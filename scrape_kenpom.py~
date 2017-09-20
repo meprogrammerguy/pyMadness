@@ -2,12 +2,15 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import pandas as pd
+import html5lib
+import pdb
 
 wiki = "https://kenpom.com/"
 page = urlopen(wiki)
-soup = BeautifulSoup(page, "html.parser")
+soup = BeautifulSoup(page, "html5lib")
 ratings_table=soup.find('table', id='ratings-table')
 
+IDX=[]
 A=[]
 B=[]
 C=[]
@@ -21,10 +24,12 @@ J=[]
 K=[]
 L=[]
 M=[]
+index=0
 for row in ratings_table.findAll("tr"):
     col=row.findAll('td')
-    #import pdb; pdb.set_trace()
     if len(col)>0:
+        index+=1
+        IDX.append(index)
         A.append(col[0].find(text=True))
         B.append(col[1].find(text=True))
         C.append(col[2].find(text=True))
@@ -39,7 +44,8 @@ for row in ratings_table.findAll("tr"):
         L.append(col[17].find(text=True))
         M.append(col[19].find(text=True))
 
-df=pd.DataFrame(A,columns=['Rank'])
+df=pd.DataFrame(IDX,columns=['Index'])
+df['Rank']=A
 df['Team']=B
 df['Conf']=C
 df['W-L']=D
@@ -54,4 +60,4 @@ df['OppDSOS']=L
 df['AdjEMNCSOS']=M
 
 with open('kenpom.json', 'w') as f:
-    f.write(df.to_json(orient='records', lines=True))
+    f.write(df.to_json(orient='index))
