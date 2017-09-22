@@ -1,4 +1,0 @@
-> c:\users\jsmith\documents\git\python\pymadness\merge_teams.py(15)<module>()
--> print (dict_kenpom)
-(Pdb) --KeyboardInterrupt--
-(Pdb) 
