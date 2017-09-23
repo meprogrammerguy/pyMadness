@@ -1,6 +1,410 @@
 <root>
-  <doc>
-    <field1 name="blah">some value1</field1>
-    <field2 name="asdfasd">some vlaue2</field2>
-  </doc>
+  <merge>
+    <bracket_key name="team">Arizona</bracket_key>
+    <token_sort_key name="team">Arizona</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Arkansas</bracket_key>
+    <token_sort_key name="team">Arkansas</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Baylor</bracket_key>
+    <token_sort_key name="team">Baylor</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Bucknell</bracket_key>
+    <token_sort_key name="team">Bucknell</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Butler</bracket_key>
+    <token_sort_key name="team">Butler</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Cincinnati</bracket_key>
+    <token_sort_key name="team">Cincinnati</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Creighton</bracket_key>
+    <token_sort_key name="team">Creighton</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Dayton</bracket_key>
+    <token_sort_key name="team">Dayton</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Duke</bracket_key>
+    <token_sort_key name="team">Duke</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">ETSU</bracket_key>
+    <token_sort_key name="team">LSU</token_sort_key>
+    <token_sort_value name="ratio">57</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">FGCU</bracket_key>
+    <token_sort_key name="team">FIU</token_sort_key>
+    <token_sort_value name="ratio">57</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Florida</bracket_key>
+    <token_sort_key name="team">Florida</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Florida State</bracket_key>
+    <token_sort_key name="team">Florida St.</token_sort_key>
+    <token_sort_value name="ratio">87</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Gonzaga</bracket_key>
+    <token_sort_key name="team">Gonzaga</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Iona</bracket_key>
+    <token_sort_key name="team">Iona</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Iowa State</bracket_key>
+    <token_sort_key name="team">Iowa St.</token_sort_key>
+    <token_sort_value name="ratio">82</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Jacksonville St</bracket_key>
+    <token_sort_key name="team">Jacksonville St.</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Kansas</bracket_key>
+    <token_sort_key name="team">Kansas</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Kansas State</bracket_key>
+    <token_sort_key name="team">Kansas St.</token_sort_key>
+    <token_sort_value name="ratio">86</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Kent State</bracket_key>
+    <token_sort_key name="team">Kent St.</token_sort_key>
+    <token_sort_value name="ratio">82</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Kentucky</bracket_key>
+    <token_sort_key name="team">Kentucky</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Louisville</bracket_key>
+    <token_sort_key name="team">Louisville</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Marquette</bracket_key>
+    <token_sort_key name="team">Marquette</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Maryland</bracket_key>
+    <token_sort_key name="team">Maryland</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Miami</bracket_key>
+    <token_sort_key name="team">Miami FL</token_sort_key>
+    <token_sort_value name="ratio">77</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Michigan</bracket_key>
+    <token_sort_key name="team">Michigan</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Michigan State</bracket_key>
+    <token_sort_key name="team">Michigan St.</token_sort_key>
+    <token_sort_value name="ratio">88</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Mid Tennessee</bracket_key>
+    <token_sort_key name="team">Middle Tennessee</token_sort_key>
+    <token_sort_value name="ratio">90</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Minnesota</bracket_key>
+    <token_sort_key name="team">Minnesota</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Mt St Mary's</bracket_key>
+    <token_sort_key name="team">Mount St. Mary's</token_sort_key>
+    <token_sort_value name="ratio">89</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">N Kentucky</bracket_key>
+    <token_sort_key name="team">Kentucky</token_sort_key>
+    <token_sort_value name="ratio">89</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">NC Central</bracket_key>
+    <token_sort_key name="team">Central Connecticut</token_sort_key>
+    <token_sort_value name="ratio">69</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Nevada</bracket_key>
+    <token_sort_key name="team">Nevada</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">New Mexico St</bracket_key>
+    <token_sort_key name="team">New Mexico St.</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">New Orleans</bracket_key>
+    <token_sort_key name="team">New Orleans</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">North Dakota</bracket_key>
+    <token_sort_key name="team">North Dakota</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Northwestern</bracket_key>
+    <token_sort_key name="team">Northwestern</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Notre Dame</bracket_key>
+    <token_sort_key name="team">Notre Dame</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Oklahoma State</bracket_key>
+    <token_sort_key name="team">Oklahoma St.</token_sort_key>
+    <token_sort_value name="ratio">88</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Oregon</bracket_key>
+    <token_sort_key name="team">Oregon</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Princeton</bracket_key>
+    <token_sort_key name="team">Princeton</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Providence</bracket_key>
+    <token_sort_key name="team">Providence</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Purdue</bracket_key>
+    <token_sort_key name="team">Purdue</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">SMU</bracket_key>
+    <token_sort_key name="team">SMU</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Saint Mary's</bracket_key>
+    <token_sort_key name="team">Saint Mary's</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Seton Hall</bracket_key>
+    <token_sort_key name="team">Seton Hall</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">South Carolina</bracket_key>
+    <token_sort_key name="team">South Carolina</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">South Dakota St</bracket_key>
+    <token_sort_key name="team">South Dakota St.</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Texas Southern</bracket_key>
+    <token_sort_key name="team">Texas Southern</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Troy</bracket_key>
+    <token_sort_key name="team">Troy</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">UC Davis</bracket_key>
+    <token_sort_key name="team">UC Davis</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">UCLA</bracket_key>
+    <token_sort_key name="team">UCLA</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">UNC</bracket_key>
+    <token_sort_key name="team">UCF</token_sort_key>
+    <token_sort_value name="ratio">67</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">UNC Wilmington</bracket_key>
+    <token_sort_key name="team">UNC Wilmington</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">URI</bracket_key>
+    <token_sort_key name="team">Rice</token_sort_key>
+    <token_sort_value name="ratio">57</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">USC</bracket_key>
+    <token_sort_key name="team">USC</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">UVA</bracket_key>
+    <token_sort_key name="team">UAB</token_sort_key>
+    <token_sort_value name="ratio">67</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">VCU</bracket_key>
+    <token_sort_key name="team">VCU</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Vanderbilt</bracket_key>
+    <token_sort_key name="team">Vanderbilt</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Vermont</bracket_key>
+    <token_sort_key name="team">Vermont</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Villanova</bracket_key>
+    <token_sort_key name="team">Villanova</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Virginia Tech</bracket_key>
+    <token_sort_key name="team">Virginia Tech</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Wake Forest</bracket_key>
+    <token_sort_key name="team">Wake Forest</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">West Virginia</bracket_key>
+    <token_sort_key name="team">West Virginia</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Wichita State</bracket_key>
+    <token_sort_key name="team">Wichita St.</token_sort_key>
+    <token_sort_value name="ratio">87</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Winthrop</bracket_key>
+    <token_sort_key name="team">Winthrop</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Wisconsin</bracket_key>
+    <token_sort_key name="team">Wisconsin</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
+  <merge>
+    <bracket_key name="team">Xavier</bracket_key>
+    <token_sort_key name="team">Xavier</token_sort_key>
+    <token_sort_value name="ratio">100</token_sort_value>
+    <override_key name="team"></override_key>
+  </merge>
 </root>

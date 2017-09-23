@@ -1,11 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import json
 import pdb
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
-import lxml.etree
-import lxml.builder    
-from lxml import etree
 from lxml import etree as ET
 
 file = 'espn.json'
@@ -31,16 +28,14 @@ team_set = set(AllTeams)
 kenpom_teams = list(team_set)
 kenpom_teams.sort()
 
-#for item in espn_teams:
-#    print (item, process.extractOne(item, kenpom_teams))
-
-
-#pdb.set_trace()
-
 root = ET.Element("root")
-doc = ET.SubElement(root, "doc")
+for item in espn_teams:
+    merge = ET.SubElement(root, "merge")
+    ET.SubElement(merge, "bracket_key", name="team").text = item
+    kenpomkey = process.extractOne(item, kenpom_teams, scorer=fuzz.token_sort_ratio)
+    ET.SubElement(merge, "token_sort_key", name="team").text = kenpomkey[0]
+    ET.SubElement(merge, "token_sort_value", name="ratio").text = str(kenpomkey[1])
+    ET.SubElement(merge, "override_key", name="team").text = ""
 
-ET.SubElement(doc, "field1", name="blah").text = "some value1"
-ET.SubElement(doc, "field2", name="asdfasd").text = "some vlaue2"
 tree = ET.ElementTree(root)
 tree.write("merge_teams.xml", pretty_print=True)
