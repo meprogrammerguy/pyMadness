@@ -6,8 +6,9 @@ def main(argv):
     first = ""
     second = ""
     verbose = False
+    neutral = False
     try:
-        opts, args = getopt.getopt(argv, "hf:s:v", ["help", "first=", "second="])
+        opts, args = getopt.getopt(argv, "hf:s:vn", ["help", "first=", "second=", "verbose", "neutral"])
     except getopt.GetoptError as err:
         print(err)
         usage()
@@ -15,8 +16,10 @@ def main(argv):
     output = None
     verbose = False
     for o, a in opts:
-        if o == "-v":
+        if o in ("-v", "--verbose"):
             verbose = True
+        elif o in ("-n", "--neutral"):
+            neutral = True
         elif o in ("-h", "--help"):
             usage()
             sys.exit()
@@ -28,13 +31,15 @@ def main(argv):
             assert False, "unhandled option"
     print(first)
     print (second)
+    print (neutral)
 
 def usage():
     usage = """
     -h --help                 Prints this
     -v --verbose              Increases the information level
-    -f --first                First Team
-    -s --second               Second Team
+    -f --first                First Team (The Away Team)
+    -s --second               Second Team (The Home Team)
+    -n --neutral              Playing on a neutral Field
     """
     print (usage)
 
