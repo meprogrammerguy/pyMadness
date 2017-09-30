@@ -38,17 +38,21 @@ def main(argv):
             second = a
         else:
             assert False, "unhandled option"
-    wiki = "https://gamepredict.us/kenpom?team_a={0}&team_b={1}&neutral={2}".format(first, second, neutral)
+    if (neutral):
+        wiki = "https://gamepredict.us/kenpom?team_a={0}&team_b={1}&neutral={2}".format(first, second, neutral).lower()
+    else:
+        wiki = "https://gamepredict.us/kenpom?team_a={0}&team_b={1}".format(first, second).lower()
+    if (verbose):
+        print (wiki)
     page = urlopen(wiki)
     soup = BeautifulSoup(page, "html5lib")
     scores = soup.findAll("div", {"class": "col-xs-6"})
-    line =  soup.findAll("div", {"class": "col-xs-12"})
-    pdb.set_trace()
-    # print (scores[4].h3.text)
-    # print (scores[4].p.text)
-    # print (scores[5].h3.text)
-    # print (scores[5].p.text)
-    # print (line[2])
+    line =  soup.findAll("div", {"class": "col-xs-12"}) 
+    dict_score = {'scorea':scores[5].h3.text, 'chancea':scores[5].p.text.replace("\n", "").strip() ,'scoreb':scores[4].h3.text, 'chanceb':scores[4].p.text.replace("\n", "").strip() }
+    if (verbose):   
+        print (dict_score)
+    return dict_score
+
 def usage():
     usage = """
     -h --help                 Prints this
