@@ -1,5 +1,5 @@
 # Test #1 Gonzaga vs. Villanova at a neutral venue
 # 
-#  https://gamepredict.us/kenpom?team_a=Gonzaga&team_b=Villanova&neutral=true
+# Data comes From kenpom.json (scraped from kenpom.com
 #
 ./score_match.py --first="Gonzaga" --second="Villanova" --neutral
