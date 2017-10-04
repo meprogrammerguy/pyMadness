@@ -22,16 +22,16 @@ def main(argv):
             neutral = True
         elif o in ("-h", "--help"):
             usage()
-            sys.exit()
+            sys.exit
         elif o in ("-f", "--first"):
             first = a
         elif o in ("-s", "--second"):
             second = a
         else:
             assert False, "unhandled option"
-    print(first)
-    print (second)
-    print (neutral)
+    dict_score = {}
+    dict_score = predict_score(first, second, neutral, verbose)
+    print (dict_score)
 
 def usage():
     usage = """
@@ -41,7 +41,12 @@ def usage():
     -s --second               Second Team (The Home Team)
     -n --neutral              Playing on a neutral Field
     """
-    print (usage)
+    print (usage) 
+
+def predict_score(first, second, neutral,verbose):
+    print (first, second, neutral, verbose)
+    dict_score = {'scorea':1, 'chancea':2 ,'scoreb':3, 'chanceb':4, 'line':5, 'tempo':6 }
+    return dict_score
 
 if __name__ == "__main__":
   main(sys.argv[1:])
