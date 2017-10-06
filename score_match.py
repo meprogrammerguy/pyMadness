@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import sys, getopt
+import pyMadness
 
 def main(argv):
     first = ""
@@ -30,7 +31,7 @@ def main(argv):
         else:
             assert False, "unhandled option"
     dict_score = {}
-    dict_score = predict_score(first, second, neutral, verbose)
+    dict_score = pyMadness.predictScore(first, second, neutral, verbose)
     print (dict_score)
 
 def usage():
@@ -42,11 +43,6 @@ def usage():
     -n --neutral              Playing on a neutral Field
     """
     print (usage) 
-
-def predict_score(first, second, neutral,verbose):
-    print (first, second, neutral, verbose)
-    dict_score = {'scorea':1, 'chancea':2 ,'scoreb':3, 'chanceb':4, 'line':5, 'tempo':6 }
-    return dict_score
 
 if __name__ == "__main__":
   main(sys.argv[1:])
