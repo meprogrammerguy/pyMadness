@@ -2,4 +2,4 @@
 # 
 # Data comes From kenpom.json (scraped from kenpom.com)
 #
-./score_match.py --first="Gonzaga" --second="Villanova" --neutral
+./score_matchup.py --first="Gonzaga" --second="Villanova" --neutral
