@@ -33,7 +33,6 @@ def main(argv):
             assert False, "unhandled option"
     dict_score = {}
     dict_score = pyMadness.predictScore(first, second, neutral, verbose)
-    print (dict_score)
 
 def usage():
     usage = """
