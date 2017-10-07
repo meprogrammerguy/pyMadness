@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import sys, getopt
+
 import pyMadness
 
 def main(argv):
