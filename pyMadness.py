@@ -9,26 +9,19 @@ from scipy.stats import norm
 import pylab as p
 import numpy as np
 
-def predictScore(first, second, neutral, verbose):
-    if (verbose):
-        if (neutral):
-            info = "{0} verses {1} at a neutral location".format(first, second)
-            print (info)
-        else:
-            info = "Visiting team: {0} verses Home team: {1}".format(first, second)
-            print (info)
-
-    file = 'kenpom.json'
-    with open(file) as kenpom_file:
-        dict_kenpom = json.load(kenpom_file)
+def findTeams(first, second, verbose = True, file = "kenpom.json"):
     teama = {}
     teamb = {}
     count = 0
+
+    with open(file) as kenpom_file:
+        dict_kenpom = json.load(kenpom_file)
+
     for item in dict_kenpom.values():
-        if (item["Team"] == first):
+        if (item["Team"].lower() == first.lower()):
             teama = item
             count += 1
-        if (item["Team"] == second):
+        if (item["Team"].lower() == second.lower()):
             teamb = item
             count += 1
         if (count == 2):
@@ -38,27 +31,42 @@ def predictScore(first, second, neutral, verbose):
             print ("Could not find stats for {0}".format(first))
         if (not teamb):
             print ("Could not find stats for {0}".format(second))
+        return {}, {}
+    return teama, teamb
+
+def percentChance(teama, teamb, std = 11.5, homeAdvantage = 3.75, homeTeam = 'none', verbose = True):
+    Tdiff = (float(teama['AdjT']) + float(teamb['AdjT'])) / 200.0
+    if (verbose):
+        print ("percentChance() tempo: {0}".format(Tdiff * 100))
+    EMdiff = (float(teama['AdjEM']) - float(teamb['AdjEM'])) * Tdiff
+    if (verbose):
+        print ("percentChance() efficiency margin: {0}".format(EMdiff))
+    if homeTeam == teama["Team"]:
+        bPercent = norm.cdf(0, EMdiff + homeAdvantage, std)
+    elif homeTeam == teamb["Team"]:
+        bPercent = norm.cdf(0, EMdiff - homeAdvantage, std)
+    else:
+        bPercent = norm.cdf(0, EMdiff, std)
+    aPercent = 1.0 - bPercent
+    return aPercent, bPercent
+
+def Score(first, second, neutral, verbose):
+    if (verbose):
+        if (neutral):
+            info = "{0} verses {1} at a neutral location".format(first, second)
+            print (info)
+        else:
+            info = "Visiting team: {0} verses Home team: {1}".format(first, second)
+            print (info)
+
+    teama, teamb = findTeams(first, second, verbose = verbose)
+    if (not teama or not teamb):
         return {}
-    #PointDiff = (AdjEM_A - AdjEM_B)*(AdjT_A + AdjT_B)/200
-    # Gonzaga, Villanova on 10/7/17
-    kpEMb, kpEMa = 32.05, 29.88
-    kpTb, kpTa = 70.1, 64.0
-    homeadv = 3.75
-    kpEMtempo = (kpTa + kpTb)/200
-    # Number of points A should win by on neutral floor
-    kpEMdiff = (kpEMa - kpEMb)*kpEMtempo
-    # Number of points A should win by on oponents floor
     if (not neutral):
-        kpEMdiff = (kpEMa - kpEMb)*kpEMtempo - homeadv
-
-    pointDiff = (float(teama["AdjEM"]) - float(teamb["AdjEM"])) * (float(teama["AdjT"]) + float(teamb["AdjT"])) / 200
-    if (not neutral):
-        pointDiff -= homeadv
-    stdev = 11
-
-    chanceb = norm.cdf(0, pointDiff, stdev)
-    chancea = 1 - chanceb
-
+        chancea, chanceb =  percentChance(teama, teamb, homeTeam = teamb["Team"], verbose = verbose)
+    else:
+        chancea, chanceb =  percentChance(teama, teamb, verbose = verbose)
+    #pdb.set_trace()
 
     dict_score = {'teama':first, 'scorea':1, 'chancea':"{0:6.4f}%".format(chancea * 100) ,'teamb':second, 'scoreb':1, 'chanceb':"{0:6.4f}%".format(chanceb * 100), 'line':1, 'tempo':1 }
     if (verbose):

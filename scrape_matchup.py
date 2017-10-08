@@ -36,7 +36,7 @@ def main(argv):
         else:
             assert False, "unhandled option"
     dict_score = {}
-    dict_score = gamePredict.predictScore(first, second, neutral, verbose)
+    dict_score = gamePredict.Score(first, second, neutral, verbose)
     #print (dict_score)
 
 def usage():

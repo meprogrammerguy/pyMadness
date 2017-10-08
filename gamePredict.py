@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
-# Data scraped in this way
-#  https://gamepredict.us/kenpom?team_a=<first>&team_b=<second>&neutral=<neutral>
 
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import html5lib
 import pdb
 
-def predictScore(first, second, neutral, verbose):
+def Score(first, second, neutral, verbose):
     if (neutral):
         wiki = "https://gamepredict.us/kenpom?team_a={0}&team_b={1}&neutral={2}".format(first, second, neutral).lower()
     else:
