@@ -1,3 +1,3 @@
-# Test #4 Gonzaga (Home) vs. Villanova (visitor)
+# Test #4  Villanova (visitor) vs. Gonzaga (Home)
 # 
-./score_matchup.py --first="Gonzaga" --second="Villanova" --verbose
+./score_matchup.py --first="Villanova" --second="Gonzaga" --verbose

@@ -1,6 +1,6 @@
-# Test #2 Gonzaga vs. Villanova at a neutral venue
+# Test #2  Villanova vs. Gonzaga at a neutral venue
 # 
 # Data scraped From here
-#  https://gamepredict.us/kenpom?team_a=Gonzaga&team_b=Villanova&neutral=true
+#  https://gamepredict.us/kenpom?team_a=villanova&team_b=gonzaga&neutral=true
 #
-./scrape_matchup.py --first="Gonzaga" --second="Villanova" --neutral --verbose
+./scrape_matchup.py --first="villanova" --second="gonzaga" --neutral --verbose

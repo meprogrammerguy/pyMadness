@@ -15,7 +15,7 @@ def predictScore(first, second, neutral, verbose):
             info = "{0} verses {1} at a neutral location".format(first, second)
             print (info)
         else:
-            info = "Home team: {0} verses Visiting team: {1}".format(first, second)
+            info = "Visiting team: {0} verses Home team: {1}".format(first, second)
             print (info)
 
     file = 'kenpom.json'
@@ -41,9 +41,9 @@ def predictScore(first, second, neutral, verbose):
         return {}
     #PointDiff = (AdjEM_A - AdjEM_B)*(AdjT_A + AdjT_B)/200
     # Gonzaga, Villanova on 10/7/17
-    kpEMa, kpEMb = 32.05, 29.88
-    kpTa, kpTb = 70.1, 64.0
-    homeadv = 3.5
+    kpEMb, kpEMa = 32.05, 29.88
+    kpTb, kpTa = 70.1, 64.0
+    homeadv = 3.75
     kpEMtempo = (kpTa + kpTb)/200
     # Number of points A should win by on neutral floor
     kpEMdiff = (kpEMa - kpEMb)*kpEMtempo
@@ -53,14 +53,14 @@ def predictScore(first, second, neutral, verbose):
 
     pointDiff = (float(teama["AdjEM"]) - float(teamb["AdjEM"])) * (float(teama["AdjT"]) + float(teamb["AdjT"])) / 200
     if (not neutral):
-        pointDiff += homeadv
-    stdev = 11
+        pointDiff -= homeadv
+    stdev = 10
 
-    chancea = norm.cdf(0, kpEMdiff, stdev)
-    chanceb = 1 - chancea
+    chanceb = norm.cdf(0, pointDiff, stdev)
+    chancea = 1 - chanceb
 
 
-    dict_score = {'scorea':1, 'chancea':"{0:6.4f}%".format(chancea * 100) ,'scoreb':1, 'chanceb':"{0:6.4f}%".format(chanceb * 100), 'line':1, 'tempo':1 }
+    dict_score = {'teama':first, 'scorea':1, 'chancea':"{0:6.4f}%".format(chancea * 100) ,'teamb':second, 'scoreb':1, 'chanceb':"{0:6.4f}%".format(chanceb * 100), 'line':1, 'tempo':1 }
     if (verbose):
         print (dict_score)
     pdb.set_trace()
