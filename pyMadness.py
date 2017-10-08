@@ -54,7 +54,7 @@ def predictScore(first, second, neutral, verbose):
     pointDiff = (float(teama["AdjEM"]) - float(teamb["AdjEM"])) * (float(teama["AdjT"]) + float(teamb["AdjT"])) / 200
     if (not neutral):
         pointDiff -= homeadv
-    stdev = 10
+    stdev = 11
 
     chanceb = norm.cdf(0, pointDiff, stdev)
     chancea = 1 - chanceb
