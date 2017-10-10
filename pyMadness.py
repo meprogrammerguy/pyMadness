@@ -34,19 +34,23 @@ def findTeams(first, second, verbose = True, file = "kenpom.json"):
         return {}, {}
     return teama, teamb
 
-def Chance(teama, teamb, std = 11.5, homeAdvantage = 3.75, homeTeam = 'none', verbose = True):
+def Chance(teama, teamb, std = 11, homeAdvantage = 3.75, homeTeam = 'none', verbose = True):
     Tdiff = (float(teama['AdjT']) + float(teamb['AdjT'])) / 200.0
     if (verbose):
         print ("Chance(tempo) {0}".format(Tdiff * 100))
     EMdiff = (float(teama['AdjEM']) - float(teamb['AdjEM'])) * Tdiff
-    if (verbose):
-        print ("Chance(efficiency margin) {0}".format(EMdiff))
     if homeTeam == teama["Team"]:
         bPercent = norm.cdf(0, EMdiff + homeAdvantage, std)
+        if (verbose):
+            print ("Chance(efficiency margin) {0}".format(EMdiff + homeAdvantage))
     elif homeTeam == teamb["Team"]:
         bPercent = norm.cdf(0, EMdiff - homeAdvantage, std)
+        if (verbose):
+            print ("Chance(efficiency margin) {0}".format(EMdiff - homeAdvantage))
     else:
         bPercent = norm.cdf(0, EMdiff, std)
+        if (verbose):
+            print ("Chance(efficiency margin) {0}".format(EMdiff))
     aPercent = 1.0 - bPercent
     if (verbose):
         print ("Chance(teama) {0}".format(aPercent), "Chance(teamb) {0}".format(bPercent))
@@ -59,8 +63,29 @@ def Tempo(teama, teamb, verbose = True):
     return Tdiff
 
 def Test(verbose):
+    result = 0
+    # Purdue, Northwestern on 3/5/17
+    # Number of points A should win by on neutral floor
+    #kpEMdiff = (kpEMa - kpEMb)*kpEMtempo
+    # Number of points A should win by on oponents floor
+    #kpEMdiff = (kpEMa - kpEMb)*kpEMtempo - homeadv
+    # Actual Score: Edwards leads No. 16 Purdue past Northwestern, 69-65
+    # venue was: Welsh-Ryan Arena in Evanston, IL (Nothwestern was the home team)
+    teama = {'Team':"purdue", 'AdjEM':24.31, 'AdjT':69.5, 'Result1':58}
+    teamb = {'Team':"northwestern", 'AdjEM':15.83, 'AdjT':65.8, 'Result1':42}
     if (verbose):
-        print ("verbose")
+        print ("Test #1 Purdue at Northwestern on 3/5/17")
+        print ("        Northwestern is Home team, testing Chance() routine)")
+    chancea, chanceb =  Chance(teama, teamb, homeTeam = teamb["Team"], verbose = verbose, homeAdvantage = 3.5)
+    #pdb.set_trace()
+    if (teama['Result1'] == int(round(chancea * 100.0))):
+        result += 1
+    if (teamb['Result1'] == int(round(chanceb * 100.0))):
+        result += 1
+    if (verbose and result == 2):
+        print ("Test #1 - pass")
+    if (result == 2):
+        return True
     return False
 
 def Score(teama, teamb, verbose = True, AVGnational = 100, AVGtempo = 67.3):
