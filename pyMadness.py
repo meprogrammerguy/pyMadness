@@ -58,7 +58,12 @@ def Tempo(teama, teamb, verbose = True):
         print ("Tempo(tempo) {0}".format(Tdiff * 100))
     return Tdiff
 
-def Score(teama, teamb, verbose = True, AVGnational = 101.5, AVGtempo = 67.3):
+def Test(verbose):
+    if (verbose):
+        print ("verbose")
+    return False
+
+def Score(teama, teamb, verbose = True, AVGnational = 100, AVGtempo = 67.3):
     Tdiff = (float(teama['AdjT']) + float(teamb['AdjT'])) / 200.0
     Tdiff *= Tdiff * 100.0 / AVGtempo
     pointsTeama = float(teama['AdjO']) / 100.0 * float(teamb['AdjD']) / 100.0 * AVGnational * Tdiff

@@ -8,8 +8,9 @@ def main(argv):
     second = ""
     verbose = False
     neutral = False
+    test = False
     try:
-        opts, args = getopt.getopt(argv, "hf:s:vn", ["help", "first=", "second=", "verbose", "neutral"])
+        opts, args = getopt.getopt(argv, "hf:s:vnt", ["help", "first=", "second=", "verbose", "neutral", "test"])
     except getopt.GetoptError as err:
         print(err)
         usage()
@@ -21,6 +22,8 @@ def main(argv):
             verbose = True
         elif o in ("-n", "--neutral"):
             neutral = True
+        elif o in ("-t", "--test"):
+            test = True
         elif o in ("-h", "--help"):
             usage()
             sys.exit
@@ -30,9 +33,15 @@ def main(argv):
             second = a
         else:
             assert False, "unhandled option"
-    dict_score = {}
-    dict_score = pyMadness.Calculate(first, second, neutral, verbose)
-    print (dict_score)
+    if (test):
+        testResult = pyMadness.Test(verbose)
+        if (testResult):
+            print ("Test result - pass")
+        else:
+            print ("Test result - fail")
+    else:
+        dict_score = {}
+        dict_score = pyMadness.Calculate(first, second, neutral, verbose)
 
 def usage():
     usage = """
@@ -41,6 +50,7 @@ def usage():
     -f --first                First Team (The Away Team)
     -s --second               Second Team (The Home Team)
     -n --neutral              Playing on a neutral Field
+    -t --test                 runs test routine to check calculations
     """
     print (usage) 
 
