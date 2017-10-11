@@ -52,6 +52,8 @@ def Chance(teama, teamb, std = 11, homeAdvantage = 3.75, homeTeam = 'none', verb
         if (verbose):
             print ("Chance(efficiency margin) {0}".format(EMdiff))
     aPercent = 1.0 - bPercent
+    aPercent = int(round(aPercent * 100.0))
+    bPercent = int(round(bPercent * 100.0))
     if (verbose):
         print ("Chance(teama) {0}".format(aPercent), "Chance(teamb) {0}".format(bPercent))
     return aPercent, bPercent
@@ -65,37 +67,57 @@ def Tempo(teama, teamb, verbose = True):
 def Test(verbose):
     result = 0
     # Purdue, Northwestern on 3/5/17
-    # Number of points A should win by on neutral floor
-    #kpEMdiff = (kpEMa - kpEMb)*kpEMtempo
-    # Number of points A should win by on oponents floor
-    #kpEMdiff = (kpEMa - kpEMb)*kpEMtempo - homeadv
     # Actual Score: Edwards leads No. 16 Purdue past Northwestern, 69-65
     # venue was: Welsh-Ryan Arena in Evanston, IL (Nothwestern was the home team)
-    teama = {'Team':"purdue", 'AdjEM':24.31, 'AdjT':69.5, 'Result1':58}
-    teamb = {'Team':"northwestern", 'AdjEM':15.83, 'AdjT':65.8, 'Result1':42}
+    teama = {'Team':"purdue", 'AdjEM':24.31, 'AdjT':69.5, 'Result1':58, 'Result2':69}
+    teamb = {'Team':"northwestern", 'AdjEM':15.83, 'AdjT':65.8, 'Result1':42,'Result2':67}
     if (verbose):
         print ("Test #1 Purdue at Northwestern on 3/5/17")
         print ("        Northwestern is Home team, testing Chance() routine)")
     chancea, chanceb =  Chance(teama, teamb, homeTeam = teamb["Team"], verbose = verbose, homeAdvantage = 3.5)
     #pdb.set_trace()
-    if (teama['Result1'] == int(round(chancea * 100.0))):
+    if (teama['Result1'] == chancea):
         result += 1
-    if (teamb['Result1'] == int(round(chanceb * 100.0))):
+    if (teamb['Result1'] == chanceb):
         result += 1
     if (verbose and result == 2):
         print ("Test #1 - pass")
-    if (result == 2):
+    if (verbose):
+        print ("Test #2 Purdue at Northwestern on 3/5/17")
+        print ("        Northwestern is Home team, testing Score() routine)")
+    scorea, scoreb = Score(teama, teamb, verbose = verbose, homeTeam = teamb["Team"], homeAdvantage = 3.5)
+    if (teama['Result2'] == scorea):
+        result += 1
+    if (teamb['Result2'] == scoreb):
+        result += 1
+    if (result == 4):
         return True
     return False
 
-def Score(teama, teamb, verbose = True, AVGnational = 100, AVGtempo = 67.3):
+def Score(teama, teamb, verbose = True, homeAdvantage = 3.75, homeTeam = 'none'):
+    # Number of points A should win by on neutral floor
+    #kpEMdiff = (kpEMa - kpEMb)*kpEMtempo
+    # Number of points A should win by on oponents floor
+    #kpEMdiff = (kpEMa - kpEMb)*kpEMtempo - homeadv
     Tdiff = (float(teama['AdjT']) + float(teamb['AdjT'])) / 200.0
-    Tdiff *= Tdiff * 100.0 / AVGtempo
-    pointsTeama = float(teama['AdjO']) / 100.0 * float(teamb['AdjD']) / 100.0 * AVGnational * Tdiff
-    pointsTeamb = float(teamb['AdjO']) / 100.0 * float(teama['AdjD']) / 100.0 * AVGnational * Tdiff
     if (verbose):
-        print ("Score(Teama) {0}".format(pointsTeama),"Score(Teamb) {0}".format(pointsTeamb))
-    return pointsTeama, pointsTeamb
+        print ("Score(tempo) {0}".format(Tdiff * 100))
+    EMdiff = (float(teama['AdjEM']) - float(teamb['AdjEM'])) * Tdiff
+    EffMgn = 0
+    if homeTeam == teama["Team"]:
+        EffMgn = EMdiff + homeAdvantage
+    elif homeTeam == teamb["Team"]:
+        EffMgn = EMdiff - homeAdvantage
+    else:
+        EffMgn = EMdiff
+    if (verbose):
+        print ("Score(efficiency margin) {0}".format(EffMgn))
+    #pdb.set_trace()
+    aScore = int(round((Tdiff * 100) + (EffMgn / 2.0)))
+    bScore = int(round((Tdiff * 100) - (EffMgn / 2.0)))
+    if (verbose):
+        print ("Score(teama) {0}".format(aScore), "Score(teamb) {0}".format(bScore))
+    return aScore, bScore
 
 def Calculate(first, second, neutral, verbose):
     if (verbose):
