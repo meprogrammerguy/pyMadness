@@ -38,6 +38,7 @@ E=[]
 F=[]
 RX=[]
 VX=[]
+RO=[]
 index = 0
 for row in soup.findAll("dl"):
     index+=1
@@ -52,12 +53,22 @@ for row in soup.findAll("dl"):
     F.append(info[5])
     if (index == 1):
         RX.append(R[3]) #South
+        RO.append(0)
     elif (index in range(2, 4)):
         RX.append(R[0]) #East
+        RO.append(0)
     elif (index == 4):
         RX.append(R[2]) #Midwest
+        RO.append(0)
+    elif (index in range(5, 13)):
+        RX.append(R[0]) #East
+        RO.append(1)
+    elif (index in range(13, 20)):
+        RX.append(R[0]) #East
+        RO.append(2)
     else :
         RX.append("?")
+        RO.append("?")
     VX.append("?")
 
 df=pd.DataFrame(IDX, columns=['Index'])
@@ -69,6 +80,7 @@ df['TeamB']=E
 df['ScoreB']=F
 df['Region']=RX
 df['Venue']=VX
+df['Round']=RO
 
 with open('espn.json', 'w') as f:
     f.write(df.to_json(orient='index'))
