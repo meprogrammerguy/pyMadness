@@ -72,15 +72,13 @@ df['Venue']=VX
 
 with open('espn.json', 'w') as f:
     f.write(df.to_json(orient='index'))
-#dict_espn = OrderedDict()
+
 with open("espn.json") as espn_json:
     dict_espn = json.load(espn_json, object_pairs_hook=OrderedDict)
 espn_sheet = open('espn.csv', 'w')
 csvwriter = csv.writer(espn_sheet)
-#sorted(dict_espn.items())
 count = 0
 for row in dict_espn.values():
-    #sorted(row.items())
     #pdb.set_trace()
     if (count == 0):
         header = row.keys()

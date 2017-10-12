@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
+
 import json
 import pdb
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
-from lxml import etree as ET
 import csv
 from collections import OrderedDict
 
@@ -30,15 +30,25 @@ team_set = set(AllTeams)
 kenpom_teams = list(team_set)
 kenpom_teams.sort()
 
-root = ET.Element("root")
+merge_sheet = open('merge.csv', 'w')
+csvwriter = csv.writer(merge_sheet)
+dict_merge = OrderedDict()
+dict_merge["espn team"] = []
+dict_merge["kenpom team"] = []
+dict_merge["ratio"] = []
+dict_merge["override team"] = []
+values = []
 for item in espn_teams:
-    merge = ET.SubElement(root, "merge")
-    ET.SubElement(merge, "bracket_key", name="team").text = item
+    dict_merge["espn team"].append(item)
     kenpomkey = process.extractOne(item, kenpom_teams, scorer=fuzz.token_sort_ratio)
-    ET.SubElement(merge, "token_sort_key", name="team").text = kenpomkey[0]
-    ET.SubElement(merge, "token_sort_value", name="ratio").text = str(kenpomkey[1])
-    ET.SubElement(merge, "override_key", name="team").text = ""
+    dict_merge["kenpom team"].append(kenpomkey[0])
+    dict_merge["ratio"].append(kenpomkey[1])
+    dict_merge["override team"].append("")
+    values.append([item,kenpomkey[0],kenpomkey[1],""])
 
-tree = ET.ElementTree(root)
-tree.write("merge_teams.xml", pretty_print=True)
+csvwriter.writerow(dict_merge.keys())
+for value in values:
+    csvwriter.writerow(value)
+merge_sheet.close()
+
 
