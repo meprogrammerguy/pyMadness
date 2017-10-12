@@ -4,14 +4,16 @@ import pdb
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 from lxml import etree as ET
+import csv
+from collections import OrderedDict
 
 file = 'espn.json'
 with open(file) as espn_file:
-    dict_espn = json.load(espn_file)
+    dict_espn = json.load(espn_file, object_pairs_hook=OrderedDict)
 
 file = 'kenpom.json'
 with open(file) as kenpom_file:
-    dict_kenpom = json.load(kenpom_file)
+    dict_kenpom = json.load(kenpom_file, object_pairs_hook=OrderedDict)
 
 AllTeams=[]
 for item in dict_espn.values():
@@ -39,3 +41,4 @@ for item in espn_teams:
 
 tree = ET.ElementTree(root)
 tree.write("merge_teams.xml", pretty_print=True)
+

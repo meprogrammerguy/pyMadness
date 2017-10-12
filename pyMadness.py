@@ -8,6 +8,7 @@ import pdb
 from scipy.stats import norm
 import pylab as p
 import numpy as np
+from collections import OrderedDict
 
 def findTeams(first, second, verbose = True, file = "kenpom.json"):
     teama = {}
@@ -15,7 +16,7 @@ def findTeams(first, second, verbose = True, file = "kenpom.json"):
     count = 0
 
     with open(file) as kenpom_file:
-        dict_kenpom = json.load(kenpom_file)
+        dict_kenpom = json.load(kenpom_file, object_pairs_hook=OrderedDict)
 
     for item in dict_kenpom.values():
         if (item["Team"].lower() == first.lower()):

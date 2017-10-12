@@ -4,6 +4,9 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import html5lib
 import pdb
+from collections import OrderedDict
+import json
+import csv
 
 wiki = "https://kenpom.com/"
 page = urlopen(wiki)
@@ -61,3 +64,17 @@ df['AdjEMNCSOS']=M
 
 with open('kenpom.json', 'w') as f:
     f.write(df.to_json(orient='index'))
+
+with open("kenpom.json") as kenpom_json:
+    dict_kenpom = json.load(kenpom_json, object_pairs_hook=OrderedDict)
+kenpom_sheet = open('kenpom.csv', 'w')
+csvwriter = csv.writer(kenpom_sheet)
+count = 0
+for row in dict_kenpom.values():
+    #pdb.set_trace()
+    if (count == 0):
+        header = row.keys()
+        csvwriter.writerow(header)
+        count += 1
+    csvwriter.writerow(row.values())
+kenpom_sheet.close()
