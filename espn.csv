@@ -15,54 +15,54 @@ Index,SeedA,TeamA,ScoreA,SeedB,TeamB,ScoreB,Region,Venue,Round
 14,5 ,UVA,39,4 ,Florida,65,EAST,?,2
 15,11 ,USC,78,3 ,Baylor,82,EAST,?,2
 16,7 ,South Carolina,88,2 ,Duke,81,EAST,?,2
-17,8 ,Wisconsin,83,4 ,Florida,84,EAST,?,2
-18,3 ,Baylor,50,7 ,South Carolina,70,EAST,?,2
-19,4 ,Florida,70,7 ,South Carolina,77,EAST,?,2
-20,1 ,Gonzaga,66,16 ,South Dakota St,46,?,?,?
-21,8 ,Northwestern,68,9 ,Vanderbilt,66,?,?,?
-22,5 ,Notre Dame,60,12 ,Princeton,58,?,?,?
-23,4 ,West Virginia,86,13 ,Bucknell,80,?,?,?
-24,6 ,Maryland,65,11 ,Xavier,76,?,?,?
-25,3 ,Florida State,86,14 ,FGCU,80,?,?,?
-26,7 ,Saint Mary's,85,10 ,VCU,77,?,?,?
-27,2 ,Arizona,100,15 ,North Dakota,82,?,?,?
-28,1 ,Gonzaga,79,8 ,Northwestern,73,?,?,?
-29,5 ,Notre Dame,71,4 ,West Virginia,83,?,?,?
-30,11 ,Xavier,91,3 ,Florida State,66,?,?,?
-31,7 ,Saint Mary's,60,2 ,Arizona,69,?,?,?
-32,1 ,Gonzaga,61,4 ,West Virginia,58,?,?,?
-33,11 ,Xavier,73,2 ,Arizona,71,?,?,?
-34,1 ,Gonzaga,83,11 ,Xavier,59,?,?,?
-35,1 ,Kansas,100,16 ,UC Davis,62,?,?,?
-36,8 ,Miami,58,9 ,Michigan State,78,?,?,?
-37,5 ,Iowa State,84,12 ,Nevada,73,?,?,?
-38,4 ,Purdue,80,13 ,Vermont,70,?,?,?
-39,6 ,Creighton,72,11 ,URI,84,?,?,?
-40,3 ,Oregon,93,14 ,Iona,77,?,?,?
-41,7 ,Michigan,92,10 ,Oklahoma State,91,?,?,?
-42,2 ,Louisville,78,15 ,Jacksonville St,63,?,?,?
-43,1 ,Kansas,90,9 ,Michigan State,70,?,?,?
-44,5 ,Iowa State,76,4 ,Purdue,80,?,?,?
-45,11 ,URI,72,3 ,Oregon,75,?,?,?
-46,7 ,Michigan,73,2 ,Louisville,69,?,?,?
-47,1 ,Kansas,98,4 ,Purdue,66,?,?,?
-48,3 ,Oregon,69,7 ,Michigan,68,?,?,?
-49,1 ,Kansas,60,3 ,Oregon,74,?,?,?
-50,1 ,UNC,103,16 ,Texas Southern,64,?,?,?
-51,8 ,Arkansas,77,9 ,Seton Hall,71,?,?,?
-52,5 ,Minnesota,72,12 ,Mid Tennessee,81,?,?,?
-53,4 ,Butler,76,13 ,Winthrop,64,?,?,?
-54,6 ,Cincinnati,75,11 ,Kansas State,61,?,?,?
-55,3 ,UCLA,97,14 ,Kent State,80,?,?,?
-56,7 ,Dayton,58,10 ,Wichita State,64,?,?,?
-57,2 ,Kentucky,79,15 ,N Kentucky,70,?,?,?
-58,1 ,UNC,72,8 ,Arkansas,65,?,?,?
-59,12 ,Mid Tennessee,65,4 ,Butler,74,?,?,?
-60,6 ,Cincinnati,67,3 ,UCLA,79,?,?,?
-61,10 ,Wichita State,62,2 ,Kentucky,65,?,?,?
-62,1 ,UNC,92,4 ,Butler,80,?,?,?
-63,3 ,UCLA,75,2 ,Kentucky,86,?,?,?
-64,1 ,UNC,75,2 ,Kentucky,73,?,?,?
-65,7 ,South Carolina,73,1 ,Gonzaga,77,?,?,?
-66,3 ,Oregon,76,1 ,UNC,77,?,?,?
-67,1 ,Gonzaga,65,1 ,UNC,71,?,?,?
+17,8 ,Wisconsin,83,4 ,Florida,84,EAST,?,3
+18,3 ,Baylor,50,7 ,South Carolina,70,EAST,?,3
+19,4 ,Florida,70,7 ,South Carolina,77,EAST,?,4
+20,1 ,Gonzaga,66,16 ,South Dakota St,46,WEST,?,1
+21,8 ,Northwestern,68,9 ,Vanderbilt,66,WEST,?,1
+22,5 ,Notre Dame,60,12 ,Princeton,58,WEST,?,1
+23,4 ,West Virginia,86,13 ,Bucknell,80,WEST,?,1
+24,6 ,Maryland,65,11 ,Xavier,76,WEST,?,1
+25,3 ,Florida State,86,14 ,FGCU,80,WEST,?,1
+26,7 ,Saint Mary's,85,10 ,VCU,77,WEST,?,1
+27,2 ,Arizona,100,15 ,North Dakota,82,WEST,?,1
+28,1 ,Gonzaga,79,8 ,Northwestern,73,WEST,?,2
+29,5 ,Notre Dame,71,4 ,West Virginia,83,WEST,?,2
+30,11 ,Xavier,91,3 ,Florida State,66,WEST,?,2
+31,7 ,Saint Mary's,60,2 ,Arizona,69,WEST,?,2
+32,1 ,Gonzaga,61,4 ,West Virginia,58,WEST,?,3
+33,11 ,Xavier,73,2 ,Arizona,71,WEST,?,3
+34,1 ,Gonzaga,83,11 ,Xavier,59,WEST,?,4
+35,1 ,Kansas,100,16 ,UC Davis,62,MIDWEST,?,1
+36,8 ,Miami,58,9 ,Michigan State,78,MIDWEST,?,1
+37,5 ,Iowa State,84,12 ,Nevada,73,MIDWEST,?,1
+38,4 ,Purdue,80,13 ,Vermont,70,MIDWEST,?,1
+39,6 ,Creighton,72,11 ,URI,84,MIDWEST,?,1
+40,3 ,Oregon,93,14 ,Iona,77,MIDWEST,?,1
+41,7 ,Michigan,92,10 ,Oklahoma State,91,MIDWEST,?,1
+42,2 ,Louisville,78,15 ,Jacksonville St,63,MIDWEST,?,1
+43,1 ,Kansas,90,9 ,Michigan State,70,MIDWEST,?,2
+44,5 ,Iowa State,76,4 ,Purdue,80,MIDWEST,?,2
+45,11 ,URI,72,3 ,Oregon,75,MIDWEST,?,2
+46,7 ,Michigan,73,2 ,Louisville,69,MIDWEST,?,2
+47,1 ,Kansas,98,4 ,Purdue,66,MIDWEST,?,3
+48,3 ,Oregon,69,7 ,Michigan,68,MIDWEST,?,3
+49,1 ,Kansas,60,3 ,Oregon,74,MIDWEST,?,4
+50,1 ,UNC,103,16 ,Texas Southern,64,SOUTH,?,1
+51,8 ,Arkansas,77,9 ,Seton Hall,71,SOUTH,?,1
+52,5 ,Minnesota,72,12 ,Mid Tennessee,81,SOUTH,?,1
+53,4 ,Butler,76,13 ,Winthrop,64,SOUTH,?,1
+54,6 ,Cincinnati,75,11 ,Kansas State,61,SOUTH,?,1
+55,3 ,UCLA,97,14 ,Kent State,80,SOUTH,?,1
+56,7 ,Dayton,58,10 ,Wichita State,64,SOUTH,?,1
+57,2 ,Kentucky,79,15 ,N Kentucky,70,SOUTH,?,1
+58,1 ,UNC,72,8 ,Arkansas,65,SOUTH,?,2
+59,12 ,Mid Tennessee,65,4 ,Butler,74,SOUTH,?,2
+60,6 ,Cincinnati,67,3 ,UCLA,79,SOUTH,?,2
+61,10 ,Wichita State,62,2 ,Kentucky,65,SOUTH,?,2
+62,1 ,UNC,92,4 ,Butler,80,SOUTH,?,3
+63,3 ,UCLA,75,2 ,Kentucky,86,SOUTH,?,3
+64,1 ,UNC,75,2 ,Kentucky,73,SOUTH,?,4
+65,7 ,South Carolina,73,1 ,Gonzaga,77,Final Four,?,5
+66,3 ,Oregon,76,1 ,UNC,77,Final Four,?,5
+67,1 ,Gonzaga,65,1 ,UNC,71,Championship,?,6

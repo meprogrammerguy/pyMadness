@@ -63,9 +63,57 @@ for row in soup.findAll("dl"):
     elif (index in range(5, 13)):
         RX.append(R[0]) #East
         RO.append(1)
-    elif (index in range(13, 20)):
+    elif (index in range(13, 17)):
         RX.append(R[0]) #East
         RO.append(2)
+    elif (index in range(17, 19)):
+        RX.append(R[0]) #East
+        RO.append(3)
+    elif (index == 19):
+        RX.append(R[0]) #East
+        RO.append(4)
+    elif (index in range(20, 28)):
+        RX.append(R[1]) #West
+        RO.append(1)
+    elif (index in range(28, 32)):
+        RX.append(R[1]) #West
+        RO.append(2)
+    elif (index in range(32, 34)):
+        RX.append(R[1]) #West
+        RO.append(3)
+    elif (index == 34):
+        RX.append(R[1]) #West
+        RO.append(4)
+    elif (index in range(35, 43)):
+        RX.append(R[2]) #Midwest
+        RO.append(1)
+    elif (index in range(43, 47)):
+        RX.append(R[2]) #Midwest
+        RO.append(2)
+    elif (index in range(47, 49)):
+        RX.append(R[2]) #Midwest
+        RO.append(3)
+    elif (index == 49):
+        RX.append(R[2]) #Midwest
+        RO.append(4)
+    elif (index in range(50, 58)):
+        RX.append(R[3]) #South
+        RO.append(1)
+    elif (index in range(58, 62)):
+        RX.append(R[3]) #South
+        RO.append(2)
+    elif (index in range(62, 64)):
+        RX.append(R[3]) #South
+        RO.append(3)
+    elif (index == 64):
+        RX.append(R[3]) #South
+        RO.append(4)
+    elif (index in range(65, 67)):
+        RX.append("Final Four") #Final
+        RO.append(5)
+    elif (index == 67):
+        RX.append("Championship") #Championship
+        RO.append(6)
     else :
         RX.append("?")
         RO.append("?")
