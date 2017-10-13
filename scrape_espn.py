@@ -42,7 +42,7 @@ venuef = soup.findAll("div", {"class": "venue final"})
 VF=[]
 for row in venuef:
     VF.append(row.find(text=True))
-pdb.set_trace()
+#pdb.set_trace()
 
 IDX=[]
 A=[]
@@ -124,15 +124,24 @@ for row in soup.findAll("dl"):
         RX.append(R[3]) #South
         RO.append(4)
     elif (index in range(65, 67)):
-        RX.append("Final Four") #Final
+        RX.append("Final Four")
         RO.append(5)
     elif (index == 67):
-        RX.append("Championship") #Championship
+        RX.append("Championship") 
         RO.append(6)
     else :
         RX.append("?")
         RO.append("?")
-    VX.append("?")
+    if (index in range(5, 7) or index == 13):
+        VX.append(V1[0])
+    elif (index in range(20, 22) or index == 28):
+        VX.append(V1[1])
+    elif (index in range(35, 37) or index == 43):
+        VX.append(V1[2])
+    elif (index in range(50, 52) or index == 58):
+        VX.append(V1[3])
+    else:
+        VX.append("?")
 
 df=pd.DataFrame(IDX, columns=['Index'])
 df['SeedA']=A
