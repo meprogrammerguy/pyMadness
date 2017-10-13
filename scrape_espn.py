@@ -140,6 +140,40 @@ for row in soup.findAll("dl"):
         VX.append(V1[2])
     elif (index in range(50, 52) or index == 58):
         VX.append(V1[3])
+    elif (index in range(7, 9) or index == 14):
+        VX.append(V2[0])
+    elif (index in range(22, 24) or index == 29):
+        VX.append(V2[1])
+    elif (index in range(37, 39) or index == 44):
+        VX.append(V2[2])
+    elif (index in range(52, 54) or index == 59):
+        VX.append(V2[3])
+    elif (index in range(9, 11) or index == 15):
+        VX.append(V3[0])
+    elif (index in range(24, 26) or index == 30):
+        VX.append(V3[1])
+    elif (index in range(39, 41) or index == 45):
+        VX.append(V3[2])
+    elif (index in range(54, 56) or index == 60):
+        VX.append(V3[3])
+    elif (index in range(11, 13) or index == 16):
+        VX.append(V4[0])
+    elif (index in range(26, 28) or index == 31):
+        VX.append(V4[1])
+    elif (index in range(41, 43) or index == 46):
+        VX.append(V4[2])
+    elif (index in range(56, 58) or index == 61):
+        VX.append(V4[3])
+    elif (index in range(17, 19) or index == 19):
+        VX.append(V5[0])
+    elif (index in range(32, 34) or index == 34):
+        VX.append(V5[1])
+    elif (index in range(47, 49) or index == 49):
+        VX.append(V5[2])
+    elif (index in range(62, 64) or index == 64):
+        VX.append(V5[3])
+    elif (index in range(65, 68)):
+        VX.append(VF[0])
     else:
         VX.append("?")
 
