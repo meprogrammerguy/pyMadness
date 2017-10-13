@@ -1,8 +1,8 @@
 Index,SeedA,TeamA,ScoreA,SeedB,TeamB,ScoreB,Region,Venue,Round
-1,11 ,Kansas State,95,11 ,Wake Forest,88,SOUTH,?,0
-2,16 ,Mt St Mary's,67,16 ,New Orleans,66,EAST,?,0
-3,11 ,Providence,71,11 ,USC,75,EAST,?,0
-4,16 ,NC Central,63,16 ,UC Davis,67,MIDWEST,?,0
+1,11 ,Kansas State,95,11 ,Wake Forest,88,First Four,"Dayton, OH",0
+2,16 ,Mt St Mary's,67,16 ,New Orleans,66,First Four,"Dayton, OH",0
+3,11 ,Providence,71,11 ,USC,75,First Four,"Dayton, OH",0
+4,16 ,NC Central,63,16 ,UC Davis,67,First Four,"Dayton, OH",0
 5,1 ,Villanova,76,16 ,Mt St Mary's,56,EAST,"Buffalo, NY",1
 6,8 ,Wisconsin,84,9 ,Virginia Tech,74,EAST,"Buffalo, NY",1
 7,5 ,UVA,76,12 ,UNC Wilmington,71,EAST,"Orlando, FL",1

@@ -16,7 +16,6 @@ region = soup.findAll("div", {"class": "regtitle"})
 R=[]
 for row in region:
     R.append(row.find(text=True))
-#pdb.set_trace()
 
 venue1 = soup.findAll("div", {"class": "venue v1"})
 V1=[]
@@ -42,7 +41,6 @@ venuef = soup.findAll("div", {"class": "venue final"})
 VF=[]
 for row in venuef:
     VF.append(row.find(text=True))
-#pdb.set_trace()
 
 IDX=[]
 A=[]
@@ -58,7 +56,6 @@ index = 0
 for row in soup.findAll("dl"):
     index+=1
     info=row.findAll(text=True)
-    #pdb.set_trace()
     IDX.append(index)
     A.append(info[0])
     B.append(info[1])
@@ -66,15 +63,10 @@ for row in soup.findAll("dl"):
     D.append(info[2])
     E.append(info[3])
     F.append(info[5])
-    if (index == 1):
-        RX.append(R[3]) #South
+    if (index in range(1, 5)):
+        RX.append("First Four")
         RO.append(0)
-    elif (index in range(2, 4)):
-        RX.append(R[0]) #East
-        RO.append(0)
-    elif (index == 4):
-        RX.append(R[2]) #Midwest
-        RO.append(0)
+        VX.append("Dayton, OH")
     elif (index in range(5, 13)):
         RX.append(R[0]) #East
         RO.append(1)
@@ -174,8 +166,6 @@ for row in soup.findAll("dl"):
         VX.append(V5[3])
     elif (index in range(65, 68)):
         VX.append(VF[0])
-    else:
-        VX.append("?")
 
 df=pd.DataFrame(IDX, columns=['Index'])
 df['SeedA']=A
@@ -197,7 +187,6 @@ espn_sheet = open('espn.csv', 'w')
 csvwriter = csv.writer(espn_sheet)
 count = 0
 for row in dict_espn.values():
-    #pdb.set_trace()
     if (count == 0):
         header = row.keys()
         csvwriter.writerow(header)
