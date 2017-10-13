@@ -22,12 +22,27 @@ venue1 = soup.findAll("div", {"class": "venue v1"})
 V1=[]
 for row in venue1:
     V1.append(row.find(text=True))
-
 venue2 = soup.findAll("div", {"class": "venue v2"})
 V2=[]
 for row in venue2:
     V2.append(row.find(text=True))
-#pdb.set_trace()
+venue3 = soup.findAll("div", {"class": "venue v3"})
+V3=[]
+for row in venue3:
+    V3.append(row.find(text=True))
+venue4 = soup.findAll("div", {"class": "venue v4"})
+V4=[]
+for row in venue4:
+    V4.append(row.find(text=True))
+venue5 = soup.findAll("div", {"class": "venue v5"})
+V5=[]
+for row in venue5:
+    V5.append(row.find(text=True))
+venuef = soup.findAll("div", {"class": "venue final"})
+VF=[]
+for row in venuef:
+    VF.append(row.find(text=True))
+pdb.set_trace()
 
 IDX=[]
 A=[]
