@@ -4,13 +4,14 @@ import sys, getopt
 import pyMadness
 
 def main(argv):
-    first = ""
-    second = ""
+    stat_file = ""
+    bracket_file = ""
+    merge_file = ""
+    output_file = ""
     verbose = False
-    neutral = False
     test = False
     try:
-        opts, args = getopt.getopt(argv, "hf:s:vnt", ["help", "first=", "second=", "verbose", "neutral", "test"])
+        opts, args = getopt.getopt(argv, "hs:b:m:o:vt", ["help", "stat_file=", "bracket_file=", "merge_file=", "output_file=", "verbose", "test"])
     except getopt.GetoptError as err:
         print(err)
         usage()
@@ -20,17 +21,19 @@ def main(argv):
     for o, a in opts:
         if o in ("-v", "--verbose"):
             verbose = True
-        elif o in ("-n", "--neutral"):
-            neutral = True
         elif o in ("-t", "--test"):
             test = True
         elif o in ("-h", "--help"):
             usage()
             sys.exit
-        elif o in ("-f", "--first"):
-            first = a
-        elif o in ("-s", "--second"):
-            second = a
+        elif o in ("-s", "--stat_file"):
+            stat_file = a
+        elif o in ("-b", "--bracket_file"):
+            bracket_file = a
+        elif o in ("-b", "--merge_file"):
+            merge_file = a
+        elif o in ("-o", "--output_file"):
+            output_file = a
         else:
             assert False, "unhandled option"
     if (test):
@@ -40,19 +43,26 @@ def main(argv):
         else:
             print ("Test result - fail")
     else:
-        dict_score = {}
-        dict_score = pyMadness.Calculate(first, second, neutral, verbose)
+        PredictTournament(stat_file = "kenpom.json", bracket_file = "espn.json", merge_file = "merge.csv", output_file = "predict.csv")
+        print ("done.")
 
 def usage():
     usage = """
     -h --help                 Prints this
     -v --verbose              Increases the information level
-    -f --first                First Team (The Away Team)
-    -s --second               Second Team (The Home Team)
-    -n --neutral              Playing on a neutral Field
+    -s --stat_file            stats file (json file format)
+    -b --bracket_file         bracket file (json file format)
+    -m --merge_file           merge file (csv/spreadsheet file format)
+    -o --output_file          output file (csv/spreadsheet file format)
     -t --test                 runs test routine to check calculations
     """
     print (usage) 
+
+def PredictTournament(stat_file, bracket_file, merge_file, output_file):
+    print (stat_file)
+    print (bracket_file)
+    print (merge_file)
+    print (output_file)
 
 if __name__ == "__main__":
   main(sys.argv[1:])
