@@ -4,10 +4,10 @@ import sys, getopt
 import pyMadness
 
 def main(argv):
-    stat_file = ""
-    bracket_file = ""
-    merge_file = ""
-    output_file = ""
+    stat_file = "kenpom.json"
+    bracket_file = "espn.json"
+    merge_file = "merge.csv"
+    output_file = "predict.csv"
     verbose = False
     test = False
     try:
@@ -43,26 +43,30 @@ def main(argv):
         else:
             print ("Test result - fail")
     else:
-        PredictTournament(stat_file = "kenpom.json", bracket_file = "espn.json", merge_file = "merge.csv", output_file = "predict.csv")
+        PredictTournament(stat_file, bracket_file, merge_file, output_file, verbose)
         print ("done.")
 
 def usage():
     usage = """
     -h --help                 Prints this
     -v --verbose              Increases the information level
-    -s --stat_file            stats file (json file format)
+    -s --stat_file            stats file   (json file format)
     -b --bracket_file         bracket file (json file format)
-    -m --merge_file           merge file (csv/spreadsheet file format)
-    -o --output_file          output file (csv/spreadsheet file format)
+    -m --merge_file           merge file   (csv/spreadsheet file format)
+    -o --output_file          output file  (csv/spreadsheet file format)
     -t --test                 runs test routine to check calculations
     """
     print (usage) 
 
-def PredictTournament(stat_file, bracket_file, merge_file, output_file):
-    print (stat_file)
-    print (bracket_file)
-    print (merge_file)
-    print (output_file)
+def PredictTournament(stat_file, bracket_file, merge_file, output_file, verbose):
+    if (verbose):
+        print ("Tournament Prediction Tool")
+        print ("**************************")
+        print ("Statistics file: {0}".format(stat_file))
+        print ("Brackets   file: {0}".format(bracket_file))
+        print ("Team Merge file: {0}".format(merge_file))
+        print ("Output     file: {0}".format(output_file))
+        print ("**************************")
 
 if __name__ == "__main__":
   main(sys.argv[1:])
