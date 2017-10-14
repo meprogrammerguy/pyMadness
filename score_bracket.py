@@ -10,8 +10,9 @@ def main(argv):
     output_file = "predict.csv"
     verbose = False
     test = False
+    gamepredict = False
     try:
-        opts, args = getopt.getopt(argv, "hs:b:m:o:vt", ["help", "stat_file=", "bracket_file=", "merge_file=", "output_file=", "verbose", "test"])
+        opts, args = getopt.getopt(argv, "hs:b:m:o:vtg", ["help", "stat_file=", "bracket_file=", "merge_file=", "output_file=", "verbose", "test", "gamepredict"])
     except getopt.GetoptError as err:
         print(err)
         usage()
@@ -23,6 +24,8 @@ def main(argv):
             verbose = True
         elif o in ("-t", "--test"):
             test = True
+        elif o in ("-g", "--gamepredict"):
+            gamepredict = True
         elif o in ("-h", "--help"):
             usage()
             sys.exit
@@ -43,7 +46,7 @@ def main(argv):
         else:
             print ("Test result - fail")
     else:
-        PredictTournament(stat_file, bracket_file, merge_file, output_file, verbose)
+        PredictTournament(stat_file, bracket_file, merge_file, output_file, verbose, gamepredict)
         print ("done.")
 
 def usage():
@@ -54,11 +57,12 @@ def usage():
     -b --bracket_file         bracket file (json file format)
     -m --merge_file           merge file   (csv/spreadsheet file format)
     -o --output_file          output file  (csv/spreadsheet file format)
+    -g --gamepredict          obtain data from gamepredict.us (default is False)
     -t --test                 runs test routine to check calculations
     """
     print (usage) 
 
-def PredictTournament(stat_file, bracket_file, merge_file, output_file, verbose):
+def PredictTournament(stat_file, bracket_file, merge_file, output_file, verbose, gamepredict):
     if (verbose):
         print ("Tournament Prediction Tool")
         print ("**************************")
@@ -66,6 +70,10 @@ def PredictTournament(stat_file, bracket_file, merge_file, output_file, verbose)
         print ("Brackets   file: {0}".format(bracket_file))
         print ("Team Merge file: {0}".format(merge_file))
         print ("Output     file: {0}".format(output_file))
+        if (gamepredict):
+            print (" ")
+            print ("===> (data will come from gamepredict.us) <===")
+            print (" ")
         print ("**************************")
 
 if __name__ == "__main__":
