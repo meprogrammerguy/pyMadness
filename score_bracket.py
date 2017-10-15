@@ -2,6 +2,10 @@
 
 import sys, getopt
 import pyMadness
+from collections import OrderedDict
+import json
+import csv
+import pdb
 
 def main(argv):
     stat_file = "kenpom.json"
@@ -75,6 +79,33 @@ def PredictTournament(stat_file, bracket_file, merge_file, output_file, verbose,
             print ("===> (data will come from gamepredict.us) <===")
             print (" ")
         print ("**************************")
+
+    file = bracket_file
+    with open(file) as espn_file:
+        dict_espn = json.load(espn_file, object_pairs_hook=OrderedDict)
+    file = stat_file
+    with open(file) as kenpom_file:
+        dict_kenpom = json.load(kenpom_file, object_pairs_hook=OrderedDict)
+    file = merge_file
+    dict_merge = []
+    with open(file) as merge_file:
+        reader = csv.DictReader(merge_file)
+        for row in reader:
+            dict_merge.append(row)
+    #pdb.set_trace()
+    dict_predict = []
+    dict_predict = LoadRound(0, dict_predict, dict_espn) 
+    predict_sheet = open(output_file, 'w')
+    csvwriter = csv.writer(predict_sheet)
+    count = 0
+    for row in dict_predict.values():
+        #pdb.set_trace()
+        if (count == 0):
+            header = row.keys()
+            csvwriter.writerow(header)
+            count += 1
+        csvwriter.writerow(row.values())
+    predict_sheet.close()
 
 if __name__ == "__main__":
   main(sys.argv[1:])
