@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 
 from urllib.request import urlopen
+from urllib.parse import quote
 from bs4 import BeautifulSoup
 import html5lib
 import pdb
 
 def Score(first, second, neutral, verbose):
+    #pdb.set_trace()
     if (neutral):
-        wiki = "https://gamepredict.us/kenpom?team_a={0}&team_b={1}&neutral={2}".format(first, second, neutral).lower()
+        wiki = "https://gamepredict.us/kenpom?team_a={0}&team_b={1}&neutral=true".format(quote(first), quote(second))
     else:
-        wiki = "https://gamepredict.us/kenpom?team_a={0}&team_b={1}".format(first, second).lower()
+        wiki = "https://gamepredict.us/kenpom?team_a={0}&team_b={1}".format(quote(first), quote(second))
     if (verbose):
         print (wiki)
     page = urlopen(wiki)
