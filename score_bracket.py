@@ -181,7 +181,7 @@ def PromoteRound(round, dict_predict, dict_espn, dict_merge):
 
 def GetNextIndex(index):
     # Hundreds position is slot number 1 or 2 rest of the number is the index
-    next_slot = [254, 205, 210, 235]
+    next_slot = [254, 205, 210, 235, 113, 213, 114, 214, 115, 215, 116, 216, 117, 217]
     slot = int(next_slot[index - 1] / 100)
     return slot, (next_slot[index - 1] - (slot * 100))
 
