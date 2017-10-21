@@ -80,30 +80,31 @@ def PredictTournament(stat_file, bracket_file, merge_file, output_file, verbose,
             print ("===> (data will come from gamepredict.us) <===")
             print (" ")
         print ("**************************")
-
-    file = bracket_file
-    with open(file) as espn_file:
-        dict_espn = json.load(espn_file, object_pairs_hook=OrderedDict)
-    file = stat_file
-    with open(file) as kenpom_file:
-        dict_kenpom = json.load(kenpom_file, object_pairs_hook=OrderedDict)
-    file = merge_file
     dict_merge = []
+    file = merge_file
     with open(file) as merge_file:
         reader = csv.DictReader(merge_file)
         for row in reader:
             dict_merge.append(row)
-    #pdb.set_trace()
+    file = bracket_file
+    with open(file) as espn_file:
+        dict_espn = json.load(espn_file, object_pairs_hook=OrderedDict)
+    for item in dict_espn.values():
+        teama, teamb = FindTeams(item["TeamA"], item["TeamB"], dict_merge)
+        item[2] = teama
+        item[6] = teamb
+    file = stat_file
+    with open(file) as kenpom_file:
+        dict_kenpom = json.load(kenpom_file, object_pairs_hook=OrderedDict)
     dict_predict = []
+    dict_predict = LoadRound(dict_predict, dict_espn) 
     for round in range(0, 7):
-        dict_predict = LoadRound(round, dict_predict, dict_espn, dict_merge) 
         dict_predict = PredictRound(round, dict_predict, gamepredict, verbose)
-        dict_espn = PromoteRound(round, dict_predict, dict_espn, dict_merge)
+        dict_espn = PromoteRound(round, dict_predict, dict_espn)
     predict_sheet = open(output_file, 'w')
     csvwriter = csv.writer(predict_sheet)
     count = 0
     for row in dict_predict:
-        #pdb.set_trace()
         csvwriter.writerow(row)
     predict_sheet.close()
 
@@ -121,26 +122,21 @@ def FindTeams(teama, teamb, dict_merge):
                 FoundB = item["override team"]
         if (FoundA and FoundB):
             break
-    #pdb.set_trace()
     return FoundA, FoundB
 
-def LoadRound(round, dict_predict, dict_espn, dict_merge):
-    index = len(dict_predict) + 1
-    if (round == 0):
-        dict_predict.append(["Index", "SeedA", "TeamA", "ChanceA", "ScoreA",
+def LoadRound(dict_predict, dict_espn):
+    dict_predict.append(["Index", "SeedA", "TeamA", "ChanceA", "ScoreA",
                                       "SeedB", "TeamB", "ChanceB", "ScoreB", "Region", "Venue", "Round", "Pick"])
+    index = 0
     for item in dict_espn.values():
-        if(round == int(item["Round"])):
-            teama, teamb = FindTeams(item["TeamA"], item["TeamB"], dict_merge)
-            dict_predict.append([index, item["SeedA"], teama, "?%", "?",
-                                        item["SeedB"], teamb, "?%", "?", item["Region"], item["Venue"], item["Round"], "?"])
+        if (item["Round"] != "Round"):
             index += 1
-            #pdb.set_trace()
+            dict_predict.append([index, item["SeedA"], item[2], "?%", "?",
+                                        item["SeedB"], item[6], "?%", "?", item["Region"], item["Venue"], item["Round"], "?"])
     return dict_predict
 
 def PredictRound(round, dict_predict, gamepredict, verbose):
     for item in dict_predict:
-        #pdb.set_trace()
         if (item[11] != "Round" and (round == int(item[11]))): #Round
             if (gamepredict):
                 dict_score = gamePredict.Score(item[2], item[6], True, verbose) #This will be slow
@@ -154,22 +150,22 @@ def PredictRound(round, dict_predict, gamepredict, verbose):
                 item[12] = "TeamA"
             else:
                 item[12] = "TeamB"
-                #pdb.set_trace()
     return dict_predict
 
-def PromoteRound(round, dict_predict, dict_espn, dict_merge):
+def PromoteRound(round, dict_predict, dict_espn):
     if (int(round) != 6):
         promote = []
         for item in dict_espn.values():
-            if (int(round) == int(item["Round"])):
-                teama, teamb = FindTeams(item["TeamA"], item["TeamB"], dict_merge)
+            if (item["Round"] != "Round" and int(round) == int(item["Round"])):
                 score = dict_predict[item["Index"]]
                 slot, index = GetNextIndex(item["Index"])
+                pteam = "?"
                 if (int(score[4]) >= int(score[8])):
-                    promote.append([index, slot, teama])
+                    promote.append([index, slot, item[2]])
+                    pteam = item[2]
                 else:
-                    promote.append([index, slot, teamb])
-        pdb.set_trace()
+                    promote.append([index, slot, item[6]])
+                    pteam = item[6]
         for item in dict_espn.values():
             for team in promote:
                 if (team[0] == item["Index"]):
@@ -177,11 +173,18 @@ def PromoteRound(round, dict_predict, dict_espn, dict_merge):
                         item["TeamA"] = team[2]
                     else:
                         item["TeamB"] = team[2]
+    pdb.set_trace()
     return dict_espn 
 
 def GetNextIndex(index):
     # Hundreds position is slot number 1 or 2 rest of the number is the index
-    next_slot = [254, 205, 210, 235, 113, 213, 114, 214, 115, 215, 116, 216, 117, 217]
+    next_slot = [254, 205, 209, 235, # First Four 
+                 113, 213, 114, 214, 115, 215, 116, 216, 117, 217, 118, 218, 119, 219, 165, # East
+                 128, 228, 129, 229, 130, 230, 131, 231, 132, 232, 133, 233, 134, 234, 265, # West
+                 143, 243, 144, 244, 145, 245, 146, 246, 147, 247, 148, 248, 149, 249, 166, # Midwest
+                 158, 258, 159, 259, 160, 260, 161, 261, 162, 262, 163, 263, 164, 264, 266, # South
+                 167, 267] # Final Four
+
     slot = int(next_slot[index - 1] / 100)
     return slot, (next_slot[index - 1] - (slot * 100))
 
