@@ -56,7 +56,7 @@ def main(argv):
             print ("Test result - fail")
     else:
         PredictTournament(stat_file, bracket_file, merge_file, input_file, output_file, verbose, gamepredict)
-        print ("done.")
+        print ("{0} has been created.".format(output_file))
 
 def usage():
     usage = """
@@ -73,19 +73,18 @@ def usage():
     print (usage) 
 
 def PredictTournament(stat_file, bracket_file, merge_file, input_file, output_file, verbose, gamepredict):
-    if (verbose):
-        print ("Tournament Prediction Tool")
-        print ("**************************")
-        print ("Statistics file: {0}".format(stat_file))
-        print ("Brackets   file: {0}".format(bracket_file))
-        print ("Team Merge file: {0}".format(merge_file))
-        print ("Input      file: {0}".format(input_file))
-        print ("Output     file: {0}".format(output_file))
-        if (gamepredict):
-            print (" ")
-            print ("===> (data will come from gamepredict.us) <===")
-            print (" ")
-        print ("**************************")
+    print ("Tournament Prediction Tool")
+    print ("**************************")
+    print ("Statistics file: {0}".format(stat_file))
+    print ("Brackets   file: {0}".format(bracket_file))
+    print ("Team Merge file: {0}".format(merge_file))
+    print ("Input      file: {0}".format(input_file))
+    print ("Output     file: {0}".format(output_file))
+    if (gamepredict):
+        print (" ")
+        print ("===> (data will come from gamepredict.us) <===")
+        print (" ")
+    print ("**************************")
     list_picks = []
     file = input_file
     with open(file) as input_file:
