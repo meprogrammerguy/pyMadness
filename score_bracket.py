@@ -97,10 +97,10 @@ def PredictTournament(stat_file, bracket_file, merge_file, output_file, verbose,
     with open(file) as kenpom_file:
         dict_kenpom = json.load(kenpom_file, object_pairs_hook=OrderedDict)
     dict_predict = []
-    dict_predict = LoadRound(dict_predict, dict_espn) 
+    dict_predict = LoadPredict(dict_predict, dict_espn) 
     for round in range(0, 7):
         dict_predict = PredictRound(round, dict_predict, gamepredict, verbose)
-        dict_espn = PromoteRound(round, dict_predict, dict_espn)
+        dict_predict = PromoteRound(round, dict_predict)
     predict_sheet = open(output_file, 'w')
     csvwriter = csv.writer(predict_sheet)
     count = 0
@@ -124,7 +124,7 @@ def FindTeams(teama, teamb, dict_merge):
             break
     return FoundA, FoundB
 
-def LoadRound(dict_predict, dict_espn):
+def LoadPredict(dict_predict, dict_espn):
     dict_predict.append(["Index", "SeedA", "TeamA", "ChanceA", "ScoreA",
                                       "SeedB", "TeamB", "ChanceB", "ScoreB", "Region", "Venue", "Round", "Pick"])
     index = 0
@@ -152,29 +152,28 @@ def PredictRound(round, dict_predict, gamepredict, verbose):
                 item[12] = "TeamB"
     return dict_predict
 
-def PromoteRound(round, dict_predict, dict_espn):
+def PromoteRound(round, dict_predict):
     if (int(round) != 6):
         promote = []
-        for item in dict_espn.values():
-            if (item["Round"] != "Round" and int(round) == int(item["Round"])):
-                score = dict_predict[item["Index"]]
-                slot, index = GetNextIndex(item["Index"])
+        for item in dict_predict:
+            if (item[0] != "Index" and int(round) == int(item[11])):
+                slot, index = GetNextIndex(item[0])
                 pteam = "?"
-                if (int(score[4]) >= int(score[8])):
+                if (int(item[4]) >= int(item[8])):
                     promote.append([index, slot, item[2]])
                     pteam = item[2]
                 else:
                     promote.append([index, slot, item[6]])
                     pteam = item[6]
-        for item in dict_espn.values():
+
+        for item in dict_predict:
             for team in promote:
-                if (team[0] == item["Index"]):
+                if (team[0] == item[0]):
                     if (team[1] == 1):
-                        item["TeamA"] = team[2]
+                        item[2] = team[2]
                     else:
-                        item["TeamB"] = team[2]
-    pdb.set_trace()
-    return dict_espn 
+                        item[6] = team[2]
+    return dict_predict 
 
 def GetNextIndex(index):
     # Hundreds position is slot number 1 or 2 rest of the number is the index
