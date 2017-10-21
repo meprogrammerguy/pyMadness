@@ -13,11 +13,13 @@ def main(argv):
     bracket_file = "espn.json"
     merge_file = "merge.csv"
     output_file = "predict.csv"
+    input_file = "predict.csv"
     verbose = False
     test = False
     gamepredict = False
     try:
-        opts, args = getopt.getopt(argv, "hs:b:m:o:vtg", ["help", "stat_file=", "bracket_file=", "merge_file=", "output_file=", "verbose", "test", "gamepredict"])
+        opts, args = getopt.getopt(argv, "hs:b:m:o:i:vtg", ["help", "stat_file=", "bracket_file=", "merge_file=", "output_file=", 
+                                         "input_file=", "verbose", "test", "gamepredict"])
     except getopt.GetoptError as err:
         print(err)
         usage()
@@ -42,6 +44,8 @@ def main(argv):
             merge_file = a
         elif o in ("-o", "--output_file"):
             output_file = a
+        elif o in ("-i", "--input_file"):
+            input_file = a
         else:
             assert False, "unhandled option"
     if (test):
@@ -51,35 +55,52 @@ def main(argv):
         else:
             print ("Test result - fail")
     else:
-        PredictTournament(stat_file, bracket_file, merge_file, output_file, verbose, gamepredict)
+        PredictTournament(stat_file, bracket_file, merge_file, input_file, output_file, verbose, gamepredict)
         print ("done.")
 
 def usage():
     usage = """
-    -h --help                 Prints this
+    -h --help                 Prints this help
     -v --verbose              Increases the information level
-    -s --stat_file            stats file   (json file format)
-    -b --bracket_file         bracket file (json file format)
-    -m --merge_file           merge file   (csv/spreadsheet file format)
-    -o --output_file          output file  (csv/spreadsheet file format)
-    -g --gamepredict          obtain data from gamepredict.us (default is False)
+    -s --stat_file            stats file                      (json file format)
+    -b --bracket_file         bracket file                    (json file format)
+    -m --merge_file           merge file                      (csv/spreadsheet file format)
+    -i --input_file           input file gets pick overrides  (csv/spreadsheet file format)
+    -o --output_file          output file                     (csv/spreadsheet file format)
+    -g --gamepredict          obtain data from gamepredict.us (default is False, runs slower)
     -t --test                 runs test routine to check calculations
     """
     print (usage) 
 
-def PredictTournament(stat_file, bracket_file, merge_file, output_file, verbose, gamepredict):
+def PredictTournament(stat_file, bracket_file, merge_file, input_file, output_file, verbose, gamepredict):
     if (verbose):
         print ("Tournament Prediction Tool")
         print ("**************************")
         print ("Statistics file: {0}".format(stat_file))
         print ("Brackets   file: {0}".format(bracket_file))
         print ("Team Merge file: {0}".format(merge_file))
+        print ("Input      file: {0}".format(input_file))
         print ("Output     file: {0}".format(output_file))
         if (gamepredict):
             print (" ")
             print ("===> (data will come from gamepredict.us) <===")
             print (" ")
         print ("**************************")
+    list_picks = []
+    file = input_file
+    with open(file) as input_file:
+        reader = csv.DictReader(input_file)
+        for row in reader:
+            if (row["ScoreA"] >= row["ScoreB"] and row["Pick"] == "TeamB"):
+                list_picks.append([row["Index"], row["Pick"]])
+            elif (row["ScoreA"] < row["ScoreB"] and row["Pick"] == "TeamA"):
+                list_picks.append([row["Index"], row["Pick"]])
+    if (len(list_picks) == 0):
+        print ("No pick Overrides")
+    elif (len(list_picks) == 1):
+        print ("Overriding one calculated pick")
+    else:
+        print ("Overriding {0} calculated pick(s)".format(len(list_picks)))
     dict_merge = []
     file = merge_file
     with open(file) as merge_file:
@@ -100,7 +121,7 @@ def PredictTournament(stat_file, bracket_file, merge_file, output_file, verbose,
     dict_predict = LoadPredict(dict_predict, dict_espn) 
     for round in range(0, 7):
         dict_predict = PredictRound(round, dict_predict, gamepredict, verbose)
-        dict_predict = PromoteRound(round, dict_predict)
+        dict_predict = PromoteRound(round, dict_predict, list_picks)
     predict_sheet = open(output_file, 'w')
     csvwriter = csv.writer(predict_sheet)
     count = 0
@@ -152,19 +173,32 @@ def PredictRound(round, dict_predict, gamepredict, verbose):
                 item[12] = "TeamB"
     return dict_predict
 
-def PromoteRound(round, dict_predict):
+def PromoteRound(round, dict_predict, list_picks):
     if (int(round) != 6):
         promote = []
         for item in dict_predict:
             if (item[0] != "Index" and int(round) == int(item[11])):
                 slot, index = GetNextIndex(item[0])
-                pteam = "?"
+                flip = False
+                #pdb.set_trace()
+                for pick in list_picks:
+                    if (int(pick[0]) == int(item[0])):
+                        flip = True
+                        #pdb.set_trace()
+                        item[12] = pick[1]
+                        break
                 if (int(item[4]) >= int(item[8])):
-                    promote.append([index, slot, item[2]])
-                    pteam = item[2]
+                    if (flip):
+                        print ("picking {0} over {1} in round {2} in match {3}".format(item[6], item[2], item[11], item[0]))
+                        promote.append([index, slot, item[6]])
+                    else:
+                        promote.append([index, slot, item[2]])
                 else:
-                    promote.append([index, slot, item[6]])
-                    pteam = item[6]
+                    if (flip):
+                        print ("picking {0} over {1} in round {2} in match {3}".format(item[2], item[6], item[11], item[0]))
+                        promote.append([index, slot, item[2]])
+                    else:
+                        promote.append([index, slot, item[6]])
 
         for item in dict_predict:
             for team in promote:
