@@ -48,6 +48,7 @@ def main(argv):
     dict_score = {}
     dict_score = gamePredict.Score(first, second, neutral, verbose)
     #print (dict_score)
+    print ("done.")
 
 def usage():
     usage = """
@@ -61,3 +62,4 @@ def usage():
 
 if __name__ == "__main__":
   main(sys.argv[1:])
+
