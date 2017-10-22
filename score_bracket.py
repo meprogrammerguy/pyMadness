@@ -7,6 +7,7 @@ from collections import OrderedDict
 import json
 import csv
 import pdb
+import os.path
 
 def main(argv):
     stat_file = "kenpom.json"
@@ -86,14 +87,15 @@ def PredictTournament(stat_file, bracket_file, merge_file, input_file, output_fi
         print (" ")
     print ("**************************")
     list_picks = []
-    file = input_file
-    with open(file) as input_file:
-        reader = csv.DictReader(input_file)
-        for row in reader:
-            if (row["ScoreA"] >= row["ScoreB"] and row["Pick"] == "TeamB"):
-                list_picks.append([row["Index"], row["Pick"]])
-            elif (row["ScoreA"] < row["ScoreB"] and row["Pick"] == "TeamA"):
-                list_picks.append([row["Index"], row["Pick"]])
+    if (os.path.exists(input_file)):
+        file = input_file
+        with open(file) as input_file:
+            reader = csv.DictReader(input_file)
+            for row in reader:
+                if (row["ScoreA"] >= row["ScoreB"] and row["Pick"] == "TeamB"):
+                    list_picks.append([row["Index"], row["Pick"]])
+                elif (row["ScoreA"] < row["ScoreB"] and row["Pick"] == "TeamA"):
+                    list_picks.append([row["Index"], row["Pick"]])
     if (len(list_picks) == 0):
         print ("No pick Overrides")
     elif (len(list_picks) == 1):
@@ -101,11 +103,17 @@ def PredictTournament(stat_file, bracket_file, merge_file, input_file, output_fi
     else:
         print ("Overriding {0} calculated pick(s)".format(len(list_picks)))
     dict_merge = []
+    if (not os.path.exists(merge_file)):
+        print ("merge file is missing, run the merge_teams tool to create")
+        exit()
     file = merge_file
     with open(file) as merge_file:
         reader = csv.DictReader(merge_file)
         for row in reader:
             dict_merge.append(row)
+    if (not os.path.exists(bracket_file)):
+        print ("brackets file is missing, run the scrape_espn tool to create")
+        exit()
     file = bracket_file
     with open(file) as espn_file:
         dict_espn = json.load(espn_file, object_pairs_hook=OrderedDict)
@@ -113,6 +121,9 @@ def PredictTournament(stat_file, bracket_file, merge_file, input_file, output_fi
         teama, teamb = FindTeams(item["TeamA"], item["TeamB"], dict_merge)
         item[2] = teama
         item[6] = teamb
+    if (not os.path.exists(stat_file)):
+        print ("statistics file is missing, run the scrape_kenpom tool to create")
+        exit()
     file = stat_file
     with open(file) as kenpom_file:
         dict_kenpom = json.load(kenpom_file, object_pairs_hook=OrderedDict)

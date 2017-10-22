@@ -9,6 +9,12 @@ import csv
 from collections import OrderedDict
 
 wiki = "http://www.espn.com/mens-college-basketball/tournament/bracket"
+
+print ("Scrape espn Tool")
+print ("**************************")
+print ("data is from {0}".format(wiki))
+print ("**************************")
+
 page = urlopen(wiki)
 soup = BeautifulSoup(page, "html5lib")
 
@@ -193,4 +199,4 @@ for row in dict_espn.values():
         count += 1
     csvwriter.writerow(row.values())
 espn_sheet.close()
-
+print ("done.")

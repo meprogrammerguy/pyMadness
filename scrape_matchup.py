@@ -35,6 +35,16 @@ def main(argv):
             second = a
         else:
             assert False, "unhandled option"
+    print ("Scrape Matchup Tool")
+    print ("**************************")
+    usage()
+    print (" ")
+    print ("===> (data will come from gamepredict.us) <===")
+    print (" ")
+    print ("**************************")
+    if (not first and not second):
+        print ("you must input the team names to run this tool, (first and second arguments)")
+        exit()
     dict_score = {}
     dict_score = gamePredict.Score(first, second, neutral, verbose)
     #print (dict_score)

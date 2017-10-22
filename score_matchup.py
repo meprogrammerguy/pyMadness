@@ -34,6 +34,10 @@ def main(argv):
             second = a
         else:
             assert False, "unhandled option"
+    print ("Score Matchup Tool")
+    print ("**************************")
+    usage()
+    print ("**************************")
     if (test):
         testResult = pyMadness.Test(verbose)
         if (testResult):
@@ -41,6 +45,9 @@ def main(argv):
         else:
             print ("Test result - fail")
     else:
+        if (not first and not second):
+            print ("you must input the team names to run this tool, (first and second arguments)")
+            exit()
         dict_score = {}
         dict_score = pyMadness.Calculate(first, second, neutral, verbose)
 

@@ -9,6 +9,12 @@ import json
 import csv
 
 wiki = "https://kenpom.com/"
+
+print ("Scrape kenpom Tool")
+print ("**************************")
+print ("data is from {0}".format(wiki))
+print ("**************************")
+
 page = urlopen(wiki)
 soup = BeautifulSoup(page, "html5lib")
 ratings_table=soup.find('table', id='ratings-table')
@@ -78,3 +84,4 @@ for row in dict_kenpom.values():
         count += 1
     csvwriter.writerow(row.values())
 kenpom_sheet.close()
+print ("done.")

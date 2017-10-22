@@ -6,12 +6,21 @@ from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 import csv
 from collections import OrderedDict
+import os.path
 
+print ("Merge Teams Tool")
+print ("**************************")
 file = 'espn.json'
+if (not os.path.exists(file)):
+    print ("brackets file is missing, run the scrape_espn tool to create")
+    exit()
 with open(file) as espn_file:
     dict_espn = json.load(espn_file, object_pairs_hook=OrderedDict)
 
 file = 'kenpom.json'
+if (not os.path.exists(file)):
+    print ("statistics file is missing, run the scrape_kenpom tool to create")
+    exit()
 with open(file) as kenpom_file:
     dict_kenpom = json.load(kenpom_file, object_pairs_hook=OrderedDict)
 
@@ -50,5 +59,4 @@ csvwriter.writerow(dict_merge.keys())
 for value in values:
     csvwriter.writerow(value)
 merge_sheet.close()
-
-
+print ("done.")
