@@ -10,15 +10,15 @@ import pylab as p
 import numpy as np
 from collections import OrderedDict
 
-def findTeams(first, second, verbose = True, file = "kenpom.json"):
+def findTeams(first, second, verbose = True, file = "stats.json"):
     teama = {}
     teamb = {}
     count = 0
 
-    with open(file) as kenpom_file:
-        dict_kenpom = json.load(kenpom_file, object_pairs_hook=OrderedDict)
+    with open(file) as stats_file:
+        dict_stats = json.load(stats_file, object_pairs_hook=OrderedDict)
 
-    for item in dict_kenpom.values():
+    for item in dict_stats.values():
         if (item["Team"].lower() == first.lower()):
             teama = item
             count += 1
@@ -57,14 +57,13 @@ def Test(verbose):
     result = 0
     # Purdue, Northwestern on 3/5/17
     # Actual Score: Edwards leads No. 16 Purdue past Northwestern, 69-65
-    # venue was: Welsh-Ryan Arena in Evanston, IL (Nothwestern was the home team)
+    # venue was: Welsh-Ryan Arena in Evanston, IL (Northwestern was the home team)
     teama = {'Team':"purdue", 'AdjEM':24.31, 'AdjT':69.5, 'Result1':58, 'Result2':69}
     teamb = {'Team':"northwestern", 'AdjEM':15.83, 'AdjT':65.8, 'Result1':42,'Result2':67}
     if (verbose):
         print ("Test #1 Purdue at Northwestern on 3/5/17")
         print ("        Northwestern is Home team, testing Chance() routine)")
     chancea, chanceb =  Chance(teama, teamb, homeTeam = teamb["Team"], verbose = verbose, homeAdvantage = 3.5)
-    #pdb.set_trace()
     if (teama['Result1'] == chancea):
         result += 1
     if (teamb['Result1'] == chanceb):
@@ -134,10 +133,8 @@ def Calculate(first, second, neutral, verbose):
         line = Line(teama, teamb, verbose = verbose)
 
     tempo = Tempo(teama, teamb, verbose = verbose)
-    #pdb.set_trace()
 
     dict_score = {'teama':first, 'scorea':"{0}".format(scorea), 'chancea':"{0}%".format(chancea) ,'teamb':second, 'scoreb':"{0}".format(scoreb), 'chanceb':"{0}%".format(chanceb), 'line':int(round(line)), 'tempo':"{0}".format(int(round(tempo * 100))) }
     if (verbose):
         print ("Calculate(dict_score) {0}".format(dict_score))
-    #pdb.set_trace()
     return dict_score

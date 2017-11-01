@@ -10,8 +10,8 @@ import pdb
 import os.path
 
 def main(argv):
-    stat_file = "kenpom.json"
-    bracket_file = "espn.json"
+    stat_file = "stats.json"
+    bracket_file = "bracket.json"
     merge_file = "merge.csv"
     output_file = "predict.csv"
     input_file = "predict.csv"
@@ -112,23 +112,23 @@ def PredictTournament(stat_file, bracket_file, merge_file, input_file, output_fi
         for row in reader:
             dict_merge.append(row)
     if (not os.path.exists(bracket_file)):
-        print ("brackets file is missing, run the scrape_espn tool to create")
+        print ("brackets file is missing, run the scrape_bracket tool to create")
         exit()
     file = bracket_file
-    with open(file) as espn_file:
-        dict_espn = json.load(espn_file, object_pairs_hook=OrderedDict)
-    for item in dict_espn.values():
+    with open(file) as bracket_file:
+        dict_bracket = json.load(bracket_file, object_pairs_hook=OrderedDict)
+    for item in dict_bracket.values():
         teama, teamb = FindTeams(item["TeamA"], item["TeamB"], dict_merge)
         item[2] = teama
         item[6] = teamb
     if (not os.path.exists(stat_file)):
-        print ("statistics file is missing, run the scrape_kenpom tool to create")
+        print ("statistics file is missing, run the scrape_stats tool to create")
         exit()
     file = stat_file
-    with open(file) as kenpom_file:
-        dict_kenpom = json.load(kenpom_file, object_pairs_hook=OrderedDict)
+    with open(file) as stats_file:
+        dict_stats = json.load(stats_file, object_pairs_hook=OrderedDict)
     dict_predict = []
-    dict_predict = LoadPredict(dict_predict, dict_espn) 
+    dict_predict = LoadPredict(dict_predict, dict_bracket) 
     for round in range(0, 7):
         dict_predict = PredictRound(round, dict_predict, gamepredict, verbose)
         dict_predict = PromoteRound(round, dict_predict, list_picks)
@@ -143,23 +143,23 @@ def FindTeams(teama, teamb, dict_merge):
     FoundA = ""
     FoundB = ""
     for item in dict_merge:
-        if (teama == item["espn team"]):
-            FoundA = item["kenpom team"]
-            if (item["override team"]):
-                FoundA = item["override team"]
-        if (teamb == item["espn team"]):
-            FoundB = item["kenpom team"]
-            if (item["override team"]):
-                FoundB = item["override team"]
+        if (teama == item["bracket team"]):
+            FoundA = item["stats team"]
+            if (item["fixed stats team"]):
+                FoundA = item["fixed stats team"]
+        if (teamb == item["bracket team"]):
+            FoundB = item["stats team"]
+            if (item["fixed stats team"]):
+                FoundB = item["fixed stats team"]
         if (FoundA and FoundB):
             break
     return FoundA, FoundB
 
-def LoadPredict(dict_predict, dict_espn):
+def LoadPredict(dict_predict, dict_bracket):
     dict_predict.append(["Index", "SeedA", "TeamA", "ChanceA", "ScoreA",
                                       "SeedB", "TeamB", "ChanceB", "ScoreB", "Region", "Venue", "Round", "Pick"])
     index = 0
-    for item in dict_espn.values():
+    for item in dict_bracket.values():
         if (item["Round"] != "Round"):
             index += 1
             dict_predict.append([index, item["SeedA"], item[2], "?%", "?",

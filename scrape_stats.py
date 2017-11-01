@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -8,9 +9,11 @@ from collections import OrderedDict
 import json
 import csv
 
-wiki = "https://kenpom.com/"
+wiki = "https://kenpom.com/index.php"
 
-print ("Scrape kenpom Tool")
+#wiki = "https://kenpom.com/index.php?y=2017" <= past year testing override
+
+print ("Scrape Statistics Tool")
 print ("**************************")
 print ("data is from {0}".format(wiki))
 print ("**************************")
@@ -68,20 +71,20 @@ df['OppOSOS']=K
 df['OppDSOS']=L
 df['AdjEMNCSOS']=M
 
-with open('kenpom.json', 'w') as f:
+with open('stats.json', 'w') as f:
     f.write(df.to_json(orient='index'))
 
-with open("kenpom.json") as kenpom_json:
-    dict_kenpom = json.load(kenpom_json, object_pairs_hook=OrderedDict)
-kenpom_sheet = open('kenpom.csv', 'w')
-csvwriter = csv.writer(kenpom_sheet)
+with open("stats.json") as stats_json:
+    dict_stats = json.load(stats_json, object_pairs_hook=OrderedDict)
+stats_sheet = open('stats.csv', 'w')
+csvwriter = csv.writer(stats_sheet)
 count = 0
-for row in dict_kenpom.values():
+for row in dict_stats.values():
     #pdb.set_trace()
     if (count == 0):
         header = row.keys()
         csvwriter.writerow(header)
         count += 1
     csvwriter.writerow(row.values())
-kenpom_sheet.close()
+stats_sheet.close()
 print ("done.")

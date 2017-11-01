@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -10,7 +11,7 @@ from collections import OrderedDict
 
 wiki = "http://www.espn.com/mens-college-basketball/tournament/bracket"
 
-print ("Scrape espn Tool")
+print ("Scrape Bracket Tool")
 print ("**************************")
 print ("data is from {0}".format(wiki))
 print ("**************************")
@@ -184,19 +185,19 @@ df['Region']=RX
 df['Venue']=VX
 df['Round']=RO
 
-with open('espn.json', 'w') as f:
+with open('bracket.json', 'w') as f:
     f.write(df.to_json(orient='index'))
 
-with open("espn.json") as espn_json:
-    dict_espn = json.load(espn_json, object_pairs_hook=OrderedDict)
-espn_sheet = open('espn.csv', 'w')
-csvwriter = csv.writer(espn_sheet)
+with open("bracket.json") as bracket_json:
+    dict_bracket = json.load(bracket_json, object_pairs_hook=OrderedDict)
+bracket_sheet = open('bracket.csv', 'w')
+csvwriter = csv.writer(bracket_sheet)
 count = 0
-for row in dict_espn.values():
+for row in dict_bracket.values():
     if (count == 0):
         header = row.keys()
         csvwriter.writerow(header)
         count += 1
     csvwriter.writerow(row.values())
-espn_sheet.close()
+bracket_sheet.close()
 print ("done.")
