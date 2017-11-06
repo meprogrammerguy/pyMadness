@@ -6,8 +6,6 @@ from bs4 import BeautifulSoup
 import html5lib
 import pdb
 from scipy.stats import norm
-import pylab as p
-import numpy as np
 from collections import OrderedDict
 
 def findTeams(first, second, verbose = True, file = "stats.json"):
