@@ -16,8 +16,16 @@ print ("**************************")
 print ("data is from {0}".format(wiki))
 print ("**************************")
 
-page = urlopen(wiki)
-soup = BeautifulSoup(page, "lxml")
+try:
+    page = urlopen(wiki)
+except HTTPError as e:
+    # do something
+    print('Error code: ', e.code)
+except URLError as e:
+    # do something (set req to blank)
+    print('Reason: ', e.reason)
+
+soup = BeautifulSoup(page, "html5lib")
 
 region = soup.findAll("div", {"class": "regtitle"})
 R=[]
