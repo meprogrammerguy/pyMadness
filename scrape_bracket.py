@@ -17,7 +17,7 @@ print ("data is from {0}".format(wiki))
 print ("**************************")
 
 page = urlopen(wiki)
-soup = BeautifulSoup(page, "html5lib")
+soup = BeautifulSoup(page, "lxml")
 
 region = soup.findAll("div", {"class": "regtitle"})
 R=[]
