@@ -8,18 +8,19 @@ import pdb
 from collections import OrderedDict
 import json
 import csv
+import contextlib
 
-wiki = "https://kenpom.com/index.php"
+url = "https://kenpom.com/index.php"
 
-#wiki = "https://kenpom.com/index.php?y=2017" <= past year testing override
+#url = "https://kenpom.com/index.php?y=2017" <= past year testing override
 
 print ("Scrape Statistics Tool")
 print ("**************************")
-print ("data is from {0}".format(wiki))
+print ("data is from {0}".format(url))
 print ("**************************")
 
-page = urlopen(wiki)
-soup = BeautifulSoup(page, "html5lib")
+with contextlib.closing(urlopen(url)) as page:
+    soup = BeautifulSoup(page, "html5lib")
 ratings_table=soup.find('table', id='ratings-table')
 
 IDX=[]

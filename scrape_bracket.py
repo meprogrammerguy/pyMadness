@@ -8,30 +8,22 @@ import pdb
 import json
 import csv
 from collections import OrderedDict
+import contextlib
 
-wiki = "http://www.espn.com/mens-college-basketball/tournament/bracket"
+url = "http://www.espn.com/mens-college-basketball/tournament/bracket"
 
 print ("Scrape Bracket Tool")
 print ("**************************")
-print ("data is from {0}".format(wiki))
+print ("data is from {0}".format(url))
 print ("**************************")
 
-try:
-    page = urlopen(wiki)
-except HTTPError as e:
-    # do something
-    print('Error code: ', e.code)
-except URLError as e:
-    # do something (set req to blank)
-    print('Reason: ', e.reason)
-
-soup = BeautifulSoup(page, "html5lib")
+with contextlib.closing(urlopen(url)) as page:
+    soup = BeautifulSoup(page, "html5lib")
 
 region = soup.findAll("div", {"class": "regtitle"})
 R=[]
 for row in region:
     R.append(row.find(text=True))
-
 venue1 = soup.findAll("div", {"class": "venue v1"})
 V1=[]
 for row in venue1:
