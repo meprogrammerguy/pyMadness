@@ -1,7 +1,7 @@
 echo off
-rem Test #2 Gonzaga vs. Villanova at a neutral venue
+rem Test #4  Villanova vs. Gonzaga at a neutral venue
 rem
 rem Data scraped From here
-rem  https://gamepredict.us/kenpom?team_a=Gonzaga&team_b=Villanova&neutral=true
+rem  https://gamepredict.us/kenpom?team_a=villanova&team_b=gonzaga&neutral=true
 rem
-.\scrape_matchup.py --first="Gonzaga" --second="Villanova" --neutral --verbose
+.\scrape_matchup.py --first="villanova" --second="gonzaga" --neutral --verbose

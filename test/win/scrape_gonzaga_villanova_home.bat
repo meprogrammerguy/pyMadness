@@ -1,7 +1,7 @@
 echo off
-rem Test #3 Gonzaga (Home) vs. Villanova (Visitor)
+rem Test #3 Villanova (visitor) Gonzaga (home)
 rem 
 rem Data scraped From here
-rem  https://gamepredict.us/kenpom?team_a=Gonzaga&team_b=Villanova
+rem   https://gamepredict.us/kenpom?team_a=villanova&team_b=gonzagaa
 rem
-.\scrape_matchup.py --first="Gonzaga" --second="Villanova" --verbose
+.\scrape_matchup.py --first="villanova" --second="gonzaga" --verbose

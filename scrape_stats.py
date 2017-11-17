@@ -12,7 +12,7 @@ import contextlib
 
 url = "https://kenpom.com/index.php"
 
-#url = "https://kenpom.com/index.php?y=2017" #past year testing override
+url = "https://kenpom.com/index.php?y=2017" #past year testing override
 
 print ("Scrape Statistics Tool")
 print ("**************************")
