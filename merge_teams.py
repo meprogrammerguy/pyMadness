@@ -39,7 +39,7 @@ team_set = set(AllTeams)
 stats_teams = list(team_set)
 stats_teams.sort()
 
-merge_sheet = open('merge.csv', 'w')
+merge_sheet = open('merge.csv', 'w', newline='')
 csvwriter = csv.writer(merge_sheet)
 dict_merge = OrderedDict()
 dict_merge["bracket team"] = []

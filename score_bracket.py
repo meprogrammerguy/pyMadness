@@ -132,7 +132,7 @@ def PredictTournament(stat_file, bracket_file, merge_file, input_file, output_fi
     for round in range(0, 7):
         dict_predict = PredictRound(round, dict_predict, gamepredict, verbose)
         dict_predict = PromoteRound(round, dict_predict, list_picks)
-    predict_sheet = open(output_file, 'w')
+    predict_sheet = open(output_file, 'w', newline='')
     csvwriter = csv.writer(predict_sheet)
     count = 0
     for row in dict_predict:

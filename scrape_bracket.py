@@ -190,7 +190,7 @@ with open('bracket.json', 'w') as f:
 
 with open("bracket.json") as bracket_json:
     dict_bracket = json.load(bracket_json, object_pairs_hook=OrderedDict)
-bracket_sheet = open('bracket.csv', 'w')
+bracket_sheet = open('bracket.csv', 'w', newline='')
 csvwriter = csv.writer(bracket_sheet)
 count = 0
 for row in dict_bracket.values():

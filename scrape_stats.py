@@ -12,7 +12,7 @@ import contextlib
 
 url = "https://kenpom.com/index.php"
 
-url = "https://kenpom.com/index.php?y=2017" #past year testing override
+#url = "https://kenpom.com/index.php?y=2017" #past year testing override
 
 print ("Scrape Statistics Tool")
 print ("**************************")
@@ -77,7 +77,7 @@ with open('stats.json', 'w') as f:
 
 with open("stats.json") as stats_json:
     dict_stats = json.load(stats_json, object_pairs_hook=OrderedDict)
-stats_sheet = open('stats.csv', 'w')
+stats_sheet = open('stats.csv', 'w', newline='')
 csvwriter = csv.writer(stats_sheet)
 count = 0
 for row in dict_stats.values():
