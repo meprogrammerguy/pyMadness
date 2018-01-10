@@ -41,7 +41,7 @@ def main(argv):
             stat_file = a
         elif o in ("-b", "--bracket_file"):
             bracket_file = a
-        elif o in ("-b", "--merge_file"):
+        elif o in ("-m", "--merge_file"):
             merge_file = a
         elif o in ("-o", "--output_file"):
             output_file = a
