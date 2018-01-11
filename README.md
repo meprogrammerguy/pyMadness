@@ -3,7 +3,7 @@ March Madness Tools
 
 to install (quickly):
 
-    pip pipenv
+    pip install pipenv
   
     pipenv install
   
