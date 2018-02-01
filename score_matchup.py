@@ -2,6 +2,7 @@
 
 import sys, getopt
 import os.path
+import pdb
 from datetime import datetime
 
 import pyMadness
@@ -66,6 +67,9 @@ def main(argv):
             RefreshStats()
         ds = {}
         ds = pyMadness.Calculate(first, second, neutral, verbose)
+        if (not ds):
+            print ("Could not predict this matchup?")
+            exit()
         if (neutral):
             print ("{0} {1} vs {2} {3} {4}-{5}".format(ds["teama"], ds["chancea"], ds["teamb"], ds["chanceb"],
                 ds["scorea"], ds["scoreb"]))
