@@ -17,6 +17,7 @@ pandas = "*"
 fuzzywuzzy = "*"
 python-levenshtein = "*"
 scipy = "*"
+"bs4" = "*"
 
 
 [requires]
