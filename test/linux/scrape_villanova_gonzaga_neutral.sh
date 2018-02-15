@@ -3,4 +3,4 @@
 # Data scraped From here
 #  https://gamepredict.us/kenpom?team_a=villanova&team_b=gonzaga&neutral=true
 #
-./scrape_matchup.py --first="villanova" --second="gonzaga" --neutral --verbose
+pipenv run python ./scrape_matchup.py --first="villanova" --second="gonzaga" --neutral --verbose
