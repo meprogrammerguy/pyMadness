@@ -4,4 +4,4 @@ rem
 rem Data scraped From here
 rem   https://gamepredict.us/kenpom?team_a=villanova&team_b=gonzagaa
 rem
-.\scrape_matchup.py --first="villanova" --second="gonzaga" --verbose
+pipenv run python .\scrape_matchup.py --first="villanova" --second="gonzaga" --verbose
