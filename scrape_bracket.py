@@ -63,6 +63,8 @@ index = 0
 for row in soup.findAll("dl"):
     index+=1
     info=row.findAll(text=True)
+    if (not info):
+        continue
     IDX.append(index)
     A.append(info[0])
     B.append(info[1])
