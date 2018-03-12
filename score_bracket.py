@@ -223,7 +223,7 @@ def PromoteRound(round, dict_predict, list_picks):
 
 def GetNextIndex(index):
     # Hundreds position is slot number 1 or 2 rest of the number is the index
-    next_slot = [254, 205, 209, 235, # First Four 
+    next_slot = [254, 239, 220, 235, # First Four 
                  113, 213, 114, 214, 115, 215, 116, 216, 117, 217, 118, 218, 119, 219, 165, # East
                  128, 228, 129, 229, 130, 230, 131, 231, 132, 232, 133, 233, 134, 234, 265, # West
                  143, 243, 144, 244, 145, 245, 146, 246, 147, 247, 148, 248, 149, 249, 166, # Midwest
