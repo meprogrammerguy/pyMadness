@@ -8,7 +8,7 @@
 *.csv
 
 # Allow
-!/archive/
+!/archive/2018/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
