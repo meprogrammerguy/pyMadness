@@ -200,23 +200,25 @@ def PromoteRound(round, dict_predict, list_picks):
                 if (int(item[4]) >= int(item[8])):
                     if (flip):
                         print ("picking {0} over {1} in round {2} in match {3}".format(item[6], item[2], item[11], item[0]))
-                        promote.append([index, slot, item[6]])
+                        promote.append([index, slot, item[5], item[6]])
                     else:
-                        promote.append([index, slot, item[2]])
+                        promote.append([index, slot, item[1], item[2]])
                 else:
                     if (flip):
                         print ("picking {0} over {1} in round {2} in match {3}".format(item[2], item[6], item[11], item[0]))
-                        promote.append([index, slot, item[2]])
+                        promote.append([index, slot, item[1], item[2]])
                     else:
-                        promote.append([index, slot, item[6]])
+                        promote.append([index, slot, item[5], item[6]])
 
         for item in dict_predict:
             for team in promote:
                 if (team[0] == item[0]):
                     if (team[1] == 1):
-                        item[2] = team[2]
+                        item[1] = team[2]
+                        item[2] = team[3]
                     else:
-                        item[6] = team[2]
+                        item[5] = team[2]
+                        item[6] = team[3]
     return dict_predict 
 
 def GetNextIndex(index):
