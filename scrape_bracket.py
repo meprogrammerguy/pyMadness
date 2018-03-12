@@ -63,15 +63,21 @@ index = 0
 for row in soup.findAll("dl"):
     index+=1
     info=row.findAll(text=True)
-    if (not info):
-        continue
     IDX.append(index)
-    A.append(info[0])
-    B.append(info[1])
-    C.append(info[4])
-    D.append(info[2])
-    E.append(info[3])
-    F.append(info[5])
+    if (not info):
+        A.append("?")
+        B.append("?")
+        C.append("?")
+        D.append("?")
+        E.append("?")
+        F.append("?")
+    else:
+        A.append(info[0])
+        B.append(info[1])
+        C.append(info[4])
+        D.append(info[2])
+        E.append(info[3])
+        F.append(info[5])
     if (index in range(1, 5)):
         RX.append("First Four")
         RO.append(0)
