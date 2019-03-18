@@ -177,7 +177,7 @@ def PredictRound(round, dict_predict, gamepredict, verbose):
             item[4] = dict_score["scorea"]
             item[7] = dict_score["chanceb"]
             item[8] = dict_score["scoreb"]
-            if (int(item[4]) >= int(item[8])):
+            if (item[3] >= item[7]):
                 item[12] = "TeamA"
             else:
                 item[12] = "TeamB"
@@ -199,7 +199,7 @@ def PromoteRound(round, dict_predict, list_picks):
                         item[12] = pick[1]
                         break
                 #pdb.set_trace()
-                if (int(item[4]) >= int(item[8])):
+                if (item[3] >= item[7]):
                     if (flip):
                         print ("picking {0} over {1} in round {2} in match {3}".format(item[6], item[2], item[11], item[0]))
                         promote.append([index, slot, item[5], item[6]])
