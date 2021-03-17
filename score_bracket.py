@@ -92,9 +92,9 @@ def PredictTournament(stat_file, bracket_file, merge_file, input_file, output_fi
         with open(file) as input_file:
             reader = csv.DictReader(input_file)
             for row in reader:
-                if (row["ScoreA"] >= row["ScoreB"] and row["Pick"] == "TeamB"):
+                if (row["ChanceA"] >= row["ChanceB"] and row["Pick"] == "TeamB"):
                     list_picks.append([row["Index"], row["Pick"]])
-                elif (row["ScoreA"] < row["ScoreB"] and row["Pick"] == "TeamA"):
+                elif (row["ChanceA"] < row["ChanceB"] and row["Pick"] == "TeamA"):
                     list_picks.append([row["Index"], row["Pick"]])
     if (len(list_picks) == 0):
         print ("No pick Overrides")
