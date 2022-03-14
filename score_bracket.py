@@ -195,8 +195,8 @@ def PromoteRound(round, dict_predict, list_picks):
                 for pick in list_picks:
                     if (int(pick[0]) == int(item[0])):
                         flip = True
-                       #pdb.set_trace()
                         item[12] = pick[1]
+                        pdb.set_trace()
                         break
                 #pdb.set_trace()
                 if (item[3] >= item[7]):
