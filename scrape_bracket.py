@@ -72,17 +72,28 @@ for row in soup.findAll("dl"):
         E.append("?")
         F.append("?")
     else:
-        A.append(info[0])
-        B.append(info[1])
-        #C.append(info[4])
-        D.append(info[2])
-        E.append(info[3])
-        #F.append(info[5])
-    #pdb.set_trace()
+        if len(info) > 0:
+            A.append(info[0])
+        else:
+            A.append("?")
+        if len(info) > 1:
+            B.append(info[1])
+        else:
+            B.append("?")
+        C.append("?")
+        if len(info) > 2:
+            D.append(info[2])
+        else:
+            D.append("?")
+        if len(info) > 3:
+            E.append(info[3])
+        else:
+            E.append("?")
+        F.append("?")
     if (index in range(1, 5)):
         RX.append("First Four")
         RO.append(0)
-        #VX.append("Indianapolis, IN")
+        VX.append("Dayton, OH")
     elif (index in range(5, 13)):
         RX.append(R[0]) #East
         RO.append(1)
@@ -140,7 +151,6 @@ for row in soup.findAll("dl"):
     else :
         RX.append("?")
         RO.append("?")
-    '''
     if (index in range(5, 7) or index == 13):
         VX.append(V1[0])
     elif (index in range(20, 22) or index == 28):
@@ -183,17 +193,16 @@ for row in soup.findAll("dl"):
         VX.append(V5[3])
     elif (index in range(65, 68)):
         VX.append(VF[0])
-    '''
 
 df=pd.DataFrame(IDX, columns=['Index'])
 df['SeedA']=A
 df['TeamA']=B
-df['ScoreA']="?"
+df['ScoreA']=C
 df['SeedB']=D
 df['TeamB']=E
-df['ScoreB']="?"
+df['ScoreB']=F
 df['Region']=RX
-df['Venue']="Indianapolis, IN"
+df['Venue']=VX
 df['Round']=RO
 
 with open('bracket.json', 'w') as f:

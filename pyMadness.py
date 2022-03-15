@@ -129,9 +129,7 @@ def Calculate(first, second, neutral, verbose):
         chancea, chanceb =  Chance(teama, teamb, verbose = verbose)
         scorea, scoreb = Score(teama, teamb, verbose = verbose)
         line = Line(teama, teamb, verbose = verbose)
-
     tempo = Tempo(teama, teamb, verbose = verbose)
-
     dict_score = {'teama':first, 'scorea':"{0}".format(scorea), 'chancea':"{0}%".format(chancea) ,'teamb':second, 'scoreb':"{0}".format(scoreb), 'chanceb':"{0}%".format(chanceb), 'line':int(round(line)), 'tempo':"{0}".format(int(round(tempo * 100))) }
     if (verbose):
         print ("Calculate(dict_score) {0}".format(dict_score))

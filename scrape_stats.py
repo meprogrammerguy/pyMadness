@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from urllib.request import urlopen
+from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 import pandas as pd
 import html5lib
@@ -19,7 +19,8 @@ print ("**************************")
 print ("data is from {0}".format(url))
 print ("**************************")
 
-with contextlib.closing(urlopen(url)) as page:
+req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+with contextlib.closing(urlopen(req)) as page:
     soup = BeautifulSoup(page, "html5lib")
 ratings_table=soup.find('table', id='ratings-table')
 

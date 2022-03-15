@@ -153,6 +153,11 @@ def FindTeams(teama, teamb, dict_merge):
                 FoundB = item["fixed stats team"]
         if (FoundA and FoundB):
             break
+    if (FoundA == "" or FoundB == ""):
+        if (teama != "?" or teamb != "?"):
+            print ("warning, in FindTeams() both teams not found, correct your merge spreadsheet, please")
+            print (FoundA,FoundB)
+            print (teama,teamb)
     return FoundA, FoundB
 
 def LoadPredict(dict_predict, dict_bracket):
@@ -172,6 +177,7 @@ def PredictRound(round, dict_predict, gamepredict, verbose):
             if (gamepredict):
                 dict_score = gamePredict.Score(item[2], item[6], True, verbose) #This will be slow
             else:
+                print (item[2],item[6])
                 dict_score = pyMadness.Calculate(item[2], item[6], True, verbose)
             item[3] = dict_score["chancea"]
             item[4] = dict_score["scorea"]
@@ -189,16 +195,12 @@ def PromoteRound(round, dict_predict, list_picks):
         for item in dict_predict:
             if (item[0] != "Index" and int(round) == int(item[11])):
                 slot, index = GetNextIndex(item[0])
-                #pdb.set_trace()
                 flip = False
-                #pdb.set_trace()
                 for pick in list_picks:
                     if (int(pick[0]) == int(item[0])):
                         flip = True
                         item[12] = pick[1]
-                        pdb.set_trace()
                         break
-                #pdb.set_trace()
                 if (item[3] >= item[7]):
                     if (flip):
                         print ("picking {0} over {1} in round {2} in match {3}".format(item[6], item[2], item[11], item[0]))
@@ -224,8 +226,8 @@ def PromoteRound(round, dict_predict, list_picks):
     return dict_predict 
 
 def GetNextIndex(index):
-    # Hundreds position is slot number 1 or 2 rest of the number is the index
-    next_slot = [205, 209, 224, 220, # First Four 
+    # Hundreds position is slot number 1 or 2 rest of the number is the index 09,22,35,50
+    next_slot = [209, 235, 250, 222, # First Four 
                  113, 213, 114, 214, 115, 215, 116, 216, 117, 217, 118, 218, 119, 219, 165, # East
                  128, 228, 129, 229, 130, 230, 131, 231, 132, 232, 133, 233, 134, 234, 265, # West
                  143, 243, 144, 244, 145, 245, 146, 246, 147, 247, 148, 248, 149, 249, 166, # Midwest
