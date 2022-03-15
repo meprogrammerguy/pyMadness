@@ -82,7 +82,6 @@ stats_sheet = open('stats.csv', 'w', newline='')
 csvwriter = csv.writer(stats_sheet)
 count = 0
 for row in dict_stats.values():
-    #pdb.set_trace()
     if (count == 0):
         header = row.keys()
         csvwriter.writerow(header)

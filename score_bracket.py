@@ -156,8 +156,7 @@ def FindTeams(teama, teamb, dict_merge):
     if (FoundA == "" or FoundB == ""):
         if (teama != "?" or teamb != "?"):
             print ("warning, in FindTeams() both teams not found, correct your merge spreadsheet, please")
-            print (FoundA,FoundB)
-            print (teama,teamb)
+            print ("*** TeamA: [{0}:{1}], TeamB: [{2}:{3}] ***".format(teama, FoundA, teamb, FoundB))
     return FoundA, FoundB
 
 def LoadPredict(dict_predict, dict_bracket):
@@ -226,7 +225,7 @@ def PromoteRound(round, dict_predict, list_picks):
     return dict_predict 
 
 def GetNextIndex(index):
-    # Hundreds position is slot number 1 or 2 rest of the number is the index 09,22,35,50
+    # Hundreds position is slot number 1 or 2 rest of the number is the index
     next_slot = [209, 235, 250, 222, # First Four 
                  113, 213, 114, 214, 115, 215, 116, 216, 117, 217, 118, 218, 119, 219, 165, # East
                  128, 228, 129, 229, 130, 230, 131, 231, 132, 232, 133, 233, 134, 234, 265, # West
