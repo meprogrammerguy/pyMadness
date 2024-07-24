@@ -9,6 +9,8 @@ from collections import OrderedDict
 import json
 import csv
 import contextlib
+import os.path
+from pathlib import Path
 
 url = "https://kenpom.com/index.php"
 
@@ -73,19 +75,17 @@ df['OppOSOS']=K
 df['OppDSOS']=L
 df['AdjEMNCSOS']=M
 
-with open('stats.json', 'w') as f:
+print ("... creating stats JSON file")
+the_file = "json/stats.json"
+the_path = "json/"
+Path(the_path).mkdir(parents=True, exist_ok=True)
+with open(the_file, 'w') as f:
     f.write(df.to_json(orient='index'))
-
-with open("stats.json") as stats_json:
-    dict_stats = json.load(stats_json, object_pairs_hook=OrderedDict)
-stats_sheet = open('stats.csv', 'w', newline='')
-csvwriter = csv.writer(stats_sheet)
-count = 0
-for row in dict_stats.values():
-    if (count == 0):
-        header = row.keys()
-        csvwriter.writerow(header)
-        count += 1
-    csvwriter.writerow(row.values())
-stats_sheet.close()
+f.close()
+    
+print ("... creating stats spreadsheet")
+excel_file = "stats.xlsx"
+writer = pd.ExcelWriter(excel_file, engine="xlsxwriter")
+df.to_excel(writer, sheet_name="Sheet1", index=False)
+writer.close()
 print ("done.")
