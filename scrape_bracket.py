@@ -11,7 +11,6 @@ from collections import OrderedDict
 import contextlib
 
 url = "http://www.espn.com/mens-college-basketball/tournament/bracket"
-#url="file:///home/jsmith/git/pyMadness/page.txt"
 
 print ("Scrape Bracket Tool")
 print ("**************************")
@@ -20,12 +19,9 @@ print ("**************************")
 
 with contextlib.closing(urlopen(url)) as page:
     soup = BeautifulSoup(page, "html.parser")
-#with open("page.txt", "w") as text_file:
-#    print(soup.prettify(), file=text_file)
 region = soup.findAll("script", {"type": "text/javascript"})
 R=[]
 for row in region:
-    #pdb.set_trace()
     R.append(row.find(text=True))
 venue1 = soup.findAll("div", {"class": "venue v1"})
 V1=[]
