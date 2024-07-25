@@ -25,6 +25,58 @@ def GetSeeds(s, ta, tb, sp):
     tb_seed = tb_p.split(sp)
     return "{:02d}".format(int(ta_seed)), "{:02d}".format(int(tb_seed[1]))
         
+def SetRound(f, s, s16, e8, f4, c, first4):
+    rd=[]
+    
+    for x in range(8):
+        rd.append(f)
+    for x in range(4):
+        rd.append(s)        # EAST
+    for x in range(2):
+        rd.append(s16)
+    for x in range(1):
+        rd.append(e8)
+        
+    for x in range(8):
+        rd.append(f)
+    for x in range(4):
+        rd.append(s)        # MIDWEST
+    for x in range(2):
+        rd.append(s16)
+    for x in range(1):
+        rd.append(e8)
+
+    for x in range(1):
+        rd.append(f4)
+
+    for x in range(1):
+        rd.append(c)
+
+    for x in range(1):
+        rd.append(f4)
+
+    for x in range(8):
+        rd.append(f)
+    for x in range(4):
+        rd.append(s)        # WEST
+    for x in range(2):
+        rd.append(s16)
+    for x in range(1):
+        rd.append(e8)
+        
+    for x in range(8):
+        rd.append(f)
+    for x in range(4):
+        rd.append(s)        # SOUTH
+    for x in range(2):
+        rd.append(s16)
+    for x in range(1):
+        rd.append(e8)
+
+    for x in range(4):
+        rd.append(first4)
+    return rd
+    
 year = 0
 now = datetime.datetime.now()
 year = int(now.year)
@@ -46,10 +98,7 @@ if (os.path.exists(test_file)):
     soup = BeautifulSoup(page, "html5lib")
     test_mode = True
 
-if current_year:
-    url = "http://www.espn.com/mens-college-basketball/tournament/bracket"
-else:
-    url = "https://www.espn.com/mens-college-basketball/bracket/_/season/{0}".format(year)
+url = "http://www.ncaa.com/march-madness-live/bracket"
 
 print ("Scrape Bracket Tool")
 print ("**************************")
@@ -95,6 +144,7 @@ SA=[]
 SEEDB=[]
 TB=[]
 SB=[]
+ROUND=[]
 index=0
 for row in rows:
     seeda, seedb = GetSeeds(rows[row][0], rows[row][1]["teama"], rows[row][1]["teamb"], rows[row][1]["scorea"])
@@ -106,7 +156,11 @@ for row in rows:
     SB.append(rows[row][1]["scoreb"])
     index+=1
     IDX.append(index)
-    
+
+ROUND = SetRound("first", "second", "sweet 16", "elite 8", "final 4", "championship", "first 4")
+
+#REGION = SetRegion("east", "west", "south", "midwest", "first 4")
+
 df=pd.DataFrame(IDX, columns=['Index'])
 df['SeedA']=SEEDA
 df['TeamA']=TA
@@ -116,7 +170,7 @@ df['TeamB']=TB
 df['ScoreB']=SB
 #df['Region']=REGION
 #df['Venue']=VX
-#df['Round']=RO
+df['Round']=ROUND
 
 print ("... creating bracket JSON file")
 the_file = "json/bracket.json"
