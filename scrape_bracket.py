@@ -25,57 +25,77 @@ def GetSeeds(s, ta, tb, sp):
     tb_seed = tb_p.split(sp)
     return "{:02d}".format(int(ta_seed)), "{:02d}".format(int(tb_seed[1]))
         
-def SetRound(f, s, s16, e8, f4, c, first4):
+def SetRoundAndRegion(f, s, s16, e8, f4, c, first4):
     rd=[]
-    
+    reg=[]    
     for x in range(8):
         rd.append(f)
+        reg.append("EAST")
     for x in range(4):
-        rd.append(s)        # EAST
+        rd.append(s)
+        reg.append("EAST")
     for x in range(2):
         rd.append(s16)
+        reg.append("EAST")
     for x in range(1):
         rd.append(e8)
-        
+        reg.append("EAST")
+       
     for x in range(8):
         rd.append(f)
+        reg.append("SOUTH")
     for x in range(4):
-        rd.append(s)        # MIDWEST
+        rd.append(s)
+        reg.append("SOUTH")
     for x in range(2):
         rd.append(s16)
+        reg.append("SOUTH")
     for x in range(1):
         rd.append(e8)
+        reg.append("SOUTH")
 
     for x in range(1):
         rd.append(f4)
+        reg.append(" ")
 
     for x in range(1):
         rd.append(c)
+        reg.append(" ")
 
     for x in range(1):
         rd.append(f4)
+        reg.append(" ")
 
     for x in range(8):
         rd.append(f)
+        reg.append("WEST")
     for x in range(4):
-        rd.append(s)        # WEST
+        rd.append(s)
+        reg.append("WEST")
     for x in range(2):
         rd.append(s16)
+        reg.append("WEST")
     for x in range(1):
         rd.append(e8)
-        
+        reg.append("WEST")
+       
     for x in range(8):
         rd.append(f)
+        reg.append("MIDWEST")
     for x in range(4):
-        rd.append(s)        # SOUTH
+        rd.append(s)
+        reg.append("MIDWEST")
     for x in range(2):
         rd.append(s16)
+        reg.append("MIDWEST")
     for x in range(1):
         rd.append(e8)
+        reg.append("MIDWEST")
 
     for x in range(4):
         rd.append(first4)
-    return rd
+        reg.append(" ")
+    return rd, reg
     
 year = 0
 now = datetime.datetime.now()
@@ -145,6 +165,7 @@ SEEDB=[]
 TB=[]
 SB=[]
 ROUND=[]
+REGION=[]
 index=0
 for row in rows:
     seeda, seedb = GetSeeds(rows[row][0], rows[row][1]["teama"], rows[row][1]["teamb"], rows[row][1]["scorea"])
@@ -157,9 +178,7 @@ for row in rows:
     index+=1
     IDX.append(index)
 
-ROUND = SetRound("first", "second", "sweet 16", "elite 8", "final 4", "championship", "first 4")
-
-#REGION = SetRegion("east", "west", "south", "midwest", "first 4")
+ROUND, REGION = SetRoundAndRegion("first", "second", "sweet 16", "elite 8", "final 4", "championship", "first 4")
 
 df=pd.DataFrame(IDX, columns=['Index'])
 df['SeedA']=SEEDA
@@ -168,7 +187,7 @@ df['ScoreA']=SA
 df['SeedB']=SEEDB
 df['TeamB']=TB
 df['ScoreB']=SB
-#df['Region']=REGION
+df['Region']=REGION
 #df['Venue']=VX
 df['Round']=ROUND
 
