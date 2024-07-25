@@ -38,6 +38,11 @@ cd $test_location
 mkdir -p $bracket
 cd $bracket
 #
+# ncaa madness tournament bracket page
+#
+echo -e "           ${green}ncaa march madness tournament bracket scrape${NC}"
+	curl -L "http://www.ncaa.com/march-madness-live/bracket" -o "ncaa_bracket.html"
+#
 # espn march madness tournament bracket page
 #
 echo -e "           ${green}espn march madness tournament bracket scrape${NC}"

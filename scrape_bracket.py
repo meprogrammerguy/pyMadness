@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from urllib.request import urlopen
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, SoupStrainer
 import pandas as pd
 import html5lib
 import pdb
@@ -19,6 +19,12 @@ def GetNumber(item):
         idx.append("-1")
     return int(idx[0])
 
+def GetSeeds(s, ta, tb, sp):
+    ta_seed = s.partition(ta)[0]
+    tb_p = s.partition(tb)[0]
+    tb_seed = tb_p.split(sp)
+    return "{:02d}".format(int(ta_seed)), "{:02d}".format(int(tb_seed[1]))
+        
 year = 0
 now = datetime.datetime.now()
 year = int(now.year)
@@ -32,7 +38,7 @@ if (len(sys.argv)>=2):
 current_working_directory = os.getcwd()
 
 test_mode = False
-test_file = "/home/jsmith/git/pyMadness/test/bracket/{0}/bracket.html".format(year)
+test_file = "/home/jsmith/git/pyMadness/test/bracket/{0}/ncaa_bracket.html".format(year)
 if (os.path.exists(test_file)):
     print("... fetching test bracket page")
     with open(test_file, 'r') as file:
@@ -62,39 +68,55 @@ print ("**************************")
 
 if not test_mode:
     with contextlib.closing(urlopen(url)) as page:
-        soup = BeautifulSoup(page, "html.parser")
-
+        soup = BeautifulSoup(page, "html.parser", parse_only=SoupStrainer('a'))
+main = soup.find_all('div', attrs = {'class':'bracket-main'})
+rows={}
+for item in main:
+    a_s = item.find_all('a')
+    p_s = item.find_all('p')
+    index=0
+    for row in a_s[3:]:
+        idx=0
+        COLS=[]
+        for i in range(idx*index,len(p_s[3:]),4):
+            cols={}
+            cols["teama"] = p_s[i+3].text
+            cols["scorea"] = p_s[i+4].text
+            cols["teamb"] = p_s[i+5].text
+            cols["scoreb"] = p_s[i+6].text
+            idx+=1
+            COLS.append(cols)
+        rows[index] = row.text, COLS[index]
+        index+=1
 IDX=[]
-A=[]
-B=[]
-C=[]
-D=[]
-E=[]
-F=[]
-RX=[]
-VX=[]
-RO=[]
-IDX.append(1)
-A.append(1)
-B.append(2)
-C.append(3)
-D.append(4)
-E.append(5)
-F.append(6)
-RX.append(7)
-VX.append(8)
-RO.append(9)
-
+SEEDA=[]
+TA=[]
+SA=[]
+SEEDB=[]
+TB=[]
+SB=[]
+index=0
+for row in rows:
+    seeda, seedb = GetSeeds(rows[row][0], rows[row][1]["teama"], rows[row][1]["teamb"], rows[row][1]["scorea"])
+    SEEDA.append(seeda)
+    SEEDB.append(seedb)
+    TA.append(rows[row][1]["teama"])
+    SA.append(rows[row][1]["scorea"])
+    TB.append(rows[row][1]["teamb"])
+    SB.append(rows[row][1]["scoreb"])
+    index+=1
+    IDX.append(index)
+    
 df=pd.DataFrame(IDX, columns=['Index'])
-df['SeedA']=A
-df['TeamA']=B
-df['ScoreA']=C
-df['SeedB']=D
-df['TeamB']=E
-df['ScoreB']=F
-df['Region']=RX
-df['Venue']=VX
-df['Round']=RO
+df['SeedA']=SEEDA
+df['TeamA']=TA
+df['ScoreA']=SA
+df['SeedB']=SEEDB
+df['TeamB']=TB
+df['ScoreB']=SB
+#df['Region']=REGION
+#df['Venue']=VX
+#df['Round']=RO
 
 print ("... creating bracket JSON file")
 the_file = "json/bracket.json"
