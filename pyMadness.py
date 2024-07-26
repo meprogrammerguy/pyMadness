@@ -53,8 +53,8 @@ def Test():
     # Purdue, Northwestern on 3/5/17
     # Actual Score: Edwards leads No. 16 Purdue past Northwestern, 69-65
     # venue was: Welsh-Ryan Arena in Evanston, IL (Northwestern was the home team)
-    teama = {'Team':"purdue", 'AdjEM':24.31, 'AdjT':69.5, 'Result1':81, 'Result2':72}
-    teamb = {'Team':"northwestern", 'AdjEM':15.83, 'AdjT':65.8, 'Result1':19,'Result2':63}
+    teama = {'Team':"purdue", 'AdjEM':24.31, 'AdjT':69.5, 'Result1':57, 'Result2':69}
+    teamb = {'Team':"northwestern", 'AdjEM':15.83, 'AdjT':65.8, 'Result1':43,'Result2':67}
     print (teama)
     print (teamb)
     print ("Test #1 Purdue at Northwestern on 3/5/17")
@@ -83,8 +83,8 @@ def Score(teama, teamb, neutral):
     tempo = Tempo(teama, teamb)
     EffMgn = Line(teama, teamb, neutral)
     print ("Score(efficiency margin) {0}".format(EffMgn))
-    aScore = int(round((tempo * 100) + (EffMgn / 2.0)))
     bScore = int(round((tempo * 100) - (EffMgn / 2.0)))
+    aScore = int(round((tempo * 100) + (EffMgn / 2.0)))
     print ("Score({0}) {1}".format(teama["Team"], aScore), "vs. Score({0}) {1}".format(teamb["Team"], bScore))
     return aScore, bScore
 
@@ -96,7 +96,7 @@ def Line(teama, teamb, neutral):
     if neutral:
         EffMgn = EMdiff
     else:
-        EffMgn = EMdiff + 3.75
+        EffMgn = EMdiff - 3.75
     print ("Line(efficiency margin) {0}".format(EffMgn))
     return EffMgn
 
