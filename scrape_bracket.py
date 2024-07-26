@@ -138,6 +138,7 @@ print ("**************************")
 if not test_mode:
     with contextlib.closing(urlopen(url)) as page:
         soup = BeautifulSoup(page, "html.parser", parse_only=SoupStrainer('a'))
+
 main = soup.find_all('div', attrs = {'class':'bracket-main'})
 rows={}
 for item in main:
@@ -188,7 +189,6 @@ df['SeedB']=SEEDB
 df['TeamB']=TB
 df['ScoreB']=SB
 df['Region']=REGION
-#df['Venue']=VX
 df['Round']=ROUND
 
 print ("... creating bracket JSON file")
