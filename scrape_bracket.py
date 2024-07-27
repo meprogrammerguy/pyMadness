@@ -25,6 +25,82 @@ def GetSeeds(s, ta, tb, sp):
     tb_seed = tb_p.split(sp)
     return "{:02d}".format(int(ta_seed)), "{:02d}".format(int(tb_seed[1]))
         
+def SetNextSlot():
+    slots=[]
+    slots.append(1)     # EAST
+    slots.append(2)
+    slots.append(1)
+    slots.append(2)
+    slots.append(1)
+    slots.append(2)
+    slots.append(1)
+    slots.append(2)
+    slots.append(1)
+    slots.append(2)
+    slots.append(1)
+    slots.append(2)
+    slots.append(1)
+    slots.append(2)
+    slots.append(1)
+        
+    slots.append(1)     # SOUTH
+    slots.append(2)
+    slots.append(1)
+    slots.append(2)
+    slots.append(1)
+    slots.append(2)
+    slots.append(1)
+    slots.append(2)
+    slots.append(1)
+    slots.append(2)
+    slots.append(1)
+    slots.append(2)
+    slots.append(1)
+    slots.append(2)
+    slots.append(1)
+    
+    slots.append(1)     # Final Four
+    slots.append(0)     # Championship
+    slots.append(2)     # Final Four
+
+    slots.append(1)     # WEST
+    slots.append(2)
+    slots.append(1)
+    slots.append(2)
+    slots.append(1)
+    slots.append(2)
+    slots.append(1)
+    slots.append(2)
+    slots.append(1)
+    slots.append(2)
+    slots.append(1)
+    slots.append(2)
+    slots.append(1)
+    slots.append(2)
+    slots.append(2)
+        
+    slots.append(1)     # MIDWEST
+    slots.append(2)
+    slots.append(1)
+    slots.append(2)
+    slots.append(1)
+    slots.append(2)
+    slots.append(1)
+    slots.append(2)
+    slots.append(1)
+    slots.append(2)
+    slots.append(1)
+    slots.append(2)
+    slots.append(1)
+    slots.append(2)
+    slots.append(2)
+    
+    slots.append(2)     # First Four
+    slots.append(2)
+    slots.append(2)
+    slots.append(2)
+    return slots
+    
 def SetNextMatch():
     mch=[]
     for x in range(2):      # EAST
@@ -246,6 +322,7 @@ SB=[]
 ROUND=[]
 REGION=[]
 NEXTMATCH=[]
+NEXTSLOT=[]
 index=0
 for row in rows:
     seeda, seedb = GetSeeds(rows[row][0], rows[row][1]["teama"], rows[row][1]["teamb"], rows[row][1]["scorea"])
@@ -260,6 +337,7 @@ for row in rows:
 
 ROUND, REGION = SetRoundRegion()
 NEXTMATCH = SetNextMatch()
+NEXTSLOT = SetNextSlot()
 
 df=pd.DataFrame(IDX, columns=['Index'])
 df['SeedA']=SEEDA
@@ -271,6 +349,7 @@ df['ScoreB']=SB
 df['Region']=REGION
 df['Round']=ROUND
 df['Next Match']=NEXTMATCH
+df['Next Slot']=NEXTSLOT
 
 print ("... creating bracket JSON file")
 the_file = "json/bracket.json"

@@ -74,34 +74,34 @@ def PredictTournament(stat_file, bracket_file, merge_file, input_file, output_fi
     print ("Input      file: {0}".format(input_file))
     print ("Output     file: {0}".format(output_file))
     print ("**************************")
-    list_picks = []
+    picks = []
     if (os.path.exists(input_file)):
         print("... retrieving prediction spreadsheet")
         excel_df = pd.read_excel(input_file, sheet_name='Sheet1')
         predict_json = json.loads(excel_df.to_json())
-
-    
-    
-    #if (os.path.exists(input_file)):
-        #file = input_file
-        #with open(file) as input_file:
-            #reader = csv.DictReader(input_file)
-            #for row in reader:
-                #if (row["ChanceA"] >= row["ChanceB"] and row["Pick"] == "TeamB"):
-                    #list_picks.append([row["Index"], row["Pick"]])
-                #elif (row["ChanceA"] < row["ChanceB"] and row["Pick"] == "TeamA"):
-                    #list_picks.append([row["Index"], row["Pick"]])
-                    
-    if (len(list_picks) == 0):
+        for x in range(len(predict_json["Index"])):
+            ta = predict_json["TeamA"][str(x)]
+            tb = predict_json["TeamB"][str(x)]
+            pick = predict_json["Pick"][str(x)]
+            sa =  predict_json["ScoreA"][str(x)]
+            sb =  predict_json["ScoreB"][str(x)]
+            idx = predict_json["Index"][str(x)]
+            if (sa >= sb and pick == "TeamB"):
+                picks.append([idx, pick])
+            else:
+                if (sa < sb and pick == "TeamA"):
+                    picks.append([idx, pick])
+    if (len(picks) == 0):
         print ("No pick Overrides")
-    elif (len(list_picks) == 1):
+    elif (len(picks) == 1):
         print ("Overriding one calculated pick")
     else:
-        print ("Overriding {0} calculated pick(s)".format(len(list_picks)))
+        print ("Overriding {0} calculated pick(s)".format(len(picks)))
 
     if (not os.path.exists(merge_file)):
         print ("merge spreadsheet is missing, run the merge_teams tool to create")
-        exit()    
+        exit() 
+    #pdb.set_trace()       
     dict_merge={}
     excel_df = pd.read_excel(merge_file, sheet_name='Sheet1')
     dict_merge = json.loads(excel_df.to_json())
@@ -126,13 +126,15 @@ def PredictTournament(stat_file, bracket_file, merge_file, input_file, output_fi
         dict_stats = json.load(stat_file, object_pairs_hook=OrderedDict)
 
     dict_predict = []
-    dict_predict = LoadPredict(dict_predict, dict_bracket)
-    #for rnd in range(0, 6):
-    for rnd in range(0, 1):
-        dict_predict = PredictRound(dict_predict)
-        dict_predict = PromoteRound(rnd, dict_predict, list_picks)
-    
-    IDX=[]
+    for rnd in range(0, 7):
+        dict_predict = LoadPredict(rnd, dict_predict, dict_bracket)
+        dict_predict = PredictRound(rnd, dict_predict)
+        if rnd < 6:
+            #if rnd > 0:
+                #dict_predict = PromoteRound(rnd, dict_predict, picks)
+            #else:
+            dict_bracket = PromoteRound(rnd, dict_predict, dict_bracket, picks)
+                
     A=[]
     B=[]
     C=[]
@@ -144,10 +146,9 @@ def PredictTournament(stat_file, bracket_file, merge_file, input_file, output_fi
     I=[]
     J=[]
     K=[]
-    index=0
+    IDX=[]
     for item in dict_predict:
-        index+=1
-        IDX.append(index)
+        IDX.append(item[0])
         A.append(item[1])
         B.append(item[2])
         C.append(item[3])
@@ -201,64 +202,93 @@ def FindTeams(teama, teamb, dict_merge):
             print ("*** TeamA: [{0}:{1}], TeamB: [{2}:{3}] ***".format(teama, FoundA, teamb, FoundB))
     return FoundA, FoundB
 
-def LoadPredict(dict_predict, dict_bracket):
+def LoadPredict(rnd, dict_predict, dict_bracket):
     index = 0
-    for item in dict_bracket.values():
+    for item in dict_bracket:
         index += 1
-        if item["Round"] <= 1:
-            dict_predict.append([index, item["SeedA"], item["TeamA"], "?%", "?", \
-                item["SeedB"], item["TeamB"], "?%", "?", item["Region"], item["Round"], "?"])
-        else:
-            dict_predict.append([index, "?", "?", "?%", "?", "?", "?", "?%", "?", item["Region"], item["Round"], "?"])
+        brk = dict_bracket[item]
+        if brk["Round"] == rnd:
+            if brk["Round"] <= 1:
+                dict_predict.append([brk["Index"], brk["SeedA"], brk["TeamA"], "?%", "?", \
+                    brk["SeedB"], brk["TeamB"], "?%", "?", brk["Region"], brk["Round"], "?", brk["Next Match"]])
+            else:
+                dict_predict.append([brk["Index"], "?", "?", "?%", "?", "?", "?", "?%", "?", \
+                    brk["Region"], brk["Round"], "?", brk["Next Match"]])
     return dict_predict
 
-def PredictRound(dict_predict):
+def PredictRound(rnd, dict_predict):
+    index=0
     for item in dict_predict:
-        print (item[2],item[6])
-        dict_score = pyMadness.Calculate(item[2], item[6], True)
-        if "chancea" in dict_score:
-            item[3] = dict_score["chancea"]
-            item[4] = dict_score["scorea"]
-            item[7] = dict_score["chanceb"]
-            item[8] = dict_score["scoreb"]
-            if (item[3] >= item[7]):
-                item[11] = "TeamA"
-            else:
-                item[11] = "TeamB"
-        else:
-            print ("Calculate failed")
+        idx = dict_predict[index][0]
+        #print ("index" + str(index))
+        #print ("idx" + str(idx))
+        #pdb.set_trace()
+        if item[10] == rnd:
             print (item[2],item[6])
-            pdb.set_trace()
+            dict_score = pyMadness.Calculate(item[2], item[6], True)
+            if "scorea" in dict_score:
+                item[3] = dict_score["chancea"]
+                item[4] = dict_score["scorea"]
+                item[7] = dict_score["chanceb"]
+                item[8] = dict_score["scoreb"]
+                if (item[4] >= item[8]):
+                    item[11] = "TeamA"
+                else:
+                    item[11] = "TeamB"
+            else:
+                print ("Calculate failed")
+                print (item[2],item[6])
+        index+=1
+
             
     return dict_predict
 
-def PromoteRound(rnd, dict_predict, list_picks):
+def PromoteRound(rnd, dict_predict, dict_bracket, picks):
     for item in dict_predict:
-        slot, index = GetNextIndex(item[0])
-        if (index == 99):
-            print ("should not get here?")
-            break
-        promote = []                
-        for pick in list_picks:
-            flip = False
-            if (int(pick[0]) == int(item[0])):
-                flip = True
-                item[11] = pick[1]
-                break
-            if (item[3] >= item[7]):
-                if (flip):
-                    print ("picking {0} over {1} in round {2} in match {3}".format(item[6], item[2], item[10], item[0]))
-                    promote.append([index, slot, item[5], item[6]])
+        if rnd == item[10]:
+            index = item[12]
+            for promote in dict_bracket:
+                if index == dict_bracket[promote]["Index"]: 
+                    pdb.set_trace()
+                    if item[11] == "TeamA":
+#[64, '16', 'Howard', '54%', '65', '16', 'Wagner', '46%', '64', 'First Four', 0, 'TeamA', 34]
+                        dict_bracket[promote]["SeedB"] = item[1]
+                        dict_bracket[promote]["TeamB"] = item[2]
+                        dict_bracket[promote]["ChanceB"] = item[3]
+                        dict_bracket[promote]["ScoreB"] = item[4]
+                    else:
+                        dict_bracket[promote]["SeedB"] = item[5]
+                        dict_bracket[promote]["TeamB"] = item[6]
+                        dict_bracket[promote]["ChanceB"] = item[7]
+                        dict_bracket[promote]["ScoreB"] = item[8]
+    return dict_bracket
+    
+def PromoteRoundOld(rnd, dict_predict, picks):
+    promote = []
+    slot = 0
+    for item in dict_predict:
+        if item[10] == rnd:
+            index = item[12]
+            for pick in picks:
+                flip = False
+                if (int(pick[0]) == int(item[0])):
+                    flip = True
+                    item[11] = pick[1]
+                    break
+                if (item[4] >= item[8]):
+                    if (flip):
+                        print ("picking {0} over {1} in round {2} in match {3}".format(item[6], item[2], item[10], item[0]))
+                        promote.append([index, slot, item[5], item[6]])
+                    else:
+                        promote.append([index, slot, item[1], item[2]])
                 else:
-                    promote.append([index, slot, item[1], item[2]])
-            else:
-                if (flip):
-                    print ("picking {0} over {1} in round {2} in match {3}".format(item[2], item[6], item[10], item[0]))
-                    promote.append([index, slot, item[1], item[2]])
-                else:
-                    promote.append([index, slot, item[5], item[6]])
-        pdb.set_trace()
-        for item in dict_predict:
+                    if (flip):
+                        print ("picking {0} over {1} in round {2} in match {3}".format(item[2], item[6], item[10], item[0]))
+                        promote.append([index, slot, item[1], item[2]])
+                    else:
+                        promote.append([index, slot, item[5], item[6]])
+    for item in dict_predict:
+        if item[10] == rnd:
             for team in promote:
                 if (team[0] == item[0]):
                     if (team[1] == 1):
@@ -268,23 +298,6 @@ def PromoteRound(rnd, dict_predict, list_picks):
                         item[5] = team[2]
                         item[6] = team[3]
     return dict_predict 
-
-def GetNextIndex(index):
-    # Hundreds position is slot number 1 or 2 rest of the number is the index
-    next_slot = \
-    [
-        135, 235, 156, 256, 150, 250, 123, 223,                                 # First Four
-        109, 209, 110, 210, 111, 211, 112, 212, 113, 213, 114, 214, 115, 215,   # EAST
-        124, 224, 125, 225, 126, 226, 127, 227, 128, 228, 129, 229, 130, 230,   # SOUTH
-        142, 242, 143, 243, 144, 244, 145, 245, 146, 246, 147, 247, 148, 248,   # WEST
-        157, 257, 158, 258, 159, 259, 160, 260, 161, 261, 162, 262, 163, 263,   # MIDWEST
-        131, 231, 133, 233                                                      # Final Four
-    ]
-    if index > len(next_slot):  # prevent index crash if next_slot is correct then this won't happen
-        return 9, 99
-    else:
-        slot = int(next_slot[index - 1] / 100)
-        return slot, (next_slot[index - 1] - (slot * 100))
 
 if __name__ == "__main__":
     main(sys.argv[1:])
