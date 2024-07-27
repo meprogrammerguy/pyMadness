@@ -4,7 +4,6 @@ import json
 import pdb
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
-import csv
 from collections import OrderedDict
 import os.path
 import xlsxwriter
@@ -47,7 +46,11 @@ dict_merge["stats team"] = []
 dict_merge["ratio"] = []
 dict_merge["fixed stats team"] = []
 values = []
+IDX = []
+index=0
 for item in bracket_teams:
+    index+=1
+    IDX.append(index)
     dict_merge["bracket team"].append(item)
     statskey = process.extractOne(item, stats_teams, scorer=fuzz.token_sort_ratio)
     dict_merge["stats team"].append(statskey[0])
@@ -55,16 +58,17 @@ for item in bracket_teams:
     dict_merge["fixed stats team"].append("")
     values.append([item,statskey[0],statskey[1],""])
 
-list_excel = []
-list_excel.append(["Index", "bracket team", "stats team", "ratio", "fixed stats team"])
-for value in values:
-    list_excel.append(value)
+df=pd.DataFrame(IDX, columns=['Index'])
+df['Index']=IDX
+df['bracket team'] = dict_merge["bracket team"]
+df['stats team'] = dict_merge["stats team"]
+df['ratio'] = dict_merge["ratio"]
+df['fixed stats team']=dict_merge["fixed stats team"]
+
 print ("... creating merge excel spreadsheet")
-workbook = xlsxwriter.Workbook("merge.xlsx")
-worksheet = workbook.add_worksheet()
-for row_num, row_data in enumerate(list_excel):
-    for col_num, col_data in enumerate(row_data):
-        worksheet.write(row_num, col_num, col_data)
-workbook.close()
+excel_file = "merge.xlsx"
+writer = pd.ExcelWriter(excel_file, engine="xlsxwriter")
+df.to_excel(writer, sheet_name="Sheet1", index=False)
+writer.close()
 
 print ("done.")

@@ -25,76 +25,154 @@ def GetSeeds(s, ta, tb, sp):
     tb_seed = tb_p.split(sp)
     return "{:02d}".format(int(ta_seed)), "{:02d}".format(int(tb_seed[1]))
         
-def SetRoundAndRegion(f, s, s16, e8, f4, c, first4):
+def SetNextMatch():
+    mch=[]
+    for x in range(2):      # EAST
+        mch.append(9)
+    for x in range(2):
+        mch.append(10)
+    for x in range(2):
+        mch.append(11)
+    for x in range(2):
+        mch.append(12)
+    for x in range(2):
+        mch.append(13)
+    for x in range(2):
+        mch.append(14)
+    for x in range(2):
+        mch.append(15)
+    mch.append(31)
+        
+    for x in range(2):      # SOUTH
+        mch.append(24)
+    for x in range(2):
+        mch.append(25)
+    for x in range(2):
+        mch.append(26)
+    for x in range(2):
+        mch.append(27)
+    for x in range(2):
+        mch.append(28)
+    for x in range(2):
+        mch.append(29)
+    for x in range(2):
+        mch.append(30)
+    mch.append(33)
+    
+    mch.append(32)          # Final Four
+    
+    mch.append(0)           # Championship
+
+    mch.append(32)          # Final Four 
+
+    for x in range(2):      # WEST
+        mch.append(42)
+    for x in range(2):
+        mch.append(43)
+    for x in range(2):
+        mch.append(44)
+    for x in range(2):
+        mch.append(45)
+    for x in range(2):
+        mch.append(46)
+    for x in range(2):
+        mch.append(47)
+    for x in range(2):
+        mch.append(48)
+    mch.append(31)    
+
+    for x in range(2):      # MIDWEST
+        mch.append(57)
+    for x in range(2):
+        mch.append(58)
+    for x in range(2):
+        mch.append(59)
+    for x in range(2):
+        mch.append(60)
+    for x in range(2):
+        mch.append(61)
+    for x in range(2):
+        mch.append(62)
+    for x in range(2):
+        mch.append(63)
+    mch.append(33)    
+
+    mch.append(34)          # First Four
+    mch.append(55)    
+    mch.append(49)    
+    mch.append(22)  
+    return mch
+    
+def SetRoundRegion():
     rd=[]
-    reg=[]    
+    reg=[]
     for x in range(8):
-        rd.append(f)
+        rd.append(1)
         reg.append("EAST")
     for x in range(4):
-        rd.append(s)
+        rd.append(2)
         reg.append("EAST")
     for x in range(2):
-        rd.append(s16)
+        rd.append(3)
         reg.append("EAST")
     for x in range(1):
-        rd.append(e8)
+        rd.append(4)
         reg.append("EAST")
+
+    for x in range(8):
+        rd.append(1)
+        reg.append("SOUTH")
+    for x in range(4):
+        rd.append(2)
+        reg.append("SOUTH")
+    for x in range(2):
+        rd.append(3)
+        reg.append("SOUTH")
+    for x in range(1):
+        rd.append(4)
+        reg.append("SOUTH")
+
+    for x in range(1):
+        rd.append(5)
+        reg.append("Final Four")
+
+    for x in range(1):
+        rd.append(6)
+        reg.append("Championship")
+
+    for x in range(1):
+        rd.append(5)
+        reg.append("Final Four")
+
+    for x in range(8):
+        rd.append(1)
+        reg.append("WEST")
+    for x in range(4):
+        rd.append(2)
+        reg.append("WEST")
+    for x in range(2):
+        rd.append(3)
+        reg.append("WEST")
+    for x in range(1):
+        rd.append(4)
+        reg.append("WEST")
        
     for x in range(8):
-        rd.append(f)
-        reg.append("SOUTH")
-    for x in range(4):
-        rd.append(s)
-        reg.append("SOUTH")
-    for x in range(2):
-        rd.append(s16)
-        reg.append("SOUTH")
-    for x in range(1):
-        rd.append(e8)
-        reg.append("SOUTH")
-
-    for x in range(1):
-        rd.append(f4)
-        reg.append(" ")
-
-    for x in range(1):
-        rd.append(c)
-        reg.append(" ")
-
-    for x in range(1):
-        rd.append(f4)
-        reg.append(" ")
-
-    for x in range(8):
-        rd.append(f)
-        reg.append("WEST")
-    for x in range(4):
-        rd.append(s)
-        reg.append("WEST")
-    for x in range(2):
-        rd.append(s16)
-        reg.append("WEST")
-    for x in range(1):
-        rd.append(e8)
-        reg.append("WEST")
-       
-    for x in range(8):
-        rd.append(f)
+        rd.append(1)
         reg.append("MIDWEST")
     for x in range(4):
-        rd.append(s)
+        rd.append(2)
         reg.append("MIDWEST")
     for x in range(2):
-        rd.append(s16)
+        rd.append(3)
         reg.append("MIDWEST")
     for x in range(1):
-        rd.append(e8)
+        rd.append(4)
         reg.append("MIDWEST")
 
     for x in range(4):
-        rd.append(first4)
-        reg.append(" ")
+        rd.append(0)
+        reg.append("First Four")
     return rd, reg
     
 year = 0
@@ -167,6 +245,7 @@ TB=[]
 SB=[]
 ROUND=[]
 REGION=[]
+NEXTMATCH=[]
 index=0
 for row in rows:
     seeda, seedb = GetSeeds(rows[row][0], rows[row][1]["teama"], rows[row][1]["teamb"], rows[row][1]["scorea"])
@@ -179,7 +258,8 @@ for row in rows:
     index+=1
     IDX.append(index)
 
-ROUND, REGION = SetRoundAndRegion("first", "second", "sweet 16", "elite 8", "final 4", "championship", "first 4")
+ROUND, REGION = SetRoundRegion()
+NEXTMATCH = SetNextMatch()
 
 df=pd.DataFrame(IDX, columns=['Index'])
 df['SeedA']=SEEDA
@@ -190,6 +270,7 @@ df['TeamB']=TB
 df['ScoreB']=SB
 df['Region']=REGION
 df['Round']=ROUND
+df['Next Match']=NEXTMATCH
 
 print ("... creating bracket JSON file")
 the_file = "json/bracket.json"
