@@ -17,6 +17,10 @@ def CurrentStatsFile(filename):
 def RefreshStats():
     import scrape_stats
 
+def GetYAD():
+    inputs={}
+    return inputs
+
 def main(argv):
     first = ""
     second = ""
@@ -61,8 +65,13 @@ def main(argv):
             print ("Test result - fail")
     else:
         if (not first and not second):
-            print ("you must input the team names to run this tool, (first and second arguments)")
-            exit()
+            yad_inputs = GetYAD()
+            if not yad_inputs:
+                print ("Score Matchup Tool")
+                print ("**************************")
+                usage()
+                print ("**************************")
+                exit()
         file = "json/stats.json"
         if (not CurrentStatsFile(file)):
             RefreshStats()
