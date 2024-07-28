@@ -101,7 +101,7 @@ def PredictTournament(stat_file, bracket_file, merge_file, input_file, output_fi
     if (not os.path.exists(merge_file)):
         print ("merge spreadsheet is missing, run the merge_teams tool to create")
         exit() 
-    #pdb.set_trace()       
+
     dict_merge={}
     excel_df = pd.read_excel(merge_file, sheet_name='Sheet1')
     dict_merge = json.loads(excel_df.to_json())
@@ -126,14 +126,11 @@ def PredictTournament(stat_file, bracket_file, merge_file, input_file, output_fi
         dict_stats = json.load(stat_file, object_pairs_hook=OrderedDict)
 
     dict_predict = []
+    dict_predict = LoadPredict(dict_predict, dict_bracket)
     for rnd in range(0, 7):
-        dict_predict = LoadPredict(rnd, dict_predict, dict_bracket)
         dict_predict = PredictRound(rnd, dict_predict)
         if rnd < 6:
-            #if rnd > 0:
-                #dict_predict = PromoteRound(rnd, dict_predict, picks)
-            #else:
-            dict_bracket = PromoteRound(rnd, dict_predict, dict_bracket, picks)
+            dict_predict = PromoteRound(rnd, dict_predict, picks)
                 
     A=[]
     B=[]
@@ -202,27 +199,26 @@ def FindTeams(teama, teamb, dict_merge):
             print ("*** TeamA: [{0}:{1}], TeamB: [{2}:{3}] ***".format(teama, FoundA, teamb, FoundB))
     return FoundA, FoundB
 
-def LoadPredict(rnd, dict_predict, dict_bracket):
+def LoadPredict(dict_predict, dict_bracket):
     index = 0
-    for item in dict_bracket:
-        index += 1
-        brk = dict_bracket[item]
-        if brk["Round"] == rnd:
-            if brk["Round"] <= 1:
-                dict_predict.append([brk["Index"], brk["SeedA"], brk["TeamA"], "?%", "?", \
-                    brk["SeedB"], brk["TeamB"], "?%", "?", brk["Region"], brk["Round"], "?", brk["Next Match"]])
-            else:
-                dict_predict.append([brk["Index"], "?", "?", "?%", "?", "?", "?", "?%", "?", \
-                    brk["Region"], brk["Round"], "?", brk["Next Match"]])
+    for rnd in range(0, 7):
+        for item in dict_bracket:
+            index += 1
+            brk = dict_bracket[item]
+            if brk["Round"] == rnd:
+                if brk["Round"] <= 1:
+                    dict_predict.append([brk["Index"], brk["SeedA"], brk["TeamA"], "?%", "?", \
+                        brk["SeedB"], brk["TeamB"], "?%", "?", brk["Region"], brk["Round"], "?", \
+                        brk["Next Match"], brk["Next Slot"]])
+                else:
+                    dict_predict.append([brk["Index"], "?", "?", "?%", "?", "?", "?", "?%", "?", \
+                        brk["Region"], brk["Round"], "?", brk["Next Match"], brk["Next Slot"]])
     return dict_predict
 
 def PredictRound(rnd, dict_predict):
     index=0
     for item in dict_predict:
         idx = dict_predict[index][0]
-        #print ("index" + str(index))
-        #print ("idx" + str(idx))
-        #pdb.set_trace()
         if item[10] == rnd:
             print (item[2],item[6])
             dict_score = pyMadness.Calculate(item[2], item[6], True)
@@ -235,33 +231,26 @@ def PredictRound(rnd, dict_predict):
                     item[11] = "TeamA"
                 else:
                     item[11] = "TeamB"
-            else:
-                print ("Calculate failed")
-                print (item[2],item[6])
-        index+=1
-
-            
+        index+=1            
     return dict_predict
-
-def PromoteRound(rnd, dict_predict, dict_bracket, picks):
+        
+def PromoteRound(rnd, dict_predict, picks):
     for item in dict_predict:
         if rnd == item[10]:
             index = item[12]
-            for promote in dict_bracket:
-                if index == dict_bracket[promote]["Index"]: 
-                    pdb.set_trace()
+            for promote in dict_predict:
+                if promote[0] == index:
                     if item[11] == "TeamA":
-#[64, '16', 'Howard', '54%', '65', '16', 'Wagner', '46%', '64', 'First Four', 0, 'TeamA', 34]
-                        dict_bracket[promote]["SeedB"] = item[1]
-                        dict_bracket[promote]["TeamB"] = item[2]
-                        dict_bracket[promote]["ChanceB"] = item[3]
-                        dict_bracket[promote]["ScoreB"] = item[4]
+                        if item[13] == 1:   # slot
+                            promote[2] = item[2]
+                        else:
+                            promote[6] = item[2]
                     else:
-                        dict_bracket[promote]["SeedB"] = item[5]
-                        dict_bracket[promote]["TeamB"] = item[6]
-                        dict_bracket[promote]["ChanceB"] = item[7]
-                        dict_bracket[promote]["ScoreB"] = item[8]
-    return dict_bracket
+                        if item[13] == 1:
+                            promote[2] = item[6]
+                        else:
+                            promote[6] = item[6]
+    return dict_predict
     
 def PromoteRoundOld(rnd, dict_predict, picks):
     promote = []
