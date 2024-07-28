@@ -22,8 +22,9 @@ def main(argv):
     second = ""
     neutral = False
     test = False
+    verbose = False
     try:
-        opts, args = getopt.getopt(argv, "hf:snt", ["help", "first=", "second=", "neutral","test"])
+        opts, args = getopt.getopt(argv, "hf:sntv", ["help", "first=", "second=", "neutral","test","verbose"])
     except getopt.GetoptError as err:
         print(err)
         usage()
@@ -34,6 +35,8 @@ def main(argv):
             neutral = True
         elif o in ("-t", "--test"):
             test = True
+        elif o in ("-v", "--verbose"):
+            verbose = True
         elif o in ("-h", "--help"):
             usage()
             sys.exit
@@ -43,12 +46,15 @@ def main(argv):
             second = a
         else:
             assert False, "unhandled option"
-    print ("Score Matchup Tool")
-    print ("**************************")
-    usage()
-    print ("**************************")
+    if verbose:
+        print (" ")
+        print ("increased information level")
+        print ("Score Matchup Tool")
+        print ("**************************")
+        usage()
+        print ("**************************")
     if (test):
-        testResult = pyMadness.Test()
+        testResult = pyMadness.Test(verbose)
         if (testResult):
             print ("Test result - pass")
         else:
@@ -61,7 +67,7 @@ def main(argv):
         if (not CurrentStatsFile(file)):
             RefreshStats()
         ds = {}
-        ds = pyMadness.Calculate(first, second, neutral)
+        ds = pyMadness.Calculate(first, second, neutral, verbose)
         if (not ds):
             print ("Could not predict this matchup?")
             exit()
@@ -79,6 +85,7 @@ def usage():
     -s --second               Second Team (The Home Team)
     -n --neutral              Playing on a neutral Field
     -t --test                 runs test routine to check calculations
+    -v --verbose              increase information level
     """
     print (usage) 
 

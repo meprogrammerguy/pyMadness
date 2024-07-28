@@ -5,9 +5,19 @@ import pyMadness
 from collections import OrderedDict
 import json
 import pdb
-import csv
 import os.path
 import pandas as pd
+from datetime import datetime
+
+def CurrentStatsFile(filename):
+    stat = os.path.getmtime(filename)
+    stat_date = datetime.fromtimestamp(stat)
+    if stat_date.date() < datetime.now().date():
+        return False
+    return True
+
+def RefreshStats():
+    import scrape_stats
 
 def main(argv):
     stat_file = "json/stats.json"
@@ -16,9 +26,10 @@ def main(argv):
     output_file = "predict.xlsx"
     input_file = "predict.xlsx"
     test = False
+    verbose = False
     try:
-        opts, args = getopt.getopt(argv, "hs:b:m:o:it", ["help", "stat_file=", "bracket_file=", \
-            "merge_file=", "output_file=", "input_file=", "test"])
+        opts, args = getopt.getopt(argv, "hs:b:m:o:itv", ["help", "stat_file=", "bracket_file=", \
+            "merge_file=", "output_file=", "input_file=", "verbose", "test"])
     except getopt.GetoptError as err:
         print(err)
         usage()
@@ -27,6 +38,8 @@ def main(argv):
     for o, a in opts:
         if o in ("-t", "--test"):
             test = True
+        elif o in ("-v", "--verbose"):
+            verbose = True
         elif o in ("-h", "--help"):
             usage()
             sys.exit
@@ -43,13 +56,13 @@ def main(argv):
         else:
             assert False, "unhandled option"
     if (test):
-        testResult = pyMadness.Test()
+        testResult = pyMadness.Test(verbose)
         if (testResult):
             print ("Test result - pass")
         else:
             print ("Test result - fail")
     else:
-        PredictTournament(stat_file, bracket_file, merge_file, input_file, output_file)
+        PredictTournament(stat_file, bracket_file, merge_file, input_file, output_file, verbose)
     print ("{0} has been created.".format(output_file))
     print ("done.")
     
@@ -62,13 +75,21 @@ def usage():
     -i --input_file           input file gets pick overrides  (excel spreadsheet file format)
     -o --output_file          output file                     (excel spreadsheet file format)
     -t --test                 runs test routine to check calculations
+    -v --verbose              increase the information level
     """
     print (usage) 
 
-def PredictTournament(stat_file, bracket_file, merge_file, input_file, output_file):
+def PredictTournament(stat_file, bracket_file, merge_file, input_file, output_file, verbose):
     print ("Tournament Prediction Tool")
     print ("**************************")
     print ("Statistics file: {0}".format(stat_file))
+    if verbose:
+        print (" ")
+        print ("increased information level")
+        print ("Score Bracket Tool")
+        print ("**************************")
+        usage()
+        print ("**************************")
     print ("Brackets   file: {0}".format(bracket_file))
     print ("Team Merge file: {0}".format(merge_file))
     print ("Input      file: {0}".format(input_file))
@@ -118,6 +139,8 @@ def PredictTournament(stat_file, bracket_file, merge_file, input_file, output_fi
         itm["TeamA"] = teama
         itm["TeamB"] = teamb
         
+    if (not CurrentStatsFile(stat_file)):
+        RefreshStats()
     if (not os.path.exists(stat_file)):
         print ("statistics file is missing, run the scrape_stats tool to create")
         exit()
@@ -128,7 +151,7 @@ def PredictTournament(stat_file, bracket_file, merge_file, input_file, output_fi
     dict_predict = []
     dict_predict = LoadPredict(dict_predict, dict_bracket)
     for rnd in range(0, 7):
-        dict_predict = PredictRound(rnd, dict_predict)
+        dict_predict = PredictRound(rnd, dict_predict, verbose)
         if rnd < 6:
             dict_predict = PromoteRound(rnd, dict_predict, picks)
                 
@@ -215,13 +238,12 @@ def LoadPredict(dict_predict, dict_bracket):
                         brk["Region"], brk["Round"], "?", brk["Next Match"], brk["Next Slot"]])
     return dict_predict
 
-def PredictRound(rnd, dict_predict):
+def PredictRound(rnd, dict_predict, verbose):
     index=0
     for item in dict_predict:
         idx = dict_predict[index][0]
         if item[10] == rnd:
-            print (item[2],item[6])
-            dict_score = pyMadness.Calculate(item[2], item[6], True)
+            dict_score = pyMadness.Calculate(item[2], item[6], True, verbose)
             if "scorea" in dict_score:
                 item[3] = dict_score["chancea"]
                 item[4] = dict_score["scorea"]
