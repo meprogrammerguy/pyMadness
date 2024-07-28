@@ -264,13 +264,17 @@ def PromoteRound(rnd, dict_predict, picks):
                 if promote[0] == index:
                     if item[11] == "TeamA":
                         if item[13] == 1:   # slot
+                            promote[1] = item[1]
                             promote[2] = item[2]
                         else:
+                            promote[5] = item[1]
                             promote[6] = item[2]
                     else:
                         if item[13] == 1:
+                            promote[1] = item[5]
                             promote[2] = item[6]
                         else:
+                            promote[5] = item[5]
                             promote[6] = item[6]
     return dict_predict
     
