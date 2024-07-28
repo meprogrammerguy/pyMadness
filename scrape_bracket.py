@@ -264,7 +264,7 @@ if (len(sys.argv)>=2):
 current_working_directory = os.getcwd()
 
 test_mode = False
-test_file = "/home/jsmith/git/pyMadness/test/bracket/{0}/ncaa_bracket.html".format(year)
+test_file = "/home/jsmith/git/pyMadness/test/bracket/{0}/bracket.html".format(year)
 if (os.path.exists(test_file)):
     print("... fetching test bracket page")
     with open(test_file, 'r') as file:
@@ -291,7 +291,7 @@ print ("**************************")
 
 if not test_mode:
     with contextlib.closing(urlopen(url)) as page:
-        soup = BeautifulSoup(page, "html.parser", parse_only=SoupStrainer('a'))
+        soup = BeautifulSoup(page, "html5lib")
 
 main = soup.find_all('div', attrs = {'class':'bracket-main'})
 rows={}

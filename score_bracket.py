@@ -101,8 +101,6 @@ def PredictTournament(stat_file, bracket_file, merge_file, input_file, output_fi
         excel_df = pd.read_excel(input_file, sheet_name='Sheet1')
         predict_json = json.loads(excel_df.to_json())
         for x in range(len(predict_json["Index"])):
-            ta = predict_json["TeamA"][str(x)]
-            tb = predict_json["TeamB"][str(x)]
             pick = predict_json["Pick"][str(x)]
             sa =  predict_json["ScoreA"][str(x)]
             sb =  predict_json["ScoreB"][str(x)]
@@ -290,41 +288,5 @@ def PromoteRound(rnd, dict_predict, picks):
                             promote[6] = item[6]
     return dict_predict
     
-def PromoteRoundOld(rnd, dict_predict, picks):
-    promote = []
-    slot = 0
-    for item in dict_predict:
-        if item[10] == rnd:
-            index = item[12]
-            for pick in picks:
-                flip = False
-                if (int(pick[0]) == int(item[0])):
-                    flip = True
-                    item[11] = pick[1]
-                    break
-                if (item[4] >= item[8]):
-                    if (flip):
-                        print ("picking {0} over {1} in round {2} in match {3}".format(item[6], item[2], item[10], item[0]))
-                        promote.append([index, slot, item[5], item[6]])
-                    else:
-                        promote.append([index, slot, item[1], item[2]])
-                else:
-                    if (flip):
-                        print ("picking {0} over {1} in round {2} in match {3}".format(item[2], item[6], item[10], item[0]))
-                        promote.append([index, slot, item[1], item[2]])
-                    else:
-                        promote.append([index, slot, item[5], item[6]])
-    for item in dict_predict:
-        if item[10] == rnd:
-            for team in promote:
-                if (team[0] == item[0]):
-                    if (team[1] == 1):
-                        item[1] = team[2]
-                        item[2] = team[3]
-                    else:
-                        item[5] = team[2]
-                        item[6] = team[3]
-    return dict_predict 
-
 if __name__ == "__main__":
     main(sys.argv[1:])

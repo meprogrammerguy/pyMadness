@@ -7,7 +7,6 @@ import html5lib
 import pdb
 from collections import OrderedDict
 import json
-import csv
 import contextlib
 import os.path
 from pathlib import Path

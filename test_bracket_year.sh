@@ -1,10 +1,7 @@
 #!/bin/bash
 #
-# script to scrape espn march madness bracket page
+# script to scrape ncaa march madness bracket page
 #   if page is there the scraper will use test data instead of "live"
-# https://www.espn.com/mens-college-basketball/bracket/_/season/2023
-# http://www.espn.com/mens-college-basketball/tournament/bracket
-# /home/jsmith/git/pyMadness/test/bracket/2023
 # 
 green='\033[0;32m'
 red='\033[0;31m'
@@ -41,17 +38,7 @@ cd $bracket
 # ncaa madness tournament bracket page
 #
 echo -e "           ${green}ncaa march madness tournament bracket scrape${NC}"
-	curl -L "http://www.ncaa.com/march-madness-live/bracket" -o "ncaa_bracket.html"
-#
-# espn march madness tournament bracket page
-#
-echo -e "           ${green}espn march madness tournament bracket scrape${NC}"
-if [[ $cur_year ]]
-then
-	curl -L "http://www.espn.com/mens-college-basketball/tournament/bracket" -o "bracket.html"
-else
-	curl -L "https://www.espn.com/mens-college-basketball/bracket/_/season/$year" -o "bracket.html"
-fi
+	curl -L "http://www.ncaa.com/march-madness-live/bracket" -o "bracket.html"
 
 echo " "
 echo -e "${green}done.${NC}"

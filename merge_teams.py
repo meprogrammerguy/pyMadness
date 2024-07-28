@@ -17,7 +17,7 @@ print ("Merge Teams Tool")
 print ("**************************")
 file = 'json/bracket.json'
 if (not os.path.exists(file)):
-    print ("brackets file is missing, run the scrape_bracket tool to create")
+    print ("madness brackets are missing, run the scrape_bracket tool to create")
     exit()
 with open(file) as bracket_file:
     dict_bracket = json.load(bracket_file, object_pairs_hook=OrderedDict)
