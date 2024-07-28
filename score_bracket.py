@@ -196,8 +196,7 @@ def PredictTournament(stat_file, bracket_file, merge_file, input_file, output_fi
     df['Pick'] = K
 
     print ("... creating prediction spreadsheet")
-    excel_file = "predict.xlsx"
-    writer = pd.ExcelWriter(excel_file, engine="xlsxwriter")
+    writer = pd.ExcelWriter(output_file, engine="xlsxwriter")
     df.to_excel(writer, sheet_name="Sheet1", index=False)
     writer.close()
 
@@ -256,12 +255,25 @@ def PredictRound(rnd, dict_predict, verbose):
         index+=1            
     return dict_predict
         
+def FindOverrides(i, p, orig):
+    pick = orig
+    for item in p:
+        if item[0] == i:
+            pick = item[1]
+            break
+    return pick
+    
 def PromoteRound(rnd, dict_predict, picks):
     for item in dict_predict:
         if rnd == item[10]:
             index = item[12]
             for promote in dict_predict:
                 if promote[0] == index:
+                    override = FindOverrides(item[0], picks, item[11])
+                    if override != item[11]:
+                        print ("picking {0} in round {1} in match {2} ** {3} vs {4}" \
+                            .format(override, item[10], item[0], item[2], item[6]))
+                        item[11] = override
                     if item[11] == "TeamA":
                         if item[13] == 1:   # slot
                             promote[1] = item[1]
