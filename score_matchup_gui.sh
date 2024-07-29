@@ -6,7 +6,7 @@ away_team=$(yad --completion --entry="" --entry-label="Away Team" --title=$title
 	while IFS= read -r cmd;
     do
         away_team=${cmd}
-        echo ${away_team}
+        echo ${cmd@Q}
     done)
 away_button=$?
 echo "button: ${away_button}"
@@ -15,12 +15,13 @@ home_team=$(yad --completion --entry="" --entry-label="Home Team" --title=$title
 	while IFS= read -r cmd;
     do
         home_team=${cmd}
-        echo ${home_team}
+        echo ${home_team@Q}
     done)
 home_button=$?
 echo "button: ${home_button}"
 echo "data: ${home_team}"
-form=$(yad --form --text="${away_team} @ ${home_team}" --text-align center \
+team_text=$(echo "${away_team} @ ${home_team}")
+form=$(yad --form --text="${team_text//&/&amp;}" --text-align center \
 	--title=$title --field="Verbose":CHK \
 	--field="Neutral Court":CHK)
 form_button=$?
