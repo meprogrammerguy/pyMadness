@@ -9,6 +9,7 @@ from collections import OrderedDict
 import json
 from pynotifier import NotificationClient, Notification
 from pynotifier.backends import platform
+import subprocess
 
 import pyMadness
 
@@ -23,6 +24,7 @@ def RefreshStats():
     import scrape_stats
     
 def main(argv):
+    cwd = os.getcwd()
     first = ""
     second = ""
     neutral = False
@@ -66,6 +68,12 @@ def main(argv):
             print ("Test result - fail")
     else:
         if (not first and not second):
+            run_gui = '{0}/score_matchup_gui.sh'.format(cwd)
+            #result = subprocess.run(run_gui)
+            #result = subprocess.run([run_gui, "/dev/null"], capture_output=True)
+            result = subprocess.run([run_gui], capture_output=True)
+            print (result)
+            pdb.set_trace()
             print ("Score Matchup Tool")
             print ("**************************")
             usage()
@@ -86,7 +94,6 @@ def main(argv):
             answer = "{0} {1} at {2} {3} {4}-{5}".format(ds["teama"], ds["chancea"], ds["teamb"], ds["chanceb"],
                 ds["scorea"], ds["scoreb"])
         print (answer)
-        cwd = os.getcwd()
         madness_icon = '{0}/basketball.ico'.format(cwd)
         c = NotificationClient()
         c.register_backend(platform.Backend())

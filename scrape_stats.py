@@ -87,4 +87,9 @@ excel_file = "stats.xlsx"
 writer = pd.ExcelWriter(excel_file, engine="xlsxwriter")
 df.to_excel(writer, sheet_name="Sheet1", index=False)
 writer.close()
+print ("... creating teams.txt")
+f = open("teams.txt", "w")
+for team in B:
+    f.write(team + "\n")
+f.close()
 print ("done.")
