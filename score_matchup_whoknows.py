@@ -44,38 +44,18 @@ def GetYAD():
     teams = GetTeams()
     away_team = yad.Entry(title="Basketball Predictor", label="Away Team", use_completion=True, data=teams)
     home_team = yad.Entry(title="Basketball Predictor", label="Home Team", use_completion=True, data=teams)
-    
-    teams = "'LBL','Auburn @ Alabama'"
-    x1 = (
-        (teams),
-        ("CHK","Verbose","true"),
-        ("CHK","Neutral Court","true"),
-        )
-    the_fields = 'LBL:"{0}"\nCHK:Verbose:false\nCHK:Neutral Court:false'.format(away_team + "@" + home_team)
-    final_screen = yad.Form(title="Basketball Predictor", align="center", fields=the_fields)
-
-    
-    
-    
-    #data = "LBL:'{0}'\nCHK:Verbose:false\nCHK:Neutral Court:false".format(away_team + " @ " + home_team)
-    #pdb.set_trace()
-    #final_screen = yad.Form(title="Basketball Predictor", use_completion=True, align="center", fields=data)
+    data = "LBL:{0}\nCHK:Verbose:false\nCHK:Neutral Court:false".format(away_team + "@" + home_team)
+    final_screen = yad.Form(title="Basketball Predictor", use_completion=True, align="center", fields=data)
     first = away_team
     second = home_team
-    if "FALSE" in final_screen[1]:
-        verbose = False
-    else:
-        verbose = True
-    if "FALSE" in final_screen[2]:
-        neutral = False
-    else:
-        neutral = True
+    verbose = final_screen[1]
+    neutral = final_screen[2]
     inputs["first"] = first
     inputs["second"] = second
     inputs["verbose"] = verbose
     inputs["neutral"] = neutral
     return inputs
-
+    
 def main(argv):
     first = ""
     second = ""
@@ -154,7 +134,6 @@ def main(argv):
         notification = Notification(title='pyMadness Predictor', message=answer,\
             icon_path=madness_icon, duration=20)
         c.notify_all(notification)
-
 def usage():
     usage = """
     -h --help                 Prints this
