@@ -4,6 +4,10 @@ import sys, getopt
 import os.path
 import pdb
 from datetime import datetime
+from yad import YAD
+import pandas as pd
+from collections import OrderedDict
+import json
 
 import pyMadness
 
@@ -17,8 +21,37 @@ def CurrentStatsFile(filename):
 def RefreshStats():
     import scrape_stats
 
+def GetTeams():
+    teams=[]
+    print("... retrieving stats file")
+    if (not os.path.exists("json/stats.json")):
+        print ("stats file is missing, run the scrape_stats tool to create")
+        exit()
+    with open("json/stats.json") as stat_file:
+        dict_stats = json.load(stat_file, object_pairs_hook=OrderedDict)
+    for item in dict_stats:
+        teams.append('"' + dict_stats[item]["Team"] + '"')
+    team_set = set(teams)
+    teams = list(team_set)
+    teams.sort()
+    return teams
+    
 def GetYAD():
     inputs={}
+    yad = YAD()
+    teams = GetTeams()
+    away_team = yad.Entry(title="Basketball Predictor", label="Away Team", use_completion=True, data=teams)
+    home_team = yad.Entry(title="Basketball Predictor", label="Home Team", use_completion=True, data=teams)
+    data = "LBL:{0}\nCHK:Verbose:false\nCHK:Neutral Court:false".format(away_team + "@" + home_team)
+    final_screen = yad.Form(title="Basketball Predictor", use_completion=True, align="center", fields=data)
+    first = away_team
+    second = home_team
+    verbose = final_screen[1]
+    neutral = final_screen[2]
+    inputs["first"] = first
+    inputs["second"] = second
+    inputs["verbose"] = verbose
+    inputs["neutral"] = neutral
     return inputs
 
 def main(argv):
@@ -66,7 +99,12 @@ def main(argv):
     else:
         if (not first and not second):
             yad_inputs = GetYAD()
-            if not yad_inputs:
+            if yad_inputs:
+                first = yad_inputs["first"]
+                second = yad_inputs["second"]
+                verbose = yad_inputs["verbose"]
+                neutral = yad_inputs["neutral"]
+            else:
                 print ("Score Matchup Tool")
                 print ("**************************")
                 usage()
