@@ -6,7 +6,7 @@ away_team=$(yad --completion --entry="" --entry-label="Away Team" --title=$title
 	while IFS= read -r cmd;
     do
         away_team=${cmd}
-        echo ${cmd@Q}
+        echo ${away_team}
     done)
 away_button=$?
 echo "button: ${away_button}"
@@ -15,7 +15,7 @@ home_team=$(yad --completion --entry="" --entry-label="Home Team" --title=$title
 	while IFS= read -r cmd;
     do
         home_team=${cmd}
-        echo ${home_team@Q}
+        echo ${home_team}
     done)
 home_button=$?
 echo "button: ${home_button}"

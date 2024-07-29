@@ -13,6 +13,27 @@ import subprocess
 
 import pyMadness
 
+def ParseResult(s):
+    result={}
+    y = s.splitlines()
+    t1 = y[1].split("data: ")
+    t2 = y[3].split("data: ")
+    chk = y[4].split("form: ")
+    chk2 = chk[1].split("|")
+    result["first"] = t1[1]
+    result["second"] = t2[1]
+    if "TRUE" in chk2[0]:
+        verbose = True
+    else:
+        verbose = False
+    if "TRUE" in chk2[1]:
+        neutral = True
+    else:
+        neutral = False
+    result["verbose"] = verbose
+    result["neutral"] = neutral
+    return result
+    
 def CurrentStatsFile(filename):
     stat = os.path.getmtime(filename)
     stat_date = datetime.fromtimestamp(stat)
@@ -69,16 +90,18 @@ def main(argv):
     else:
         if (not first and not second):
             run_gui = '{0}/score_matchup_gui.sh'.format(cwd)
-            #result = subprocess.run(run_gui)
-            #result = subprocess.run([run_gui, "/dev/null"], capture_output=True)
-            result = subprocess.run([run_gui], capture_output=True)
-            print (result)
-            pdb.set_trace()
-            print ("Score Matchup Tool")
-            print ("**************************")
-            usage()
-            print ("**************************")
-            exit()
+            from_bash = subprocess.run([run_gui], capture_output=True)
+            result = ParseResult(from_bash.stdout.decode("utf-8"))
+            first = result["first"]
+            second = result["second"]
+            verbose = result["verbose"]
+            neutral = result["neutral"]
+            if (not first and not second):
+                print ("Score Matchup Tool")
+                print ("**************************")
+                usage()
+                print ("**************************")
+                exit()
         file = "json/stats.json"
         if (not CurrentStatsFile(file)):
             RefreshStats()
