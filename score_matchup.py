@@ -4,7 +4,6 @@ import sys, getopt
 import os, os.path
 import pdb
 from datetime import datetime
-from yad import YAD
 import pandas as pd
 from collections import OrderedDict
 import json
@@ -22,60 +21,7 @@ def CurrentStatsFile(filename):
 
 def RefreshStats():
     import scrape_stats
-
-def GetTeams():
-    teams=[]
-    print("... retrieving stats file")
-    if (not os.path.exists("json/stats.json")):
-        print ("stats file is missing, run the scrape_stats tool to create")
-        exit()
-    with open("json/stats.json") as stat_file:
-        dict_stats = json.load(stat_file, object_pairs_hook=OrderedDict)
-    for item in dict_stats:
-        teams.append('"' + dict_stats[item]["Team"] + '"')
-    team_set = set(teams)
-    teams = list(team_set)
-    teams.sort()
-    return teams
     
-def GetYAD():
-    inputs={}
-    yad = YAD()
-    teams = GetTeams()
-    away_team = yad.Entry(title="Basketball Predictor", label="Away Team", use_completion=True, data=teams)
-    home_team = yad.Entry(title="Basketball Predictor", label="Home Team", use_completion=True, data=teams)
-    
-    teams = "'LBL','Auburn @ Alabama'"
-    x1 = (
-        (teams),
-        ("CHK","Verbose","true"),
-        ("CHK","Neutral Court","true"),
-        )
-    the_fields = 'LBL:"{0}"\nCHK:Verbose:false\nCHK:Neutral Court:false'.format(away_team + "@" + home_team)
-    final_screen = yad.Form(title="Basketball Predictor", align="center", fields=the_fields)
-
-    
-    
-    
-    #data = "LBL:'{0}'\nCHK:Verbose:false\nCHK:Neutral Court:false".format(away_team + " @ " + home_team)
-    #pdb.set_trace()
-    #final_screen = yad.Form(title="Basketball Predictor", use_completion=True, align="center", fields=data)
-    first = away_team
-    second = home_team
-    if "FALSE" in final_screen[1]:
-        verbose = False
-    else:
-        verbose = True
-    if "FALSE" in final_screen[2]:
-        neutral = False
-    else:
-        neutral = True
-    inputs["first"] = first
-    inputs["second"] = second
-    inputs["verbose"] = verbose
-    inputs["neutral"] = neutral
-    return inputs
-
 def main(argv):
     first = ""
     second = ""
@@ -120,18 +66,11 @@ def main(argv):
             print ("Test result - fail")
     else:
         if (not first and not second):
-            yad_inputs = GetYAD()
-            if yad_inputs:
-                first = yad_inputs["first"]
-                second = yad_inputs["second"]
-                verbose = yad_inputs["verbose"]
-                neutral = yad_inputs["neutral"]
-            else:
-                print ("Score Matchup Tool")
-                print ("**************************")
-                usage()
-                print ("**************************")
-                exit()
+            print ("Score Matchup Tool")
+            print ("**************************")
+            usage()
+            print ("**************************")
+            exit()
         file = "json/stats.json"
         if (not CurrentStatsFile(file)):
             RefreshStats()
