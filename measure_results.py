@@ -99,7 +99,6 @@ def main(argv):
         grand_rnd_count+=rnd_count
         percent = GetPercent(rnd_count, wins)
         PERCENT.append(percent)
-
         
     ROUND.append("Totals")             #grand totals row
     index+=1
