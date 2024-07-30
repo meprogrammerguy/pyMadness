@@ -279,14 +279,14 @@ print ("**************************")
 print (" ")
 if test_mode:
     print ("*** Test data ***")
-    print ("    data is from {0}".format(test_file))
     print ("*** delete test data and re-run to go live ***")
+    print (" ")
+    print ("    data is from {0}".format(test_file))
 else:
     print ("*** Live ***")
     print ("data is from {0}".format(url))
 print (" ")
 print ("Year is: {0}".format(year))
-print ("data is from {0}".format(url))
 print ("**************************")
 
 if not test_mode:

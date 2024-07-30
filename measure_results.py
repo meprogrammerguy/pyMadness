@@ -2,7 +2,6 @@
 
 import json
 import pdb
-import csv
 from collections import OrderedDict
 import os.path
 from pathlib import Path
@@ -10,11 +9,6 @@ from datetime import datetime
 import re
 import pandas as pd
 import sys
-import glob
-
-import settings
-import pyBlitz
-import scrape_schedule
 
 def GetNumber(item):
     idx = re.findall(r'\d+', str(item))
@@ -22,38 +16,27 @@ def GetNumber(item):
         idx.append("-1")
     return int(idx[0])
 
-def GetIndex(item):
-    filename = os.path.basename(str(item))
-    idx = re.findall(r'\d+', str(filename))
-    if (len(idx) == 0):
-        idx.append("-1")
-    return int(idx[0])
+def RefreshBracket():
+    import scrape_bracket
 
-def RefreshScheduleFiles():
-    scrape_schedule.year = year
-    scrape_schedule.main(sys.argv[1:])
+def GetRoundCount(r, j):
+    count = 0
+    for x in range(len(j)):
+        rnd = j[str(x)]["Round"]
+        if rnd == r:
+            count+=1
+    return count
 
-def HaveIWon(d, ta, tb, sa, sb, j):
-    have_won = False
-    for x in j:
-        teama_won = False
-        if (d == j[x]["Date"]) and (ta == j[x]["Team 1"]) and (tb ==  j[x]["Team 2"]):
-            if j[x]["Score 1"] > j[x]["Score 1"]:
-                teama_won = True
-                if sa > sb:
-                    have_won = True
-            else:
-                if sb > sa:
-                    have_won = True
-    return have_won
+def GetWins(r, b, p):
+    return 1
 
-def myPercent(v1, v2):
-    if v2 <= 0:
+def GetPercent(t, w):
+    if w <= 0:
         return "0%"
     try:
-        answer = float(v1/v2)
+        answer = float(w/t)
     except ValueError:
-        return 0
+        return "0%"
     return str("{:.0f}".format(answer*100)) + "%"
 
 year = 0
@@ -66,96 +49,71 @@ if (len(sys.argv)>=2):
 current_working_directory = os.getcwd()
 
 def main(argv):
-    saved_path = "{0}{1}/{2}".format(settings.predict_root, year, settings.predict_saved)
-    sched_path = "{0}{1}/{2}".format(settings.predict_root, year, settings.predict_sched)
-
+    saved_path = "{0}/archive/{1}/".format(current_working_directory, year)
+    predict_path = "{0}/".format(current_working_directory)
+ 
     print ("Measure Actual Results Tool")
     print ("**************************")
     print (" ")
+    print ("run this tool after the madness tournament is done")
+    print ("        let's see how we did")
+    print (" ")
     print ("Year is: {0}".format(year))
-    print ("Directory location: {0}".format(saved_path))
+    print ("Archive location: {0}".format(saved_path))
     print ("**************************")
 
-    Path(sched_path).mkdir(parents=True, exist_ok=True)
-    RefreshScheduleFiles()
+    Path(predict_path).mkdir(parents=True, exist_ok=True)
+    #RefreshBracket() # turn back on after this tool works
 
-    file = '{0}json/sched.json'.format(sched_path)
+    file = '{0}json/bracket.json'.format(predict_path)
     if (not os.path.exists(file)):
-        print ("schedule file is missing, run the scrape_schedule tool to create")
+        print ("ncaa bracket is missing, run the scrape_bracket tool to create")
         exit()
-    with open(file) as schedule_file:
-        json_sched = json.load(schedule_file, object_pairs_hook=OrderedDict)
+    with open(file) as bracket_file:
+        bracket_json = json.load(bracket_file, object_pairs_hook=OrderedDict)
     
-    Path(saved_path).mkdir(parents=True, exist_ok=True)
-    file = '{0}week1.xlsx'.format(saved_path)
+    Path(predict_path).mkdir(parents=True, exist_ok=True)
+    file = '{0}predict.xlsx'.format(predict_path)
     if (not os.path.exists(file)):
-        print ("Cannot measure results until week 2 or later, exiting")
+        print ("Cannot measure results, no prediction spreadsheet")
         exit()
-
-    week_files = glob.glob("{0}week*.xlsx".format(saved_path))
-    list_week = []
-    for file in week_files:
-        excel_df = pd.read_excel(file, sheet_name='Sheet1')
-        teams_json = json.loads(excel_df.to_json())
-        teams_json['Week'] = GetIndex(file)
-        list_week.append(teams_json)
+    excel_df = pd.read_excel(file, sheet_name='Sheet1')
+    predict_json = json.loads(excel_df.to_json())
  
     IDX=[]
-    W=[]
+    ROUND=["First Four", "First Round", "Second Round", "Sweet Sixteen", "Elite Eight", "Final Four", "Championship"]
     index = 0
-    T=[]
-    U=[]
-    C=[]
-    P=[]
-    grand_total_games = 0
-    grand_count_predicted = 0
-    grand_count_wins = 0
-    for item in list_week:
-        week = item["Week"]
-        total_games = len(item["Index"])
-        grand_total_games+=total_games
-        if week == 99:
-            W.append("bowls")
-        else:
-            W.append("{:03d}".format(week))
-        T.append(total_games)
+    TOTALS=[]
+    WON=[]
+    PERCENT=[]
+    grand_rnd_count = 0
+    grand_wins=0
+    for rnd in range(0, 7):
         index+=1
         IDX.append(index)
-        count_predicted=0
-        count_wins=0
-        for i in range(len(item["Index"])):
-            scorea = item["ScoreA"][str(i)]
-            if str(scorea).strip() == "?":
-                scorea = "0"
-            scoreb = item["ScoreB"][str(i)]
-            if str(scoreb).strip() == "?":
-                scoreb = "0"
-            if int(scorea) + int(scoreb) > 0:
-                game_won = HaveIWon(item["Date"][str(i)], item["TeamA"][str(i)], \
-                    item["TeamB"][str(i)], item["ScoreA"][str(i)], item["ScoreB"][str(i)], json_sched)
-                if game_won:
-                    count_wins+=1
-                count_predicted+=1
-        grand_count_predicted+=count_predicted
-        grand_count_wins+=count_wins
-        U.append(total_games - count_predicted)
-        C.append(count_wins)
-        P.append(myPercent(count_wins, count_predicted))
+        rnd_count = GetRoundCount(rnd, bracket_json)
+        wins = GetWins(rnd, bracket_json, predict_json)
+        WON.append(wins)
+        grand_wins+=wins
+        TOTALS.append(rnd_count)
+        grand_rnd_count+=rnd_count
+        percent = GetPercent(rnd_count, wins)
+        PERCENT.append(percent)
 
-    W.append("totals")             #grand totals row
-    T.append(grand_total_games)
+        
+    ROUND.append("Totals")             #grand totals row
     index+=1
     IDX.append(index)
-    U.append(grand_total_games - grand_count_predicted)
-    C.append(grand_count_wins)
-    P.append(myPercent(grand_count_wins, grand_count_predicted))
-
+    TOTALS.append(grand_rnd_count)
+    WON.append(grand_wins)
+    percent = GetPercent(grand_rnd_count, grand_wins)
+    PERCENT.append(percent)
+    
     df=pd.DataFrame(IDX,columns=['Index'])
-    df['Week']=W
-    df['Total Games']=T
-    df['Count Unpredicted']=U
-    df['Count Correct']=C
-    df['Percent Correct']=P
+    df['Round']=ROUND
+    df['Games']=TOTALS
+    df['Won']=WON
+    df['Percent']=PERCENT
 
     print ("... creating results JSON file")
     the_file = "{0}json/results.json".format(saved_path)
