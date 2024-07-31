@@ -37,98 +37,30 @@ def GetWins(b, p):
             rnd = p["Round"][str(x)]
             idx = p["Index"][str(x)]
             if rnd == r:
-                count+=1
+                p_scorea = p["ScoreA"][str(x)]
+                p_scoreb = p["ScoreB"][str(x)]
+                p_teama = p["TeamA"][str(x)]
+                p_teamb = p["TeamB"][str(x)]
+                predict = p["Pick"][str(x)]
+                for y in range(len(b)):
+                    if b[str(y)]["Round"] == r:
+                        b_scorea = b[str(y)]["ScoreA"]
+                        b_scoreb = b[str(y)]["ScoreB"]
+                        b_teama = b[str(y)]["TeamA"]
+                        b_teamb = b[str(y)]["TeamB"]
+                        if predict == "TeamA":
+                            if b_scorea > b_scoreb:
+                                if b_teama == p_teama:
+                                    count+=1
+                        else:
+                            if b_scoreb > b_scorea:
+                                if b_teamb == p_teamb:
+                                    count+=1
         total_count+=count
         wins[r] = count
     wins[7] = total_count
     print ("wins: " + str(wins))
     return wins
-
-def GetWinsOld(b, p):
-    rnd=[]
-    count = 0
-    for x in range(len(p)):
-        pa = p["ScoreA"][str(x)]  # prediction
-        pb = p["ScoreB"][str(x)]
-        tpa = p["TeamA"][str(x)]
-        tpb = p["TeamB"][str(x)]
-        predict = p["Pick"][str(x)]
-        print ("predict team: " + tpa + " vs " + tpb)
-        print ("predict score: " + str(pa) + " - " + str(pb))
-        print ("predict: " + str(predict))
-        print (" " )
-        idx = p["Index"][str(x)]
-        for y in range(len(b)):
-            if idx == b[str(y)]["Index"]:
-                ba = b[str(y)]["ScoreA"]    # bracket
-                bb = b[str(y)]["ScoreB"]
-                tba = b[str(y)]["TeamA"]
-                tbb = b[str(y)]["TeamB"]
-                print ("team: " + tba + " vs " + tbb)
-                print ("score: " + ba + " - " + bb)
-                print (" ")
-                if predict == "TeamA":
-                    print (predict)
-                    if ba > bb:
-                        if tba == tpa:
-                            print ("won")
-                            count+=1
-                        else:
-                            print ("teams don't match")
-                else:
-                    print (predict)
-                    if bb > ba:
-                        if tbb == tpb:
-                            print ("won")
-                            count+=1
-                        else:
-                            print ("teams don't match")
-    print ("round: " + str(r) + " won: " + str(count))
-    pdb.set_trace()
-    return count
-
-def GetWinsOlder(r, b, p):
-    count = 0
-    for x in range(len(b)):
-        if r == b[str(x)]["Round"]:
-            ba = b[str(x)]["ScoreA"]    # bracket
-            bb = b[str(x)]["ScoreB"]
-            tba = b[str(x)]["TeamA"]
-            tbb = b[str(x)]["TeamB"]
-            print ("team: " + tba + " vs " + tbb)
-            print ("score: " + ba + " - " + bb)
-            print (" ")
-            idx =  b[str(x)]["Index"]
-            index=0
-            for y in range(len(p)):
-                if idx == p["Index"][str(y)]:
-                    pa = p["ScoreA"][str(index)]  # prediction
-                    pb = p["ScoreB"][str(index)]
-                    tpa = p["TeamA"][str(index)]
-                    tpb = p["TeamB"][str(index)]
-                    predict = p["Pick"][str(index)]
-                    print ("predict team: " + tpa + " vs " + tpb)
-                    print ("predict score: " + str(pa) + " - " + str(pb))
-                    if predict == "TeamA":
-                        print (predict)
-                        if ba > bb:
-                            if tba == tpa:
-                                print ("won")
-                                count+=1
-                            else:
-                                print ("teams don't match")
-                    else:
-                        print (predict)
-                        if bb > ba:
-                            if tbb == tpb:
-                                print ("won")
-                                count+=1
-                            else:
-                                print ("teams don't match")
-                    pdb.set_trace()
-                index+=1
-    
-    return count
 
 def GetPercent(t, w):
     if w <= 0:
