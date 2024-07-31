@@ -9,6 +9,8 @@ from datetime import datetime
 import re
 import pandas as pd
 import sys
+from shutil import copyfile
+
 import pyMadness
 
 def GetNumber(item):
@@ -59,7 +61,6 @@ def GetWins(b, p):
         total_count+=count
         wins[r] = count
     wins[7] = total_count
-    print ("wins: " + str(wins))
     return wins
 
 def GetPercent(t, w):
@@ -70,6 +71,16 @@ def GetPercent(t, w):
     except ValueError:
         return "0%"
     return str("{:.0f}".format(answer*100)) + "%"
+
+def SaveOffFiles(spath, ppath, file_list):
+    Path(spath).mkdir(parents=True, exist_ok=True)
+    for item in file_list:
+        filename = os.path.basename(str(item))
+        dest_file = "{0}{1}".format(spath, filename)
+        source_file = "{0}{1}".format(ppath, filename)
+        if (os.path.exists(dest_file)):
+            os.remove(dest_file)
+        copyfile(source_file, dest_file)
 
 year = 0
 now = datetime.now()
@@ -95,7 +106,7 @@ def main(argv):
     print ("**************************")
 
     Path(predict_path).mkdir(parents=True, exist_ok=True)
-    #RefreshBracket() # turn back on after this tool works
+    RefreshBracket()
 
     file = '{0}json/bracket.json'.format(predict_path)
     if (not os.path.exists(file)):
@@ -165,10 +176,16 @@ def main(argv):
     f.close()
     
     print ("... creating results spreadsheet")
-    excel_file = "{0}results.xlsx".format(saved_path)
+    excel_file = "{0}results.xlsx".format(predict_path)
     writer = pd.ExcelWriter(excel_file, engine="xlsxwriter")
     df.to_excel(writer, sheet_name="Sheet1", index=False)
     writer.close()
+    print ("... archiving files for this year")
+    file_list = []
+    file_list.append("results.xlsx")
+    file_list.append("bracket.xlsx")
+    file_list.append("predict.xlsx")
+    SaveOffFiles(saved_path, predict_path, file_list)
     print ("done.")
 
 if __name__ == "__main__":
