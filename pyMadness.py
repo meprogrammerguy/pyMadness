@@ -8,6 +8,27 @@ import pdb
 from scipy.stats import norm
 from collections import OrderedDict
 
+def FindMergeTeams(teama, teamb, dict_merge):
+    FoundA = ""
+    FoundB = ""
+    for index in range(len(dict_merge["Index"])):
+        idx = str(index)
+        if (teama == dict_merge["bracket team"][idx]):
+            FoundA = dict_merge["stats team"][idx]
+            if (dict_merge["fixed stats team"][idx]):
+                FoundA = dict_merge["fixed stats team"][idx]
+        if (teamb == dict_merge["bracket team"][idx]):
+            FoundB = dict_merge["stats team"][idx]
+            if (dict_merge["fixed stats team"][idx]):
+                FoundB = dict_merge["fixed stats team"][idx]
+        if (FoundA and FoundB):
+            break
+    if (FoundA == "" or FoundB == ""):
+        if (teama != "?" or teamb != "?"):
+            print ("warning, in FindTeams() both teams not found, correct your merge spreadsheet, please")
+            print ("*** TeamA: [{0}:{1}], TeamB: [{2}:{3}] ***".format(teama, FoundA, teamb, FoundB))
+    return FoundA, FoundB
+
 def findTeams(first, second, file = "json/stats.json"):
     teama = {}
     teamb = {}

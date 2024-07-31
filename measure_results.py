@@ -9,6 +9,7 @@ from datetime import datetime
 import re
 import pandas as pd
 import sys
+import pyMadness
 
 def GetNumber(item):
     idx = re.findall(r'\d+', str(item))
@@ -26,9 +27,108 @@ def GetRoundCount(r, j):
         if rnd == r:
             count+=1
     return count
+    
+def GetWins(b, p):
+    wins={}
+    total_count=0
+    for r in range(0, 7):
+        count = 0
+        for x in range(len(p["Index"])):
+            rnd = p["Round"][str(x)]
+            idx = p["Index"][str(x)]
+            if rnd == r:
+                count+=1
+        total_count+=count
+        wins[r] = count
+    wins[7] = total_count
+    print ("wins: " + str(wins))
+    return wins
 
-def GetWins(r, b, p):
-    return 1
+def GetWinsOld(b, p):
+    rnd=[]
+    count = 0
+    for x in range(len(p)):
+        pa = p["ScoreA"][str(x)]  # prediction
+        pb = p["ScoreB"][str(x)]
+        tpa = p["TeamA"][str(x)]
+        tpb = p["TeamB"][str(x)]
+        predict = p["Pick"][str(x)]
+        print ("predict team: " + tpa + " vs " + tpb)
+        print ("predict score: " + str(pa) + " - " + str(pb))
+        print ("predict: " + str(predict))
+        print (" " )
+        idx = p["Index"][str(x)]
+        for y in range(len(b)):
+            if idx == b[str(y)]["Index"]:
+                ba = b[str(y)]["ScoreA"]    # bracket
+                bb = b[str(y)]["ScoreB"]
+                tba = b[str(y)]["TeamA"]
+                tbb = b[str(y)]["TeamB"]
+                print ("team: " + tba + " vs " + tbb)
+                print ("score: " + ba + " - " + bb)
+                print (" ")
+                if predict == "TeamA":
+                    print (predict)
+                    if ba > bb:
+                        if tba == tpa:
+                            print ("won")
+                            count+=1
+                        else:
+                            print ("teams don't match")
+                else:
+                    print (predict)
+                    if bb > ba:
+                        if tbb == tpb:
+                            print ("won")
+                            count+=1
+                        else:
+                            print ("teams don't match")
+    print ("round: " + str(r) + " won: " + str(count))
+    pdb.set_trace()
+    return count
+
+def GetWinsOlder(r, b, p):
+    count = 0
+    for x in range(len(b)):
+        if r == b[str(x)]["Round"]:
+            ba = b[str(x)]["ScoreA"]    # bracket
+            bb = b[str(x)]["ScoreB"]
+            tba = b[str(x)]["TeamA"]
+            tbb = b[str(x)]["TeamB"]
+            print ("team: " + tba + " vs " + tbb)
+            print ("score: " + ba + " - " + bb)
+            print (" ")
+            idx =  b[str(x)]["Index"]
+            index=0
+            for y in range(len(p)):
+                if idx == p["Index"][str(y)]:
+                    pa = p["ScoreA"][str(index)]  # prediction
+                    pb = p["ScoreB"][str(index)]
+                    tpa = p["TeamA"][str(index)]
+                    tpb = p["TeamB"][str(index)]
+                    predict = p["Pick"][str(index)]
+                    print ("predict team: " + tpa + " vs " + tpb)
+                    print ("predict score: " + str(pa) + " - " + str(pb))
+                    if predict == "TeamA":
+                        print (predict)
+                        if ba > bb:
+                            if tba == tpa:
+                                print ("won")
+                                count+=1
+                            else:
+                                print ("teams don't match")
+                    else:
+                        print (predict)
+                        if bb > ba:
+                            if tbb == tpb:
+                                print ("won")
+                                count+=1
+                            else:
+                                print ("teams don't match")
+                    pdb.set_trace()
+                index+=1
+    
+    return count
 
 def GetPercent(t, w):
     if w <= 0:
@@ -79,34 +179,44 @@ def main(argv):
         exit()
     excel_df = pd.read_excel(file, sheet_name='Sheet1')
     predict_json = json.loads(excel_df.to_json())
- 
+
+    file = '{0}merge.xlsx'.format(predict_path)
+    if (not os.path.exists(file)):
+        print ("merge spreadsheet is missing, run the merge_teams tool to create")
+        exit() 
+
+    dict_merge={}
+    excel_df = pd.read_excel(file, sheet_name='Sheet1')
+    dict_merge = json.loads(excel_df.to_json())
+    for itm in bracket_json.values():
+        teama, teamb = pyMadness.FindMergeTeams(itm["TeamA"], itm["TeamB"], dict_merge)
+        itm["TeamA"] = teama
+        itm["TeamB"] = teamb
+    
     IDX=[]
-    ROUND=["First Four", "First Round", "Second Round", "Sweet Sixteen", "Elite Eight", "Final Four", "Championship"]
+    ROUND=["First Four", "First Round", "Second Round", "Sweet Sixteen", "Elite Eight", "Final Four", "Championship", "Totals"]
     index = 0
     TOTALS=[]
     WON=[]
     PERCENT=[]
     grand_rnd_count = 0
-    grand_wins=0
+    wins = GetWins(bracket_json, predict_json)
     for rnd in range(0, 7):
         index+=1
         IDX.append(index)
         rnd_count = GetRoundCount(rnd, bracket_json)
-        wins = GetWins(rnd, bracket_json, predict_json)
-        WON.append(wins)
-        grand_wins+=wins
         TOTALS.append(rnd_count)
         grand_rnd_count+=rnd_count
-        percent = GetPercent(rnd_count, wins)
+        WON.append(wins[rnd])
+        percent = GetPercent(rnd_count, wins[rnd])
         PERCENT.append(percent)
         
-    ROUND.append("Totals")             #grand totals row
+    percent = GetPercent(grand_rnd_count, wins[index])
+    PERCENT.append(percent)
+    WON.append(wins[index])
     index+=1
     IDX.append(index)
     TOTALS.append(grand_rnd_count)
-    WON.append(grand_wins)
-    percent = GetPercent(grand_rnd_count, grand_wins)
-    PERCENT.append(percent)
     
     df=pd.DataFrame(IDX,columns=['Index'])
     df['Round']=ROUND

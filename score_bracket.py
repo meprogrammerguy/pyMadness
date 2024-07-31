@@ -8,6 +8,7 @@ import pdb
 import os.path
 import pandas as pd
 from datetime import datetime
+import pyMadness
 
 def CurrentStatsFile(filename):
     stat = os.path.getmtime(filename)
@@ -133,7 +134,7 @@ def PredictTournament(stat_file, bracket_file, merge_file, input_file, output_fi
         dict_bracket = json.load(bracket_file, object_pairs_hook=OrderedDict)
    
     for itm in dict_bracket.values():
-        teama, teamb = FindTeams(itm["TeamA"], itm["TeamB"], dict_merge)
+        teama, teamb = pyMadness.FindMergeTeams(itm["TeamA"], itm["TeamB"], dict_merge)
         itm["TeamA"] = teama
         itm["TeamB"] = teamb
         
@@ -197,27 +198,6 @@ def PredictTournament(stat_file, bracket_file, merge_file, input_file, output_fi
     writer = pd.ExcelWriter(output_file, engine="xlsxwriter")
     df.to_excel(writer, sheet_name="Sheet1", index=False)
     writer.close()
-
-def FindTeams(teama, teamb, dict_merge):
-    FoundA = ""
-    FoundB = ""
-    for index in range(len(dict_merge["Index"])):
-        idx = str(index)
-        if (teama == dict_merge["bracket team"][idx]):
-            FoundA = dict_merge["stats team"][idx]
-            if (dict_merge["fixed stats team"][idx]):
-                FoundA = dict_merge["fixed stats team"][idx]
-        if (teamb == dict_merge["bracket team"][idx]):
-            FoundB = dict_merge["stats team"][idx]
-            if (dict_merge["fixed stats team"][idx]):
-                FoundB = dict_merge["fixed stats team"][idx]
-        if (FoundA and FoundB):
-            break
-    if (FoundA == "" or FoundB == ""):
-        if (teama != "?" or teamb != "?"):
-            print ("warning, in FindTeams() both teams not found, correct your merge spreadsheet, please")
-            print ("*** TeamA: [{0}:{1}], TeamB: [{2}:{3}] ***".format(teama, FoundA, teamb, FoundB))
-    return FoundA, FoundB
 
 def LoadPredict(dict_predict, dict_bracket):
     index = 0
